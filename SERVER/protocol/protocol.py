@@ -19,21 +19,20 @@ def param_to_frame(param):
 
 
 def load_protocol_from_json_file(json_file, module_manager):
-        
-    protocol = Protocol(name="Jsonprotocol2")
+
     with open(json_file) as json_data:
         data = json.load(json_data)
         return load_protocol_from_json(data, module_manager)
-                
-    return protocol 
+
+    return None
 
 
 def load_protocol_from_json_string(json_string, module_manager):
-        
+
     data = json.loads(json_string)
-    
+
     return load_protocol_from_json(data, module_manager)
-    
+
 
 def load_protocol_from_json(json_data, module_manager):
     #the new protocol
@@ -43,7 +42,7 @@ def load_protocol_from_json(json_data, module_manager):
     logger = logging.getLogger()
     module_dict = {}
 
-    # We build a dictionary with all the modules/labwares used on the protocol 
+    # We build a dictionary with all the modules/labwares used on the protocol
     # to link the name they are refered by and their id on the deck
     for labware in labware_description:
         mod = module_manager.get_module(labware_description[labware]["id"])
@@ -53,31 +52,31 @@ def load_protocol_from_json(json_data, module_manager):
             logger.error("A module on the json refs section is not on the deck")
         else:
             module_dict[labware] = mod
-
+    print(module_dict)
     for instruction in instructions:
-        if instruction['op'] in labware_description: 
+        if instruction['op'] in labware_description:
             mod = module_dict[instruction['op']]
-        else:            
+        else:
             logger.error("An op in the json is not present on the refs section")
 
         steps = mod.parse_json(instruction, module_dict)
         protocol.add_steps(steps)
-            
-    return protocol 
+
+    return protocol
 
 
 class Protocol:
     """
     Protocol describe a Protocol of instructions for multiples modules
-    Protocol are a named suit of instructions grouped as steps. (doc a modifier) 
+    Protocol are a named suit of instructions grouped as steps. (doc a modifier)
     """
 
     def __init__(self, name = "generic_name"):
         """
         Constructor of Protocol
-    
-        @param self 
-        @param name the name of the Protocol, default to "generic_name" 
+
+        @param self
+        @param name the name of the Protocol, default to "generic_name"
         """
         self.name = name
         self.current_step = None
@@ -108,7 +107,7 @@ class Protocol:
         modules = []
         for step in self.steps:
             modules += step.get_module_list()
-        
+
         return list(set(modules))
 
     def start(self):
@@ -152,12 +151,12 @@ class Protocol:
                 self.logger.info(time.time())
                 stop_value = self.current_step.condition.value
                 Timer(stop_value, self.start_next_step, ()).start()
-        
+
 
 class Step:
     """
     A step is the core component of a Protocol.
-    A step is the combinaison of a stop condition and a set of parameters to be 
+    A step is the combinaison of a stop condition and a set of parameters to be
     send to modules
     """
 
@@ -199,7 +198,7 @@ class Step:
     def to_com_string(self):
         """
         Transform the step as a communication string for the modules
-        @return the trame to be send for the target module describing each 
+        @return the trame to be send for the target module describing each
                 parameters
         """
         string = ""
@@ -221,7 +220,7 @@ class Step:
 
 class StepParameter:
     """
-    StepParameter, merain component of a step, a step parameter is a parameter 
+    StepParameter, merain component of a step, a step parameter is a parameter
     to be enforced on a module.
     """
 
@@ -232,7 +231,7 @@ class StepParameter:
         @param name the parameter name, temperature for exemaple
         @param value the value to be set for a given parameter name
         """
-        self.module = module 
+        self.module = module
         self.name = name
         self.value = value
 
@@ -245,6 +244,3 @@ class StepParameter:
         Return true if the step parameter match a given for a module
         """
         return self.module == module and self.name == name and self.value == value
-
-
-
