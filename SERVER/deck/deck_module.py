@@ -133,7 +133,7 @@ class DeckModule(object):
         """
         Return a string representing the module (the name)
         """
-        return self.name
+        return "module : " + self.name
 
     def add_parameter(self, module_param):
         """
@@ -163,8 +163,8 @@ class DeckModule(object):
         Return a well coordinate, acording to the global referential
         (robot top left corner)
         """
-        
-        letter = letter - ord('A') + 1 
+
+        letter = letter - ord('A') + 1
         # add more information on the log error + check for < 0
         if letter > self.nb_line or letter < 1:
             self.logger.error("Error on the line")
@@ -226,4 +226,3 @@ class ModuleParam(object):
         Return a string representing the param, its name.
         """
         return self.name
-
