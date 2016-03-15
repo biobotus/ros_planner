@@ -1,36 +1,53 @@
 #!/usr/bin/python
 #added for ROS
 import rospy
-import CoordinateMsgs.msg
-from std_msgs.msg import integer
-def setCoord(name):
-    # Function asking user to enter position of each modules
-    print('position for ', name)
-    Fx = raw_input('Enter x coord dumbass: ')
-    Fy = raw_input('Enter y coord dumbass: ')
-    Fz = raw_input('Enter z coord dumbass: ')
-    # Got some error with JSON file, make sure raw_input is an integer so
-    # it can be concanated later.
-    return (int(Fx),int(Fy),int(Fz))
+from ros_planner.msg import CoordinateMsgs
+from std_msgs.msg import Int32,Int8
 
-def getPosition():
-    coord_x, coord_y, coord_z = setCoord(name)
-    pub = rospy.Publisher('chatter', CoordinateMsgs)
-    rospy.init_node('talker',anonymous=True)
-    rate = rospy.Rate(10) #10hz
-    msg = CoordinateMsgs()
-    msg.name = name
-    msg.coord_x = coord_x
-    msg.coord_y = coord_y
-    msg.coord_z = coord_z
+class Position_input():
 
-    while not rospy.is_shutdownd():
-        rospy.loginfo(msg)
-        pub.publish(msg)
-        rate.sleep()
+    def __init__(self):
+        self.pub = rospy.Publisher('modules_position', CoordinateMsgs, queue_size=10)
+        rospy.init_node('HMI_Planner',anonymous=True)
+        self.rate = rospy.Rate(10) #10hz
+        self.msg = CoordinateMsgs()
+
+
+    def setCoord(self, name):
+        # Function asking user to enter position of each modules
+        print('position for ', self.name)
+        self.Fx = raw_input('Enter x coord: ')
+        self.Fy = raw_input('Enter y coord: ')
+        self.Fz = raw_input('Enter z coord: ')
+        # Got some error with JSON file, make sure raw_input is an integer so
+        # it can be concanated later.
+        return (int(self.Fx),int(self.Fy),int(self.Fz))
+
+    def getPosition(self):
+
+        while not rospy.is_shutdown():
+            self.run = int(raw_input(" Do you want to create a module? (yes = 1/no = 0) "))
+
+            if self.run:
+
+                self.name = raw_input('Enter module name: ')
+                self.coord_x, self.coord_y, self.coord_z = p_i.setCoord(self.name)
+
+                self.msg.name = self.name
+                self.msg.coord_x = self.coord_x
+                self.msg.coord_y = self.coord_y
+                self.msg.coord_z = self.coord_z
+
+                rospy.loginfo(self.msg)
+                self.pub.publish(self.msg)
+                self.rate.sleep()
+
+            else :
+                return
 
 if __name__ == '__main__':
     try:
-        talker()
+        p_i = Position_input()
+        p_i.getPosition()
     except rospy.ROSInterruptException:
         pass
