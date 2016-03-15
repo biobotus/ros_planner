@@ -1,5 +1,5 @@
 """
-
+TODO
 """
 
 from collections import deque
@@ -20,11 +20,9 @@ def param_to_frame(param):
 
 def load_protocol_from_json_file(json_file, module_manager):
 
-    with open(json_file) as json_data:
+    with open(json_file, 'r') as json_data:
         data = json.load(json_data)
         return load_protocol_from_json(data, module_manager)
-
-    return None
 
 
 def load_protocol_from_json_string(json_string, module_manager):

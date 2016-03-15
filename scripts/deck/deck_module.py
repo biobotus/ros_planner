@@ -12,7 +12,7 @@ from protocol.protocol import Step, StepParameter
 import logging
 
 
-class Coordinate(object):
+class Coordinate():
     """
     Coordinate represente a position (x,y,z) inside the deck. This class offer
     tools to translate and rotate those position.
@@ -75,7 +75,7 @@ class Coordinate(object):
             self.coor_z == other.coor_z
 
 
-class DeckManager(object):
+class DeckManager():
     """
     The module manager handles modules,labware and their Ids.
     """
@@ -109,7 +109,7 @@ class DeckManager(object):
             return -1
 
 
-class DeckModule(object):
+class DeckModule():
     """
     This class represent an entity of a module present on the deck
     """
@@ -202,10 +202,11 @@ class DeckModule(object):
         return [step,]
 
 
-class ModuleParam(object):
+class ModuleParam():
     """
     Represent a param that can be command (in) or ask (out) to a module.
     """
+
     def __init__(self, name, p_in, p_out, vmax=0, vmin=0):
         """
         Constructor for ModuleParam.
