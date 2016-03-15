@@ -1,0 +1,33 @@
+The Num.msg is written as :
+String
+Int32
+Int32
+Int32
+Int8
+Int8
+
+Which describes the name of the module, its x,y and z coordinates.
+Both int8 at the end of file is to identify column and line size of certain boxes
+(it can be ignore)
+To make sure that the msg file is turned into source code for C++, Python, 
+and other languages :
+Open package.xml and make sure these two lines are in it :
+
+<build_depend>message_generation</build_depend>
+<run_depend>message_runtime</run_depend>
+
+Open CMakeLists.txt
+
+Add the message_generation dependency to the find_package call which already
+ exists in your CMakeLists.txt so that you can generate messages. You can do
+ this by simply adding message_generation to the list of COMPONENTS such that
+ it looks like this:
+
+
+# Do not just add this to your CMakeLists.txt, modify the existing text to add message_generation before the closing parenthesis
+find_package(catkin REQUIRED COMPONENTS
+   roscpp
+   rospy
+   std_msgs
+   message_generation
+)

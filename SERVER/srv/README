@@ -1,0 +1,16 @@
+Also you need the same changes to package.xml for services as for messages, so look above for the additional dependencies required.
+
+Remove # to uncomment the following lines:
+
+# add_service_files(
+#   FILES
+#   Service1.srv
+#   Service2.srv
+# )
+And replace the placeholder Service*.srv files for your service files:
+
+
+add_service_files(
+  FILES
+  AddTwoInts.srv
+)
