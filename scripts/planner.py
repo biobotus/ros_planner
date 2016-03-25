@@ -19,31 +19,25 @@ class Planner():
         self.node_name = self.__class__.__name__
         rospy.init_node(self.node_name, anonymous=True)
         self.subscriber = rospy.Subscriber('modules_position', CoordinateMsgs, self.callback_input)
-        self.labware = {};
-        self.i = 0
+        self.module = DeckManager()
+
 
     def callback_input(self,data):
 
-        self.name = data.name
-        self.coord_x = data.coord_x
-        self.coord_y = data.coord_y
-        self.coord_z = data.coord_z
-        self.labware["name"]=self.name
-        self.labware["x_coord"]=self.coord_x
-        self.labware["y_coord"]=self.coord_y
-        self.labware["z_coord"]=self.coord_z
-        #self.labware.append(RectContainerLabware(self.name))
-        # = RectContainerLabware(self.name)
+        self.module.add_module(data.id)
+        self.module.get_module(data.id)
+        try:
+            getattr(self.__class__, 'add_{0}'.format(data.type))(self, data.id)
+        except AttributeError as e:
+            print(e)
 
-        print(self.labware)
-        self.i=self.i+1
-        for self.name in self.labware:
-            print(self.labware["name"], self.coord_x)
-
-
+    def add_tac(self,id):
+        print "BABOO"
 
     def listener(self):
         rospy.spin()
+
+
 
 if __name__ == "__main__":
     try:

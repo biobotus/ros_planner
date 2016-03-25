@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/python
 
 from deck.deck_module import DeckManager
 from deck.deck_module import DeckModule

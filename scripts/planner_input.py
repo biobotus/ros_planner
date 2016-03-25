@@ -15,7 +15,7 @@ class Position_input():
 
     def setCoord(self, name):
         # Function asking user to enter position of each modules
-        print('position for ', self.name)
+        print('position for ', self.id)
         self.Fx = raw_input('Enter x coord: ')
         self.Fy = raw_input('Enter y coord: ')
         self.Fz = raw_input('Enter z coord: ')
@@ -30,10 +30,12 @@ class Position_input():
 
             if self.run:
 
-                self.name = raw_input('Enter module name: ')
-                self.coord_x, self.coord_y, self.coord_z = p_i.setCoord(self.name)
+                self.type = raw_input('Enter module type: ')
+                self.id = raw_input('Enter module ID: ')
+                self.coord_x, self.coord_y, self.coord_z = p_i.setCoord(self.id)
 
-                self.msg.name = self.name
+                self.msg.id = self.id
+                self.msg.type = self.type
                 self.msg.coord_x = self.coord_x
                 self.msg.coord_y = self.coord_y
                 self.msg.coord_z = self.coord_z
