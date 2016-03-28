@@ -108,21 +108,25 @@ class DeckManager():
         else:
             return -1
 
+    def list_module(self):
+        print "Modules  list :"
+        for module in self.modules:
+            print(self.get_module(module))
 
-class DeckModule():
+class DeckModule(object):
     """
     This class represent an entity of a module present on the deck
     """
 
-    def __init__(self, name, coor=Coordinate(0, 0, 0)):
+    def __init__(self, name, coord):
         """ Constructor for module
         @param name The name of the module
-        @param coor the coordinate of the module on the deck, top left
+        @param coord the coorddinate of the module on the deck, top left
            relative to the robot top left corner.
         """
         self.name = name
         self.params = []
-        self.coor = coor
+        self.coordd =coord
         self.nb_line = 0
         self.nb_column = 0
         self.well1_offset = Coordinate(0, 0, 0)
@@ -134,6 +138,7 @@ class DeckModule():
         Return a string representing the module (the name)
         """
         return "module : " + self.name
+
 
     def add_parameter(self, module_param):
         """
@@ -174,12 +179,12 @@ class DeckModule():
             self.logger.error("Error on the column")
             return -1
 
-        coor_x = self.coor.coor_x + self.well1_offset.coor_x + \
-                    (letter-1) * self.well_offset.coor_x
-        coor_y = self.coor.coor_y +self.well1_offset.coor_y + \
-                    (number-1)*self.well_offset.coor_y
+        coord_x = self.coord.coord_x + self.well1_offset.coord_x + \
+                    (letter-1) * self.well_offset.coord_x
+        coord_y = self.coord.coord_y +self.well1_offset.coord_y + \
+                    (number-1)*self.well_offset.coord_y
 
-        return Coordinate(coor_x, coor_y, 0)
+        return Coordinate(coord_x, coord_y, 0)
 
     def parse_json(self, json_instruction, module_dic):
         """

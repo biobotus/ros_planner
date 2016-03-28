@@ -1,5 +1,5 @@
 {
-  "refs": {     
+  "refs": {
       "dye": {
       "id": "ct13zjq79whe",
       "store": { "where": "ambient" }
@@ -18,9 +18,6 @@
     "TAC2": {
       "module" : "tac",
       "id": "1235"
-    },
-    "pipette": {
-      "id": "4321"
     }
   },
   "instructions": [{
@@ -42,35 +39,6 @@
         "condition":"density",
         "value":85
     }
-  },
-  { "op": "pipette",
-    "groups": [
-      { "distribute": {
-        "from": "water/A1",
-        "to": [
-          { "well": "test/A1",
-            "volume": "40:microliter" },
-          { "well": "test/A2",
-            "volume": "40:microliter" },
-          { "well": "test/A3",
-            "volume": "40:microliter" }
-        ]
-      } }, { "distribute": {
-        "from": "dye/A1",
-        "to": [
-          { "well": "test/A1",
-            "volume": "5:microliter" },
-          { "well": "test/A2",
-            "volume": "5:microliter" },
-          { "well": "test/A3",
-            "volume": "5:microliter" }
-        ]
-      }}, { "transfert": {
-          "from": "dye/A1",
-          "to": "TAC/A1",
-          "volume": "5:microliter"
-          }}
-    ]
   },
   {
     "op": "TAC",

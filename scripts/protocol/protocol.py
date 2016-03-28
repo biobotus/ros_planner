@@ -47,6 +47,7 @@ def load_protocol_from_json(json_data, module_manager):
         if mod == -1:
             # raise an error
             # A module on the json is not on the deck
+            print "errrrrrror"
             logger.error("A module on the json refs section is not on the deck")
         else:
             module_dict[labware] = mod
