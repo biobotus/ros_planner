@@ -5,7 +5,7 @@ Module contain ModuleParam wich describe what can be ask to a module.
 """
 
 # cos and sin used in rotation fonction
-from math import cos, sin
+import math
 from protocol.protocol import Step, StepParameter
 
 # using the python ubber logger
@@ -14,20 +14,20 @@ import logging
 
 class Coordinate():
     """
-    Coordinate represente a position (x,y,z) inside the deck. This class offer
+    coordinate represente a position (x,y,z) inside the deck. This class offer
     tools to translate and rotate those position.
     """
 
-    def __init__(self, coor_x, coor_y, coor_z):
+    def __init__(self, coord_x, coord_y, coord_z):
         """
         Constructor for coordinate
-        @param coor_x the x coordinate
-        @param coor_y the y coordinate
-        @param coor_z the z coordinate
+        @param coord_x the x coordinate
+        @param coord_y the y coordinate
+        @param coord_z the z coordinate
         """
-        self.coor_x = coor_x
-        self.coor_y = coor_y
-        self.coor_z = coor_z
+        self.coord_x = coord_x
+        self.coord_y = coord_y
+        self.coord_z = coord_z
 
     def rotate_z(self, angle, axe):
         """
@@ -35,44 +35,43 @@ class Coordinate():
         @param axe the coordinate of the axe for the rotation
         @param angle the angle for the rotation
         """
-        coor_x = self.coor_x - axe.coor_x
-        coor_y = self.coor_y - axe.coor_y
-        cos_angle = cos(angle)
-        sin_angle = sin(angle)
+        coord_x = self.coord_x - axe.coord_x
+        coord_y = self.coord_y - axe.coord_y
+        cos_angle = math.cos(angle)
+        sin_angle = math.sin(angle)
 
-        self.coor_x = axe.coor_x + coor_x * cos_angle - coor_y * sin_angle
-        self.coor_y = axe.coor_y + coor_x * sin_angle + coor_y * cos_angle
+        self.coord_x = axe.coord_x + coord_x * cos_angle - coord_y * sin_angle
+        self.coord_y = axe.coord_y + coord_x * sin_angle + coord_y * cos_angle
 
-        self.coor_x = round(self.coor_x, 2)
-        self.coor_y = round(self.coor_y, 2)
+        self.coord_x = round(self.coord_x, 2)
+        self.coord_y = round(self.coord_y, 2)
 
     def translate_x(self, distance):
         """
         Translate the coordinate along the axe X
         @param distance the distance to be translate
         """
-        self.coor_x += distance
+        self.coord_x += distance
 
     def translate_y(self, distance):
         """
         Translate the coordinate along the axe Y
         @param distance the distance to be translate
         """
-        self.coor_y += distance
+        self.coord_y += distance
 
     def __str__(self):
         """
         Return a string representing the coordinate
         """
-        return "( x:" + str(self.coor_x) + "; y:" + str(self.coor_y) \
-                    + "; z:" + str(self.coor_z) + " )"
+        return "(x: {0}; y: {1}; z: {2})".format(self.coord_x, self.coord_y, self.coord_z)
 
     def __eq__(self, other):
         """
         Overloading of the equal function to compare equity of coordone
         """
-        return self.coor_x == other.coor_x and self.coor_y == other.coor_y and \
-            self.coor_z == other.coor_z
+        return self.coord_x == other.coord_x and self.coord_y == other.coord_y and \
+            self.coord_z == other.coord_z
 
 
 class DeckManager():
@@ -121,12 +120,12 @@ class DeckModule(object):
     def __init__(self, name, coord):
         """ Constructor for module
         @param name The name of the module
-        @param coord the coorddinate of the module on the deck, top left
+        @param coord the coordinate of the module on the deck, top left
            relative to the robot top left corner.
         """
         self.name = name
         self.params = []
-        self.coordd =coord
+        self.coord = coord
         self.nb_line = 0
         self.nb_column = 0
         self.well1_offset = Coordinate(0, 0, 0)
@@ -184,7 +183,7 @@ class DeckModule(object):
         coord_y = self.coord.coord_y +self.well1_offset.coord_y + \
                     (number-1)*self.well_offset.coord_y
 
-        return Coordinate(coord_x, coord_y, 0)
+        return Coordinate(coord_x, coord_y, coord_z=0)
 
     def parse_json(self, json_instruction, module_dic):
         """

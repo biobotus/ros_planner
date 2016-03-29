@@ -1,12 +1,7 @@
-__author__ = 'Do'
-from deck.deck_module import DeckModule
-from deck.deck_module import ModuleParam
-from deck.deck_module import Coordinate
+#/usr/bin/
 
+from deck.deck_module import Coordinate, DeckModule, ModuleParam
 from protocol.protocol import Step, StepParameter
-
-import re
-
 
 class PipetteModule(DeckModule):
 
@@ -19,7 +14,8 @@ class PipetteModule(DeckModule):
 
     def parse_json(self, json_instruction, module_dic):
         steps = []
-        for instruction in json_instruction['groups']:
+
+        for instruction in json_instruction:
             if "distribute" in instruction:
                 #TODO raise an exception, this operation won't be possible with the mechaPipette
                 self.logger.error("distribute operation is not possible with the mecha pipette for now")
@@ -30,12 +26,14 @@ class PipetteModule(DeckModule):
 
             elif "transfert" in instruction:
                 steps = self._parse_transfert(instruction['transfert'], module_dic)
+
             elif "mix" in instruction:
                 #TODO est possible avec la mechaPipette?
                 steps = self._parse_mix(instruction['mix'])
+
             else:
                 #TODO raise an exception instruction not known
-                self.logger.error("unknown operation : %s", instruction)
+                self.logger.error("unknown operation: {0}".format(instruction))
                 pass
         return steps
 
@@ -67,10 +65,11 @@ class PipetteModule(DeckModule):
         to_coord = self.parse_mod_coord(trans_json["to"], module_dic)
 
         #TODO trouver un moyen de gerer la poubelle
-        dump_coord = coordinate(5, 5, 10)
+        dump_coord = Coordinate(5, 5, 10)
 
         steps = []
         # Going to the source position
+        print(from_coord)
         from_coord.coord_z = 10
         steps.append(self.get_go_to_step(from_coord))
 
@@ -81,6 +80,7 @@ class PipetteModule(DeckModule):
 
         # aspirate
         # TODO ajouter le step pour aspirer
+
         # get Up
         from_coord.coord_z = 10
         steps.append(self.get_go_to_step(from_coord))
@@ -94,6 +94,7 @@ class PipetteModule(DeckModule):
 
         # blow
         # TODO ajouter le step pour ejecter
+
         # get up
         to_coord.coord_z = 10;
         steps.append(self.get_go_to_step(to_coord))
@@ -111,7 +112,7 @@ class PipetteModule(DeckModule):
         self.logger.info("parsing mix instruction")
 
     def get_go_to_step(self, coord):
-        coord_to = coordinate(coord_x=coord.coord_x, coord_y=coord.coord_y, coord_z=0)
+        coord_to = Coordinate(coord_x=coord.coord_x, coord_y=coord.coord_y, coord_z=0)
         stop_condition = StepParameter(module=self,
                                        name="position",
                                        value=coord_to)
@@ -135,14 +136,14 @@ class PipetteModule(DeckModule):
 
     def parse_mod_coord(self, dest_string, mod_dict):
         dest = dest_string.split("/")
-        well = re.split('(\d+)', dest[1])
         mod_name = dest[0]
-        letter = well[0]
-        number = well[1]
+        letter = dest[1][0]
+        number = dest[1][1:]
 
         if mod_name in mod_dict:
             mod = mod_dict[mod_name]
             return mod.get_well_coordinate(ord(letter), int(number))
         else:
+            print "ERROR no module to set coord"
             self.logger.error("attempt to access the coordinate of a module wich is not reference on the refs section of the json")
             #TODO raise an error

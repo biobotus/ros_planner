@@ -1,23 +1,11 @@
 {
   "refs": {
-      "dye": {
-      "id": "ct13zjq79whe",
-      "store": { "where": "ambient" }
-    },
-    "water": {
-      "id": "ct149x8mea3j",
-      "store": { "where": "ambient" }
-    },
-    "samples": {
-      "id": "ct3b245kx34l",
-      "discard": true
-    },
+
     "TAC": {
-      "id": "1234"
+      "id": "2"
     },
-    "TAC2": {
-      "module" : "tac",
-      "id": "1235"
+    "Pipette_Simple": {
+      "id": "3"
     }
   },
   "instructions": [{
@@ -45,7 +33,7 @@
     "temperature":4,
     "spin":0,
     "stop":{
-        "op":"TAC:1234",
+        "op":"TAC",
         "condition":"time",
         "value":40
   }

@@ -1,0 +1,61 @@
+{
+  "refs": {
+    "pipette":
+    {
+      "id": "1"
+    },
+    "water":
+    {
+      "id": "2"
+    },
+    "pipette2":
+    {
+      "id": "3"
+    }
+  },
+  "instructions":
+    [
+      { "op": "pipette",
+      "groups":
+      [
+        {
+          "transfert":
+          {
+                "from": "water/A1",
+                "to": "water/A2",
+                "volume": "5"
+          }
+        },
+        {
+          "transfert":
+          {
+                "from": "water/A1",
+                "to": "water/A2",
+                "volume": "5"
+          }
+        }
+      ]
+      },
+      { "op": "pipette2",
+      "groups":
+      [
+        {
+          "transfert":
+          {
+                "from": "water/A3",
+                "to": "water/A2",
+                "volume": "1"
+          }
+        },
+        {
+          "transfert":
+          {
+                "from": "water/A3",
+                "to": "water/A2",
+                "volume": "1"
+          }
+        }
+      ]
+      }
+    ]
+}

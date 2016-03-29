@@ -1,7 +1,3 @@
-"""
-TODO
-"""
-
 from collections import deque
 import time
 import json
@@ -35,6 +31,10 @@ def load_protocol_from_json_string(json_string, module_manager):
 def load_protocol_from_json(json_data, module_manager):
     #the new protocol
     protocol = Protocol(name="Jsonprotocol2")
+    #print json.dumps(json_data, sort_keys=True, indent=4)
+
+    #print json.dumps(json_data['instructions'], sort_keys=True, indent=4)
+
     instructions = json_data['instructions']
     labware_description = json_data['refs']
     logger = logging.getLogger()
@@ -47,19 +47,21 @@ def load_protocol_from_json(json_data, module_manager):
         if mod == -1:
             # raise an error
             # A module on the json is not on the deck
-            print "errrrrrror"
+            print "A module on the json refs section is not on the deck : "
+            print(labware_description[labware]["id"])
             logger.error("A module on the json refs section is not on the deck")
         else:
             module_dict[labware] = mod
     print(module_dict)
-    for instruction in instructions:
-        if instruction['op'] in labware_description:
-            mod = module_dict[instruction['op']]
-        else:
-            logger.error("An op in the json is not present on the refs section")
 
-        steps = mod.parse_json(instruction, module_dict)
-        protocol.add_steps(steps)
+    for instruction in instructions:
+        if 'op' in instruction and instruction['op'] in labware_description and 'groups' in instruction:
+            mod = module_dict[instruction['op']]
+            steps = mod.parse_json(instruction['groups'], module_dict)
+            protocol.add_steps(steps)
+
+        else:
+            logger.error("Instruction error : wrong operator or groups")
 
     return protocol
 
@@ -96,7 +98,7 @@ class Protocol:
         @param step the step to be add
         """
         for step in steps:
-            self.logger.info("adding step to Protocol : %s", self.name)
+            self.logger.info("adding step to Protocol : {0}".format(self.name))
             self.steps.append(step)
 
     def get_module_list(self):

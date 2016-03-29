@@ -1,4 +1,3 @@
-int32 run
 string name
 string type
 string m_id

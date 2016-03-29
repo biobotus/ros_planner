@@ -26,7 +26,7 @@ class Position_input():
     def getPosition(self):
 
         while not rospy.is_shutdown():
-            self.go = int(raw_input(" Create a module (1) or Launch the protocol (0) "))
+            self.go = int(raw_input(" Create a module (1) or end (0) "))
             if self.go:
 
                 self.name = raw_input('Enter module name: ')
@@ -34,7 +34,6 @@ class Position_input():
                 self.m_id = raw_input('Enter module ID: ')
                 self.coord_x, self.coord_y, self.coord_z = p_i.setCoord(self.m_id)
 
-                self.msg.run = 0
                 self.msg.name = self.name
                 self.msg.m_id = self.m_id
                 self.msg.type = self.type
@@ -47,17 +46,7 @@ class Position_input():
                 self.rate.sleep()
 
             else:
-                self.msg.run = 1
-                self.msg.name = "NA"
-                self.msg.m_id = "NA"
-                self.msg.type = "NA"
-                self.msg.coord_x = 0
-                self.msg.coord_y = 0
-                self.msg.coord_z = 0
-
-                rospy.loginfo(self.msg)
-                self.pub.publish(self.msg)
-                self.rate.sleep()
+                return
 
 
 if __name__ == '__main__':
