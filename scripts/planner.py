@@ -23,7 +23,7 @@ class Planner():
         self.rate = rospy.Rate(10)  # 10 Hz
 
         # ROS subscriptions
-        self.subscriber = rospy.Subscriber('modules_position', CoordinateMsgs, self.callback_input)
+        self.subscriber = rospy.Subscriber('Deck_Item', CoordinateMsgs, self.callback_input)
         self.subscriber = rospy.Subscriber('Start_Protocol', String, self.callback_start_protocol)
         self.subscriber = rospy.Subscriber('Done_Step', Bool, self.callback_done_step)
 
@@ -37,9 +37,9 @@ class Planner():
         self.step_complete = False
 
     def callback_start_protocol(self, data):
-        prot = load_protocol_from_json_file(data.string, self.modules)
+        prot = load_protocol_from_json_file(data.data, self.modules)
         print("Protocol loaded from JSON file:")
-        print(prot.steps)
+        print(data.data)
 
         for step in prot.steps:
             self.step_complete = False
@@ -57,32 +57,24 @@ class Planner():
 
     def callback_input(self, data):
         try:
-            parameters = [self, data.name, data.m_id, Coordinate(data.coord_x, data.coord_y ,data.coord_z)]
-            getattr(self.__class__, 'add_{0}'.format(data.type))(*parameters)
+            parameters = [self, data.m_name, data.m_id, Coordinate(data.coord_x, data.coord_y ,data.coord_z)]
+            getattr(self.__class__, 'add_{0}'.format(data.m_type))(*parameters)
         except AttributeError as e:
             print(e)
 
-
-        # TEST CODE!
-        print("Available modules:")
-        self.modules.list_module()
-        json_file = '/home/jonathan/catkin_ws/src/ros_planner/json/pipette.json'
-        prot = load_protocol_from_json_file(json_file, self.modules)
-        print prot.steps
-
-    def add_rect4container(self,name,m_id,coord):
+    def add_rect4container(self,m_name,m_id,coord):
         self.logger.info("Add rectangular 4 col container")
-        rect_4_labware = Rect4Container(name, coord)
+        rect_4_labware = Rect4Container(m_name, coord)
         self.modules.add_module(rect_4_labware, m_id)
 
-    def add_tac(self,name,m_id,coord):
+    def add_tac(self,m_name,m_id,coord):
         self.logger.info("Add tac module")
-        tac_module = TacModule(name, coord)
+        tac_module = TacModule(m_name, coord)
         self.modules.add_module(tac_module, m_id)
 
-    def add_pipette(self,name,m_id,coord):
+    def add_pipette(self,m_name,m_id,coord):
         self.logger.info("Add pipette module")
-        pipette_module = PipetteModule(name,coord)
+        pipette_module = PipetteModule(m_name,coord)
         self.modules.add_module(pipette_module,m_id)
 
     def listener(self):

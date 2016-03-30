@@ -8,4 +8,4 @@ class Rect4Container(DeckModule):
 
         super(Rect4Container,self).__init__(name, coor)
         self.set_well_layout(1, 4, Coordinate(10, 15, 0), Coordinate(20, 0, 0))
-        print "Rectangular Container Initialized"
+        
