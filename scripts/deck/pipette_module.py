@@ -55,7 +55,7 @@ class PipetteModule(DeckModule):
             * eject tip
         :param trans_json: the json containing the information
         :param module_dict: the list of module involved in the protocol
-        :return: a list of step with their different parameter to complete
+        :return: a list of steps with their different parameters to complete
             the task
         """
 
@@ -104,6 +104,7 @@ class PipetteModule(DeckModule):
 
         # eject the tip
         # TODO ajouter le step pour ejecter le tip
+
         print steps
 
         return steps
@@ -113,23 +114,25 @@ class PipetteModule(DeckModule):
 
     def get_go_to_step(self, coord):
         coord_to = Coordinate(coord_x=coord.coord_x, coord_y=coord.coord_y, coord_z=0)
-        stop_condition = StepParameter(module=self,
+        stop_condition = StepParameter(module=self.name,
                                        name="position",
                                        value=coord_to)
 
         step_move = Step(stop_condition)
-        step_move.add_parameter(StepParameter(module=self,
+        step_move.add_parameter(StepParameter(module=self.name,
                                               name="destination",
                                               value=coord_to))
+        print(step_move)
+
         return step_move
 
     def get_down_steps(self, height):
-        stop_condition = StepParameter(module=self,
+        stop_condition = StepParameter(module=self.name,
                                        name="position",
                                        value=coord_to)
 
         step_move = Step(stop_condition)
-        step_move.add_parameter(StepParameter(module=self,
+        step_move.add_parameter(StepParameter(module=self.name,
                                               name="destination",
                                               value=coord_to))
         return step_move
@@ -147,3 +150,4 @@ class PipetteModule(DeckModule):
             print "ERROR no module to set coord"
             self.logger.error("attempt to access the coordinate of a module wich is not reference on the refs section of the json")
             #TODO raise an error
+            return None

@@ -31,6 +31,7 @@ def load_protocol_from_json_string(json_string, module_manager):
 def load_protocol_from_json(json_data, module_manager):
     #the new protocol
     protocol = Protocol(name="Jsonprotocol2")
+    # TODO - change the name for the name of the json file
     #print json.dumps(json_data, sort_keys=True, indent=4)
 
     #print json.dumps(json_data['instructions'], sort_keys=True, indent=4)
@@ -171,11 +172,8 @@ class Step:
         self.logger = logging.getLogger(__name__)
 
     def __str__(self):
-        string = "Stop : \n"
-        string += str(self.condition)+"\n"
-        string += "Parameters : \n"
-        for param in self.params:
-            string += "\t" + str(param) + "\n"
+        return "Stop : {0}; Parameters: \n\t{1}".format(self.condition, \
+                            "\n\t".join([str(param) for param in self.params]))
 
     def add_parameter(self, step_param):
         """
@@ -237,8 +235,7 @@ class StepParameter:
         self.value = value
 
     def __str__(self):
-        return str(self.module) + " : " + str(self.name) + " @ " + \
-        str(self.value)
+        return "{0}: {1} @ {2}".format(self.module, self.name, self.value)
 
     def is_match(self, module, name, value):
         """

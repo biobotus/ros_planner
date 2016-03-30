@@ -13,33 +13,61 @@ import logging
 from protocol.protocol import *
 from ros_planner.msg import CoordinateMsgs
 from deck.tac_module import TacModule
-from std_msgs.msg import String
+from std_msgs.msg import Bool, String
 
 class Planner():
 
     def __init__(self):
         self.node_name = self.__class__.__name__
         rospy.init_node(self.node_name, anonymous=True)
+        self.rate = rospy.Rate(10)  # 10 Hz
+
+        # ROS subscriptions
         self.subscriber = rospy.Subscriber('modules_position', CoordinateMsgs, self.callback_input)
-        self.subscriber = rospy.Subscriber('start_protocol', String, self.callback_start_protocol)
+        self.subscriber = rospy.Subscriber('Start_Protocol', String, self.callback_start_protocol)
+        self.subscriber = rospy.Subscriber('Done_Step', Bool, self.callback_done_step)
+
+        # ROS publishments
+        # TODO - Change message format
+        self.send_step = rospy.Publisher('Protocol_Step', String, queue_size=10)
+
         self.modules = DeckManager()
         self.logger = logging.getLogger(__name__)
 
+        self.step_complete = False
+
     def callback_start_protocol(self, data):
-
         prot = load_protocol_from_json_file(data.string, self.modules)
-        print prot.steps
+        print("Protocol loaded from JSON file:")
+        print(prot.steps)
 
-    def callback_input(self,data):
+        for step in prot.steps:
+            self.step_complete = False
+            self.send_step.publish(step)
 
+            while not self.step_complete:
+                self.rate.sleep()
+
+            print("Step complete!")
+
+
+    def callback_done_step(self, data):
+        if data.data:
+            self.step_complete = True
+
+    def callback_input(self, data):
         try:
             parameters = [self, data.name, data.m_id, Coordinate(data.coord_x, data.coord_y ,data.coord_z)]
             getattr(self.__class__, 'add_{0}'.format(data.type))(*parameters)
         except AttributeError as e:
             print(e)
 
+
+        # TEST CODE!
+        print("Available modules:")
         self.modules.list_module()
-        prot = load_protocol_from_json_file('src/ros_planner/json/pipette.json', self.modules)
+        json_file = '/home/jonathan/catkin_ws/src/ros_planner/json/pipette.json'
+        prot = load_protocol_from_json_file(json_file, self.modules)
         print prot.steps
 
     def add_rect4container(self,name,m_id,coord):
