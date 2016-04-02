@@ -162,18 +162,16 @@ class Step:
     send to modules
     """
 
-    def __init__(self, condition):
+    def __init__(self):
         """
         Constructor of step taking the stop condition
         @param condition a step param used as stop condition
         """
-        self.condition = condition
         self.params = []
         self.logger = logging.getLogger(__name__)
 
     def __str__(self):
-        return "Stop : {0}; Parameters: \n\t{1}".format(self.condition, \
-                            "\n\t".join([str(param) for param in self.params]))
+        return "Parameters: \n\t{1}".format("\n\t".join([str(param) for param in self.params]))
 
     def add_parameter(self, step_param):
         """
@@ -184,15 +182,6 @@ class Step:
         self.logger.info("Added a parameter to the step : " + step_param.name + " @ "
                  + str(step_param.value))
         self.params.append(step_param)
-
-    def started(self):
-        """
-        Function when the Step is signaled as started by the module
-        """
-        self.logger.info("step is started")
-        self.logger.info("condition is " + self.condition.name + " @ " +
-                         str(self.condition.value) +
-                         "waiting for module message or time")
 
     def to_com_string(self):
         """

@@ -4,6 +4,7 @@
 import rospy
 import numpy
 from deck.deck_module import DeckManager
+from deck.labware_module import Trash_bin
 from deck.deck_module import DeckModule
 from deck.deck_module import ModuleParam
 from deck.deck_module import Coordinate
@@ -76,6 +77,11 @@ class Planner():
         self.logger.info("Add pipette module")
         pipette_module = PipetteModule(m_name,coord)
         self.modules.add_module(pipette_module,m_id)
+
+    def add_trash(self, m_name, m_id, coord):
+        self.logger.info("Ass thrash module")
+        trash_module = Trash_bin(m_name, coord)
+        self.modules.add_module(trash_module, m_id)
 
     def listener(self):
         rospy.spin()

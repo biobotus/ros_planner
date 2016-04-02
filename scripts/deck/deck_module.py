@@ -168,7 +168,9 @@ class DeckModule(object):
         (robot top left corner)
         """
 
+
         letter = letter - ord('A') + 1
+
         # add more information on the log error + check for < 0
         if letter > self.nb_line or letter < 1:
             self.logger.error("Error on the line")
@@ -177,13 +179,16 @@ class DeckModule(object):
         if number > self.nb_column or number < 1:
             self.logger.error("Error on the column")
             return -1
-
         coord_x = self.coord.coord_x + self.well1_offset.coord_x + \
-                    (letter-1) * self.well_offset.coord_x
+                    (number-1) * self.well_offset.coord_x
+
         coord_y = self.coord.coord_y +self.well1_offset.coord_y + \
-                    (number-1)*self.well_offset.coord_y
+                    (letter-1)*self.well_offset.coord_y
 
         return Coordinate(coord_x, coord_y, coord_z=0)
+
+    def get_mod_coordinate(self):
+        return Coordinate(self.coord.coord_x, self.coord.coord_y, self.coord.coord_z)
 
     def parse_json(self, json_instruction, module_dic):
         """

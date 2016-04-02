@@ -11,8 +11,13 @@
     "pipette2":
     {
       "id": "3"
+    },
+    "trash":
+    {
+      "id": "4"
     }
   },
+
   "instructions":
     [
       { "op": "pipette",
@@ -22,8 +27,10 @@
           "transfert":
           {
                 "from": "water/A1",
-                "to": "water/A2",
-                "volume": "5"
+                "to": "water/B1",
+                "volume": "5",
+                "aspirate_speed": "10",
+                "dispense_speed": "10"
           }
         },
         {
@@ -31,7 +38,9 @@
           {
                 "from": "water/A1",
                 "to": "water/A2",
-                "volume": "5"
+                "volume": "5",
+                "aspirate_speed": "10",
+                "dispense_speed": "10"
           }
         }
       ]
@@ -44,7 +53,9 @@
           {
                 "from": "water/A3",
                 "to": "water/A2",
-                "volume": "1"
+                "volume": "5",
+                "aspirate_speed": "10",
+                "dispense_speed": "10"
           }
         },
         {
@@ -52,7 +63,9 @@
           {
                 "from": "water/A3",
                 "to": "water/A2",
-                "volume": "1"
+                "volume": "5",
+                "aspirate_speed": "10",
+                "dispense_speed": "10"
           }
         }
       ]
