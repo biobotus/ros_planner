@@ -5,12 +5,13 @@ from protocol.protocol import Step, StepParameter
 
 class PipetteModule(DeckModule):
 
-    def __init__(self, name, coord):
+    def __init__(self, name, coord, m_type):
         super(PipetteModule, self).__init__(name, coord)
-        self.add_parameter(ModuleParam("volume", True, False))
-        self.add_parameter(ModuleParam("from", True, False))
-        self.add_parameter(ModuleParam("to", True, False))
+        #self.add_parameter(ModuleParam("volume", True, False))
+        #self.add_parameter(ModuleParam("from", True, False))
+        #self.add_parameter(ModuleParam("to", True, False))
         self.logger.info("Pipette initialized")
+        self.m_type = m_type
 
     def parse_json(self, json_instruction, module_dic):
         steps = []
@@ -61,32 +62,22 @@ class PipetteModule(DeckModule):
 
         self.logger.info("parsing transfert instruction")
 
-        # Get dump from deck
+        # Get trash_bin from deck
         trash_mod = module_dic["trash"]
         dump_coord  = trash_mod.get_mod_coordinate()
 
-        # Get coord from and to
+        # Coord initialized
         from_coord = self.parse_mod_coord(trans_json["from"], module_dic)
-        from_aspirate = self.parse_mod_aspirate(trans_json["volume"],
-                                                trans_json["aspirate_speed"], module_dic)
-
         to_coord = self.parse_mod_coord(trans_json["to"], module_dic)
-
         steps = []
 
         # Going to the source position
-        print("Coord pos")
-        print(trans_json["to"])
-        print("aspirate param : ")
-        print(trans_json["volume"])
         from_coord.coord_z = 10
-        steps.append(self.get_go_to_step(from_coord))
+        steps.append(self.move_pos(from_coord))
 
         # Getting down
-        print(from_coord)
         from_coord.coord_z = 100
-        print(from_coord)
-        steps.append(self.get_go_to_step(from_coord))
+        steps.append(self.move_pos(from_coord))
 
         # aspirate
         steps.append(self.aspirate(trans_json["volume"],
@@ -94,24 +85,25 @@ class PipetteModule(DeckModule):
 
         # get Up
         from_coord.coord_z = 10
-        steps.append(self.get_go_to_step(from_coord))
+        steps.append(self.move_pos(from_coord))
 
         # got to the destination well
         to_coord.coord_z = 10
-        steps.append(self.get_go_to_step(to_coord))
+        steps.append(self.move_pos(to_coord))
         # getting down
         to_coord.coord_z = 100
-        steps.append(self.get_go_to_step(to_coord))
+        steps.append(self.move_pos(to_coord))
 
         # blow
         steps.append(self.dispense(trans_json["volume"],
                                     trans_json["dispense_speed"]))
+
         # get up
         to_coord.coord_z = 10;
-        steps.append(self.get_go_to_step(to_coord))
+        steps.append(self.move_pos(to_coord))
 
         # go to the dump
-        steps.append(self.get_go_to_step(dump_coord))
+        steps.append(self.move_pos(dump_coord))
 
         # eject the tip
         # TODO ajouter le step pour ejecter le tip
@@ -121,74 +113,44 @@ class PipetteModule(DeckModule):
     def _parse_mix(self, mix_json):
         self.logger.info("parsing mix instruction")
 
-    def aspirate(self, speed, volume):
-        stop_condition = StepParameter(module=self,
-                                        name="volume",
-                                        value=volume)
-        step_move = Step(stop_condition)
-        step_move.add_parameter(StepParameter(module=self,
-                                        name="speed",
-                                        value=speed))
+    def aspirate(self, volume, speed):
+
+        args = {"vol": float(volume), "speed": float(speed)}
+        params = {"name": "manip", "args": args}
+        step_move = Step({"module_type": self.m_type, "params": params})
 
         print(step_move)
         return step_move
 
-    def dispense(self, speed, volume):
-        stop_condition = StepParameter(module=self,
-                                        name="volume",
-                                        value=-int(volume))
-        step_move = Step(stop_condition)
-        step_move.add_parameter(StepParameter(module=self,
-                                        name="speed",
-                                        value=speed))
+    def dispense(self, volume, speed):
 
+        args = {"vol": -float(volume), "speed": float(speed)}
+        params = {"name": "manip", "args": args}
+        step_move = Step({"module_type": self.m_type, "params": params})
 
         print(step_move)
         return step_move
 
-    def get_go_to_step(self, coord):
-        coord_to = Coordinate(coord_x=coord.coord_x, coord_y=coord.coord_y, coord_z=coord.coord_z)
-        stop_condition = StepParameter(module=self,
-                                       name="position",
-                                       value=coord_to)
+    def move_pos(self, coord):
 
-        step_move = Step(stop_condition)
-        step_move.add_parameter(StepParameter(module=self,
-                                              name="destination",
-                                              value=coord_to))
+        args =  {"x": coord.coord_x, "y": coord.coord_y, "z": coord.coord_z}
+        params = {"name": "pos", "args": args}
+        step_move = Step({"module_type": self.m_type, "params": params})
+
         print(step_move)
         return step_move
 
-    def get_down_steps(self, height):
-        stop_condition = StepParameter(module=self,
-                                       name="position",
-                                       value=coord_to)
-
-        step_move = Step(stop_condition)
-        step_move.add_parameter(StepParameter(module=self,
-                                              name="destination",
-                                              value=coord_to))
-        print(step_move)
-        return step_move
-
-    def parse_mod_aspirate(self, volume, speed, mod_dict):
-        print("ASPIRATE!")
-        return[volume, speed]
-
+    def eject_tip(self):
+        return
 
     def parse_mod_coord(self, dest_string, mod_dict):
         dest = dest_string.split("/")
         mod_name = dest[0]
         letter = dest[1][0]
         number = dest[1][1:]
-        print(dest)
 
         if mod_name in mod_dict:
             mod = mod_dict[mod_name]
-            print(mod)
-            print(letter)
-            print(number)
-            print(mod.get_well_coordinate(ord(letter), int(number)))
             return mod.get_well_coordinate(ord(letter), int(number))
         else:
             print "ERROR no module to set coord"

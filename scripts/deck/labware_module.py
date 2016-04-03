@@ -1,5 +1,5 @@
-from deck.deck_module import DeckModule
-from deck.deck_module import Coordinate
+#!usr/bin/python
+from deck.deck_module import Coordinate, DeckModule
 
 
 class Rect4Container(DeckModule):
@@ -7,7 +7,7 @@ class Rect4Container(DeckModule):
     def __init__(self, name, coord):
 
         super(Rect4Container,self).__init__(name, coord)
-        self.set_well_layout(4, 4, Coordinate(10, 10, 0), Coordinate(10, 0, 0))
+        self.set_well_layout(4, 4, Coordinate(10, 10, 0), Coordinate(10, 10, 0))
 
 class Trash_bin(DeckModule):
 

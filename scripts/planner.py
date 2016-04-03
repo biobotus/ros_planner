@@ -30,7 +30,7 @@ class Planner():
 
         # ROS publishments
         # TODO - Change message format
-        self.send_step = rospy.Publisher('Protocol_Step', String, queue_size=10)
+        self.send_step = rospy.Publisher('New_Step', String, queue_size=10)
 
         self.modules = DeckManager()
         self.logger = logging.getLogger(__name__)
@@ -42,7 +42,9 @@ class Planner():
         print("Protocol loaded from JSON file:")
         print(data.data)
 
+
         for step in prot.steps:
+            print(step)
             self.step_complete = False
             self.send_step.publish(step)
 
@@ -58,28 +60,28 @@ class Planner():
 
     def callback_input(self, data):
         try:
-            parameters = [self, data.m_name, data.m_id, Coordinate(data.coord_x, data.coord_y ,data.coord_z)]
+            parameters = [self, data.m_name, data.m_id, Coordinate(data.coord_x, data.coord_y ,data.coord_z), data.m_type]
             getattr(self.__class__, 'add_{0}'.format(data.m_type))(*parameters)
         except AttributeError as e:
             print(e)
 
-    def add_rect4container(self,m_name,m_id,coord):
+    def add_rect4container(self, m_name, m_id, coord, m_type):
         self.logger.info("Add rectangular 4 col container")
         rect_4_labware = Rect4Container(m_name, coord)
         self.modules.add_module(rect_4_labware, m_id)
 
-    def add_tac(self,m_name,m_id,coord):
+    def add_tac(self, m_name, m_id, coord, m_type):
         self.logger.info("Add tac module")
         tac_module = TacModule(m_name, coord)
         self.modules.add_module(tac_module, m_id)
 
-    def add_pipette(self,m_name,m_id,coord):
+    def add_pipette(self, m_name, m_id, coord, m_type):
         self.logger.info("Add pipette module")
-        pipette_module = PipetteModule(m_name,coord)
+        pipette_module = PipetteModule(m_name, coord, m_type)
         self.modules.add_module(pipette_module,m_id)
 
-    def add_trash(self, m_name, m_id, coord):
-        self.logger.info("Ass thrash module")
+    def add_trash(self, m_name, m_id, coord, m_type):
+        self.logger.info("Add trash module")
         trash_module = Trash_bin(m_name, coord)
         self.modules.add_module(trash_module, m_id)
 
