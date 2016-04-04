@@ -62,9 +62,7 @@ class PipetteModule(DeckModule):
 
         self.logger.info("parsing transfert instruction")
 
-        # Get trash_bin from deck
-        trash_mod = module_dic["trash"]
-        dump_coord  = trash_mod.get_mod_coordinate()
+
 
         # Coord initialized
         from_coord = self.parse_mod_coord(trans_json["from"], module_dic)
@@ -97,16 +95,11 @@ class PipetteModule(DeckModule):
         # blow
         steps.append(self.dispense(trans_json["volume"],
                                     trans_json["dispense_speed"]))
-
         # get up
         to_coord.coord_z = 10;
         steps.append(self.move_pos(to_coord))
 
-        # go to the dump
-        steps.append(self.move_pos(dump_coord))
-
-        # eject the tip
-        # TODO ajouter le step pour ejecter le tip
+        steps.append(self.eject_tip("Large", module_dic))
 
         return steps
 
@@ -140,8 +133,37 @@ class PipetteModule(DeckModule):
         print(step_move)
         return step_move
 
-    def eject_tip(self):
-        return
+    def eject_tip(self,tip_size, module_dic):
+        steps=[]
+        to_coord = Coordinate(0,0,0)
+        # Get trash_bin from deck
+        trash_mod = module_dic["trash"]
+        dump_coord  = trash_mod.get_mod_coordinate()
+        steps.append(self.move_pos(dump_coord))
+
+        # TODO ajouter le step pour ejecter le tip
+        # step down, move forward to the tooth
+        if tip_size=="Large":
+            to_coord.coord_z = 79 #mm
+        elif tip_size=="Medium":
+            to_coord.coord_z = 51 #mm
+        elif tip_size=="Small":
+            to_coord.coord_z = 46.5 #mm
+        else:
+            print("Error reading tip size")
+        # Depends on tip size
+        to_coord.coord_x = 10;
+        steps.append(self.move_pos(to_coord)) # x&z
+        # get up
+        if tip_size=="Large":
+            to_coord.coord_z = -30.09 #mm
+        elif tip_size=="Medium":
+            to_coord.coord_z = -20.29 #mm
+        elif tip_size=="Small":
+            to_coord.coord_z = -11.51 #mm
+        steps.append(self.move_pos(to_coord))
+        # ready to move away
+        return to_coord
 
     def parse_mod_coord(self, dest_string, mod_dict):
         dest = dest_string.split("/")

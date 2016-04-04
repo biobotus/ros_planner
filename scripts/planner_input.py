@@ -15,9 +15,9 @@ class HMI_Planner():
         self.pub_start_protcol = rospy.Publisher('Start_Protocol', String, queue_size=10)
         self.msg = CoordinateMsgs()
         self.deck = []
-        self.deck_import_file = '/home/jonathan/catkin_ws/src/ros_planner/deck/test.txt'
-        self.deck_file = '/home/jonathan/catkin_ws/src/ros_planner/deck/deck.txt'
-        self.default_protocol = '/home/jonathan/catkin_ws/src/ros_planner/json/pipette.json'
+        self.deck_import_file = '/home/linux/catkin_ws/src/ros_planner/deck/test.txt'
+        self.deck_file = '/home/linux/catkin_ws/src/ros_planner/deck/deck.txt'
+        self.default_protocol = '/home/linux/catkin_ws/src/ros_planner/json/pipette.json'
 
     def setCoord(self, name):
         # Function asking user to enter position of each modules

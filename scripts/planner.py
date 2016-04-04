@@ -3,13 +3,19 @@
 # Imports
 import rospy
 import numpy
+import sys
+#sys.path.append("/home/linux/catkin_ws/src/ros_planner/scripts/deck")
+#sys.path.append("/home/linux/catkin_ws/src/ros_planner/scripts/protocol")
+
 from deck.deck_module import DeckManager
 from deck.labware_module import Trash_bin
 from deck.deck_module import DeckModule
 from deck.deck_module import ModuleParam
 from deck.deck_module import Coordinate
 from deck.pipette_module import PipetteModule
-from deck.labware_module import Rect4Container
+from deck.labware_module import Small_Tip_Holder
+from deck.labware_module import Medium_Tip_Holder
+from deck.labware_module import Large_Tip_Holder
 import logging
 from protocol.protocol import *
 from ros_planner.msg import CoordinateMsgs
