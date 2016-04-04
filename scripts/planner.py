@@ -65,10 +65,25 @@ class Planner():
         except AttributeError as e:
             print(e)
 
-    def add_rect4container(self, m_name, m_id, coord, m_type):
-        self.logger.info("Add rectangular 4 col container")
-        rect_4_labware = Rect4Container(m_name, coord)
-        self.modules.add_module(rect_4_labware, m_id)
+    def add_small_tip_holder(self, m_name, m_id, coord, m_type):
+        small_tip_holder = Small_Tip_Holder(m_name, coord)
+        self.modules.add_module(small_tip_holder, m_id)
+
+    def add_medium_tip_holder(self, m_name, m_id, coord, m_type):
+        medium_tip_holder = Medium_Tip_Holder(m_name, coord)
+        self.modules.add_module(medium_tip_holder, m_id)
+
+    def add_large_tip_holder(self, m_name, m_id, coord, m_type):
+        large_tip_holder = Large_Tip_Holder(m_name, coord)
+        self.modules.add_module(large_tip_holder, m_id)
+
+    def add_centrifuge_vial_holder(self, m_name, m_id, coord, m_type):
+        centrifuge_vial_holder = Centrifuge_Vial_Holder(m_name, coord)
+        self.modules.add_module(centrifuge_vial_holder, m_id)
+
+    def add_multiwell_plate(self, m_name, m_id, coord, m_type):
+        multiwell_plate = Multiwell_Plate(m_name, coord)
+        self.modules.add_module(multiwell_plate, m_id)
 
     def add_tac(self, m_name, m_id, coord, m_type):
         self.logger.info("Add tac module")
