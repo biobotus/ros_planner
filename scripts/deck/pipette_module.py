@@ -133,6 +133,19 @@ class PipetteModule(DeckModule):
         print(step_move)
         return step_move
 
+
+#        __________ (0,0,0) ==> dump_coord (top left corner)
+#      /|_________|       y <-----|
+#     / |         |             / |
+#    /  |         |           v   |
+#    |  |         |         z     V
+#    |  |/\/\/\/\/|               x
+#    |  |---------|
+#    | /         /
+#    |----------|
+#   The dump will always be positioned in this manner
+#       because of the 8-tips pipette.
+
     def eject_tip(self,tip_size, module_dic):
         steps=[]
         to_coord = Coordinate(0,0,0)
@@ -141,8 +154,16 @@ class PipetteModule(DeckModule):
         dump_coord  = trash_mod.get_mod_coordinate()
         steps.append(self.move_pos(dump_coord))
 
-        # TODO ajouter le step pour ejecter le tip
-        # step down, move forward to the tooth
+        # move at the middle of the dump (89.6/2 mm)
+        to_coord.coord_y = dump_coord.coord_y+44.8;
+        # move over the dump hole
+        to_coord.coord_x = dump_coord.coord_x+21;
+        steps.append(self.move_pos(to_coord)) # x-y move at the same time
+        # move just in front of the teeth
+        to_coord.coord_x = dump_coord.coord_x+79.1;
+        steps.append(self.move_pos(to_coord)) # x move (over dump hole)
+
+        # step down
         if tip_size=="Large":
             to_coord.coord_z = 79 #mm
         elif tip_size=="Medium":
@@ -151,9 +172,20 @@ class PipetteModule(DeckModule):
             to_coord.coord_z = 46.5 #mm
         else:
             print("Error reading tip size")
-        # Depends on tip size
-        to_coord.coord_x = dump_coord.coord_x+10;
-        steps.append(self.move_pos(to_coord)) # x&z
+        to_coord.coord_z = dump_coord.coord_z+to_coord.coord_z;
+        steps.append(self.move_pos(to_coord))
+
+        # move into the teeth (x move)
+        if tip_size=="Large":
+            to_coord.coord_x = to_coord.coord_x+5.3 #mm
+        elif tip_size=="Medium":
+            to_coord.coord_x = to_coord.coord_x+2.8 #mm
+        elif tip_size=="Small":
+            to_coord.coord_x = to_coord.coord_x+1.6 #mm
+        else:
+            print("Error reading tip size")
+        steps.append(self.move_pos(to_coord))
+
         # get up
         if tip_size=="Large":
             to_coord.coord_z = to_coord.coord_z-30.09 #mm
