@@ -152,18 +152,20 @@ class PipetteModule(DeckModule):
         else:
             print("Error reading tip size")
         # Depends on tip size
-        to_coord.coord_x = 10;
+        to_coord.coord_x = dump_coord.coord_x+10;
         steps.append(self.move_pos(to_coord)) # x&z
         # get up
         if tip_size=="Large":
-            to_coord.coord_z = -30.09 #mm
+            to_coord.coord_z = to_coord.coord_z-30.09 #mm
         elif tip_size=="Medium":
-            to_coord.coord_z = -20.29 #mm
+            to_coord.coord_z = to_coord.coord_z-20.29 #mm
         elif tip_size=="Small":
-            to_coord.coord_z = -11.51 #mm
+            to_coord.coord_z = to_coord.coord_z-11.51 #mm
+        else:
+            print("Error reading tip size")
         steps.append(self.move_pos(to_coord))
         # ready to move away
-        return to_coord
+        return steps
 
     def parse_mod_coord(self, dest_string, mod_dict):
         dest = dest_string.split("/")
