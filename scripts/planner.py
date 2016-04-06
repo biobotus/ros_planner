@@ -4,8 +4,6 @@
 import rospy
 import numpy
 import sys
-#sys.path.append("/home/linux/catkin_ws/src/ros_planner/scripts/deck")
-#sys.path.append("/home/linux/catkin_ws/src/ros_planner/scripts/protocol")
 
 from deck.deck_module import DeckManager
 from deck.labware_module import Trash_bin

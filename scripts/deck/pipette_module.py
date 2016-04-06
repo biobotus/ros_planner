@@ -59,7 +59,12 @@ class PipetteModule(DeckModule):
         :return: a list of steps with their different parameters to complete
             the task
         """
-
+        xL=[0]
+        yL=[0]
+        xM=[0]
+        yM=[0]
+        xS=[0]
+        yS=[0]
         self.logger.info("parsing transfert instruction")
 
 
@@ -101,6 +106,18 @@ class PipetteModule(DeckModule):
 
         steps.append(self.eject_tip("Large", module_dic))
 
+        steps.append(self.get_tip("Large", module_dic,  xL,yL, xM, yM, xS, yS))
+        steps.append(self.get_tip("Large", module_dic,  xL,yL, xM, yM, xS, yS))
+        steps.append(self.get_tip("Large", module_dic,  xL,yL, xM, yM, xS, yS))
+        steps.append(self.get_tip("Large", module_dic,  xL,yL, xM, yM, xS, yS))
+        steps.append(self.get_tip("Large", module_dic,  xL,yL, xM, yM, xS, yS))
+        steps.append(self.get_tip("Large", module_dic,  xL,yL, xM, yM, xS, yS))
+        steps.append(self.get_tip("Large", module_dic,  xL,yL, xM, yM, xS, yS))
+        steps.append(self.get_tip("Medium", module_dic,  xL,yL, xM, yM, xS, yS))
+        steps.append(self.get_tip("Large", module_dic,  xL,yL, xM, yM, xS, yS))
+        steps.append(self.get_tip("Large", module_dic,  xL,yL, xM, yM, xS, yS))
+
+
         return steps
 
     def _parse_mix(self, mix_json):
@@ -133,20 +150,71 @@ class PipetteModule(DeckModule):
         print(step_move)
         return step_move
 
+    def get_tip(self, tip_size, module_dic, xL,yL, xM, yM, xS, yS):
 
-#        __________ (0,0,0) ==> dump_coord (top left corner)
-#      /|_________|       y <-----|
-#     / |         |             / |
-#    /  |         |           v   |
-#    |  |         |         z     V
-#    |  |/\/\/\/\/|               x
-#    |  |---------|
-#    | /         /
-#    |----------|
-#   The dump will always be positioned in this manner
-#       because of the 8-tips pipette.
+        steps = []
+        to_coord = Coordinate(0,0,0)
+
+            # Get tip holder from deck
+        if tip_size=="Large":
+            tip_mod = module_dic["pipette"]
+            to_coord = tip_mod.get_mod_coordinate()
+            if xL[0]>7:
+                yL[0]=yL[0]+1
+                xL[0]=0
+            to_coord.coord_x = to_coord.coord_x + 7.286 + xL[0]*1.55
+            to_coord.coord_y = to_coord.coord_y + 7.286 + yL[0]*1.52
+            steps.append(self.move_pos(to_coord)) # move over first well
+            print("There you ARE")
+            print xL, yL
+            xL[0]=xL[0]+1
+            to_coord.coord_z = 30.09 #mm
+            steps.append(self.move_pos(to_coord)) # move over first well
+
+        elif tip_size=="Medium":
+            tip_mod = module_dic["pipette"]
+            to_coord = tip_mod.get_mod_coordinate()
+            if xM[0]>7:
+                yM[0]=yM[0]+1
+                xM[0]=0
+            to_coord.coord_x = to_coord.coord_x + 9.27 + xM[0]*5.07
+            to_coord.coord_y = to_coord.coord_y + 9.07 + yM[0]*5.07
+            steps.append(self.move_pos(to_coord)) # move over first well
+            xM[0]=xM[0]+1
+            to_coord.coord_z = 20.24 #mm
+            steps.append(self.move_pos(to_coord)) # move over first well
+
+        elif tip_size=="Small":
+            tip_mod = module_dic["pipette"]
+            to_coord = tip_mod.get_mod_coordinate()
+            if xS[0]>7:
+                yS[0]=yM[0]+1
+                xS[0]=0
+            to_coord.coord_x = to_coord.coord_x + 9.0 + xS[0]*9.0
+            to_coord.coord_y = tip_coord.coord_y + 9.37 + yS[0]*9.0
+            steps.append(self.move_pos(to_coord)) # move over first well
+            xM[0]=xM[0]+1
+            to_coord.coord_z = 11.51 #mm
+            steps.append(self.move_pos(to_coord)) # move over first well
+
+        else:
+            print("Error reading tip size")
+        return steps
 
     def eject_tip(self,tip_size, module_dic):
+
+        #        __________ (0,0,0) ==> dump_coord (top left corner)
+        #      /|_________|       y <-----|
+        #     / |         |             / |
+        #    /  |         |           v   |
+        #    |  |         |         z     V
+        #    |  |/\/\/\/\/|               x
+        #    |  |---------|
+        #    | /         /
+        #    |----------|
+        #   The dump will always be positioned in this manner
+        #       because of the 8-tips pipette.
+
         steps=[]
         to_coord = Coordinate(0,0,0)
         # Get trash_bin from deck
