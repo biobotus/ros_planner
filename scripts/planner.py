@@ -14,6 +14,8 @@ from deck.pipette_module import PipetteModule
 from deck.labware_module import Small_Tip_Holder
 from deck.labware_module import Medium_Tip_Holder
 from deck.labware_module import Large_Tip_Holder
+from deck.labware_module import Centrifuge_Vial_Holder
+from deck.labware_module import Multiwell_Plate
 import logging
 from protocol.protocol import *
 from ros_planner.msg import CoordinateMsgs

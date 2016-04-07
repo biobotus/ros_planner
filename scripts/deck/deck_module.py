@@ -94,6 +94,7 @@ class DeckManager():
         @param module_id the id of the module
         """
         self.logger.info('Module %s : %s added', module.name, module_id)
+        print module, module_id
         self.modules[module_id] = module
 
     def get_module(self, module_id):
@@ -168,23 +169,20 @@ class DeckModule(object):
         (robot top left corner)
         """
 
-
-        letter = letter - ord('A') + 1
-
         # add more information on the log error + check for < 0
-        if letter > self.nb_line or letter < 1:
+        if letter > self.nb_line or letter < 0:
             self.logger.error("Error on the line")
             return -1
 
-        if number > self.nb_column or number < 1:
+        if number > self.nb_column or number < 0:
             self.logger.error("Error on the column")
             return -1
+
         coord_x = self.coord.coord_x + self.well1_offset.coord_x + \
-                    (number-1) * self.well_offset.coord_x
+                    (number) * self.well_offset.coord_x
 
         coord_y = self.coord.coord_y +self.well1_offset.coord_y + \
-                    (letter-1)*self.well_offset.coord_y
-
+                    (letter)*self.well_offset.coord_y
         return Coordinate(coord_x, coord_y, coord_z=0)
 
     def get_mod_coordinate(self):

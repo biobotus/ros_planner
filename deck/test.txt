@@ -1,11 +1,11 @@
 pipette
 pipette
 1
-1
-1
-1
+80
+225
+375
 water
-small_tip_holder
+centrifuge_vial_holder
 2
 100
 100
@@ -22,3 +22,9 @@ trash
 10
 10
 0
+small_tip_holder
+small_tip_holder
+5
+100
+100
+100
