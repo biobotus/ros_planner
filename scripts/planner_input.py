@@ -15,9 +15,9 @@ class HMI_Planner():
         self.pub_start_protcol = rospy.Publisher('Start_Protocol', String, queue_size=10)
         self.msg = CoordinateMsgs()
         self.deck = []
-        self.deck_import_file = '/home/ubuntu/biobot_ros_jtk/src/ros_planner/deck/test.txt'
-        self.deck_file = '/home/ubuntu/biobot_ros_jtk/src/ros_planner/deck/deck.txt'
-        self.default_protocol = '/home/ubuntu/biobot_ros_jtk/src/ros_planner/json/pipette.json'
+        self.deck_import_file = '/home/linux/catkin_ws/src/ros_planner/deck/test.txt'
+        self.deck_file = '/home/linux/catkin_ws/src/ros_planner/deck/deck.txt'
+        self.default_protocol = '/home/linux/catkin_ws/src/ros_planner/json/pipette.json'
 
     def setCoord(self, name):
         # Function asking user to enter position of each modules
@@ -71,7 +71,7 @@ class HMI_Planner():
                     pass
 
             elif go == '3':
-                
+
                 if raw_input('Coordinates measured with pipette_s ? (1=yes/0=no)'):
                     with open(self.deck_file, 'r') as f:
                         x = f.readlines()
