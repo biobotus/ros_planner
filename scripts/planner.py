@@ -32,7 +32,7 @@ class Planner():
         # ROS subscriptions
         self.subscriber = rospy.Subscriber('Deck_Item', CoordinateMsgs, self.callback_input)
         self.subscriber = rospy.Subscriber('Start_Protocol', String, self.callback_start_protocol)
-        self.subscriber = rospy.Subscriber('Done_Step', Bool, self.callback_done_step)
+        self.subscriber = rospy.Subscriber('Step_Done', Bool, self.callback_done_step)
 
         # ROS publishments
         # TODO - Change message format
@@ -52,8 +52,7 @@ class Planner():
         for step in prot.steps:
             print(step)
             self.step_complete = False
-            self.send_step.publish(step)
-
+            self.send_step.publish(str(step))
             while not self.step_complete:
                 self.rate.sleep()
 
@@ -96,7 +95,7 @@ class Planner():
         tac_module = TacModule(m_name, coord)
         self.modules.add_module(tac_module, m_id)
 
-    def add_pipette(self, m_name, m_id, coord, m_type):
+    def add_pipette_s(self, m_name, m_id, coord, m_type):
         self.logger.info("Add pipette module")
         pipette_module = PipetteModule(m_name, coord, m_type)
         self.modules.add_module(pipette_module,m_id)

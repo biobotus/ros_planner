@@ -15,17 +15,17 @@ class HMI_Planner():
         self.pub_start_protcol = rospy.Publisher('Start_Protocol', String, queue_size=10)
         self.msg = CoordinateMsgs()
         self.deck = []
-        self.deck_import_file = '/home/linux/catkin_ws/src/ros_planner/deck/test.txt'
-        self.deck_file = '/home/linux/catkin_ws/src/ros_planner/deck/deck.txt'
-        self.default_protocol = '/home/linux/catkin_ws/src/ros_planner/json/pipette.json'
+        self.deck_import_file = '/home/ubuntu/biobot_ros_jtk/src/ros_planner/deck/test.txt'
+        self.deck_file = '/home/ubuntu/biobot_ros_jtk/src/ros_planner/deck/deck.txt'
+        self.default_protocol = '/home/ubuntu/biobot_ros_jtk/src/ros_planner/json/pipette.json'
 
     def setCoord(self, name):
         # Function asking user to enter position of each modules
         print('position for ', name)
-        Fx = int(raw_input('Enter x coord: '))
-        Fy = int(raw_input('Enter y coord: '))
-        Fz = int(raw_input('Enter z coord: '))
-        # Got some error with JSON file, make sure raw_input is an integer so
+        Fx = float(raw_input('Enter x coord: '))
+        Fy = float(raw_input('Enter y coord: '))
+        Fz = float(raw_input('Enter z coord: '))
+        # Got some error with JSON file, make sure raw_input is float so
         # it can be concanated later.
         return (Fx, Fy, Fz)
 
@@ -71,25 +71,53 @@ class HMI_Planner():
                     pass
 
             elif go == '3':
-                with open(self.deck_file, 'r') as f:
-                    x = f.readlines()
-                x = [i.rstrip() for i in x]
+                
+                if raw_input('Coordinates measured with pipette_s ? (1=yes/0=no)'):
+                    with open(self.deck_file, 'r') as f:
+                        x = f.readlines()
+                    x = [i.rstrip() for i in x]
 
-                verify = len(x) % 6
-                if verify:
-                    print("Error - deck file has incorrect length")
-                    return
+                    verify = len(x) % 6
+                    if verify:
+                        print("Error - deck file has incorrect length")
+                        return
 
-                nb_mod = len(x) / 6
-                for i in range(nb_mod):
-                    self.msg.m_name = x[i*6+0]
-                    self.msg.m_type = x[i*6+1]
-                    self.msg.m_id = x[i*6+2]
-                    self.msg.coord_x = int(x[i*6+3])
-                    self.msg.coord_y = int(x[i*6+4])
-                    self.msg.coord_z = int(x[i*6+5])
-                    self.pub.publish(self.msg)
-                    self.rate.sleep()
+                    nb_mod = len(x) / 6
+                    for i in range(nb_mod):
+                        self.msg.m_name = x[i*6+0]
+                        self.msg.m_type = x[i*6+1]
+                        self.msg.m_id = x[i*6+2]
+                        self.msg.coord_x = float(x[i*6+3])+80
+                        self.msg.coord_y = float(x[i*6+4])+275
+                        self.msg.coord_z = float(x[i*6+5])+120
+                        print self.msg.coord_x
+                        print self.msg.coord_y
+                        print self.msg.coord_z
+                        self.pub.publish(self.msg)
+                        self.rate.sleep()
+
+                else:
+
+                    with open(self.deck_file, 'r') as f:
+                        x = f.readlines()
+                    x = [i.rstrip() for i in x]
+
+                    verify = len(x) % 6
+                    if verify:
+                        print("Error - deck file has incorrect length")
+                        return
+
+                    nb_mod = len(x) / 6
+                    for i in range(nb_mod):
+                        self.msg.m_name = x[i*6+0]
+                        self.msg.m_type = x[i*6+1]
+                        self.msg.m_id = x[i*6+2]
+                        self.msg.coord_x = float(x[i*6+3])
+                        self.msg.coord_y = float(x[i*6+4])
+                        self.msg.coord_z = float(x[i*6+5])
+                        self.pub.publish(self.msg)
+                        self.rate.sleep()
+
 
             elif go == '4':
                 protocol_path = raw_input('Enter protocol path (0 for default): ')

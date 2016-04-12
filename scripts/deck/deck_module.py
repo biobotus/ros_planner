@@ -53,6 +53,13 @@ class Coordinate():
         """
         self.coord_x += distance
 
+    def translate_z(self, distance):
+        """
+        Translate the coordinate along the axe z
+        @param distance the distance to be translate
+        """
+        self.coord_z += distance
+
     def translate_y(self, distance):
         """
         Translate the coordinate along the axe Y
@@ -168,22 +175,22 @@ class DeckModule(object):
         Return a well coordinate, acording to the global referential
         (robot top left corner)
         """
-
         # add more information on the log error + check for < 0
         if letter > self.nb_line or letter < 0:
             self.logger.error("Error on the line")
+            print "Error on the line"
             return -1
 
         if number > self.nb_column or number < 0:
             self.logger.error("Error on the column")
+            print "Error on the column"
             return -1
-
+        mod_coord = self.get_mod_coordinate()
         coord_x = self.coord.coord_x + self.well1_offset.coord_x + \
                     (number) * self.well_offset.coord_x
-
         coord_y = self.coord.coord_y +self.well1_offset.coord_y + \
                     (letter)*self.well_offset.coord_y
-        return Coordinate(coord_x, coord_y, coord_z=0)
+        return Coordinate(coord_x, coord_y, mod_coord.coord_z)
 
     def get_mod_coordinate(self):
         return Coordinate(self.coord.coord_x, self.coord.coord_y, self.coord.coord_z)

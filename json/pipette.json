@@ -1,6 +1,6 @@
 {
   "refs": {
-    "pipette":
+    "pipette_s":
     {
       "id": "1"
     },
@@ -8,65 +8,26 @@
     {
       "id": "2"
     },
-    "pipette2":
+    "trash":
     {
       "id": "3"
     },
-    "trash":
-    {
-      "id": "4"
-    },
     "small_tip_holder":
     {
-      "id": "5"
+      "id": "4"
     }
   },
 
   "instructions":
     [
-      { "op": "pipette",
+      { "op": "pipette_s",
       "groups":
       [
         {
           "transfert":
           {
                 "from": "water/A1",
-                "to": "water/B1",
-                "volume": "5",
-                "aspirate_speed": "10",
-                "dispense_speed": "10"
-          }
-        },
-        {
-          "transfert":
-          {
-                "from": "water/A1",
-                "to": "water/A2",
-                "volume": "5",
-                "aspirate_speed": "10",
-                "dispense_speed": "10"
-          }
-        }
-      ]
-      },
-      { "op": "pipette2",
-      "groups":
-      [
-        {
-          "transfert":
-          {
-                "from": "water/A3",
-                "to": "water/A2",
-                "volume": "5",
-                "aspirate_speed": "10",
-                "dispense_speed": "10"
-          }
-        },
-        {
-          "transfert":
-          {
-                "from": "water/A3",
-                "to": "water/A2",
+                "to": "water/E4",
                 "volume": "5",
                 "aspirate_speed": "10",
                 "dispense_speed": "10"

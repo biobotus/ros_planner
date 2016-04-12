@@ -35,8 +35,9 @@ def load_protocol_from_json(json_data, module_manager):
     #print json.dumps(json_data, sort_keys=True, indent=4)
 
     #print json.dumps(json_data['instructions'], sort_keys=True, indent=4)
-
+    print protocol 
     instructions = json_data['instructions']
+    print instructions
     labware_description = json_data['refs']
     logger = logging.getLogger()
     module_dict = {}
@@ -53,14 +54,18 @@ def load_protocol_from_json(json_data, module_manager):
             logger.error("A module on the json refs section is not on the deck")
         else:
             module_dict[labware] = mod
-    print(module_dict)
 
     for instruction in instructions:
         if 'op' in instruction and instruction['op'] in labware_description and 'groups' in instruction:
             mod = module_dict[instruction['op']]
             steps = mod.parse_json(instruction['groups'], module_dict)
-            protocol.add_steps(steps)
+            
+            params = ["MotorControlXY", "MotorControlZ"]
+            step_move = Step({"module_type": "init", "params": params})
 
+            steps.append(step_move)
+
+            protocol.add_steps(steps)
         else:
             logger.error("Instruction error : wrong operator or groups")
 
@@ -100,6 +105,8 @@ class Protocol:
         """
         for step in steps:
             self.logger.info("adding step to Protocol : {0}".format(self.name))
+            print "adding step to Protocol : {0}"
+            print step
             self.steps.append(step)
 
     def get_module_list(self):
