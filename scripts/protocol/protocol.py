@@ -35,9 +35,7 @@ def load_protocol_from_json(json_data, module_manager):
     #print json.dumps(json_data, sort_keys=True, indent=4)
 
     #print json.dumps(json_data['instructions'], sort_keys=True, indent=4)
-    print protocol 
     instructions = json_data['instructions']
-    print instructions
     labware_description = json_data['refs']
     logger = logging.getLogger()
     module_dict = {}
@@ -105,8 +103,6 @@ class Protocol:
         """
         for step in steps:
             self.logger.info("adding step to Protocol : {0}".format(self.name))
-            print "adding step to Protocol : {0}"
-            print step
             self.steps.append(step)
 
     def get_module_list(self):

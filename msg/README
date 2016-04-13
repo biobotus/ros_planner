@@ -1,10 +1,10 @@
 The Num.msg is written as :
 String
-Int32
-Int32
-Int32
-Int8
-Int8
+String
+String
+Float32
+Float32
+Float32
 
 Which describes the name of the module, its x,y and z coordinates.
 Both int8 at the end of file is to identify column and line size of certain boxes

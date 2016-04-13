@@ -1,20 +1,28 @@
 {
   "refs": {
+    "trash":
+    {
+      "id": "0"
+    },
     "pipette_s":
     {
       "id": "1"
     },
-    "water":
+   "small_tip_holder":
     {
       "id": "2"
     },
-    "trash":
+    "medium_tip_holder":
     {
       "id": "3"
     },
-    "small_tip_holder":
+    "large_tip_holder":
     {
       "id": "4"
+    },
+    "water":
+    {
+      "id": "5"
     }
   },
 
@@ -29,6 +37,16 @@
                 "from": "water/A1",
                 "to": "water/E4",
                 "volume": "5",
+                "aspirate_speed": "10",
+                "dispense_speed": "10"
+          }
+        },
+        {
+          "transfert":
+          {
+                "from": "water/B6",
+                "to": "water/F2",
+                "volume": "500",
                 "aspirate_speed": "10",
                 "dispense_speed": "10"
           }
