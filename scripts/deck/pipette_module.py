@@ -101,8 +101,8 @@ class PipetteModule(DeckModule):
         self.steps.append(self.move_pos(from_coord, module_dic))
 
         # aspirate
-        #self.steps.append(self.aspirate(trans_json["volume"],
-        #                           trans_json["aspirate_speed"]))
+        self.steps.append(self.aspirate(trans_json["volume"],
+                                   trans_json["aspirate_speed"]))
 
         if from_mod == to_mod:
             self.height = self.tip_height
@@ -116,8 +116,8 @@ class PipetteModule(DeckModule):
         # getting down
         self.steps.append(self.move_pos(to_coord, module_dic))
         # blow
-        #self.steps.append(self.dispense(trans_json["volume"],
-        #                            trans_json["dispense_speed"]))
+        self.steps.append(self.dispense(trans_json["volume"],
+                                    trans_json["dispense_speed"]))
         # get up
         self.height = dump_coord.coord_z-100
         self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.height), module_dic))
@@ -181,14 +181,14 @@ class PipetteModule(DeckModule):
             self.steps.append(self.move_pos(to_coord, module_dic))
             
             to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(self.xL[0],self.yL[0], ))
-            to_coord.coord_z = to_coord.coord_z+6.51 #11.51mm
+            to_coord.coord_z = to_coord.coord_z  #0mm
             self.steps.append(self.move_pos(to_coord, module_dic)) # move over first well
             to_coord.coord_z = self.height
             self.steps.append(self.move_pos(to_coord, module_dic))
 
             self.xL[0]=self.xL[0]+1
-            self.mod_coord.coord_z = self.mod_coord.coord_z + 37 #tip offset
-            self.tip_height = 330 - 37
+            self.mod_coord.coord_z = self.mod_coord.coord_z + 52 #tip offset
+            self.tip_height = 330 - 52
            
         elif tip_size=="Medium":
             tip_mod = module_dic["medium_tip_holder"]
@@ -202,14 +202,14 @@ class PipetteModule(DeckModule):
             self.steps.append(self.move_pos(to_coord, module_dic))
 
             to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(self.xM[0],self.yM[0], ))
-            to_coord.coord_z = to_coord.coord_z+6.51 #11.51mm
+            to_coord.coord_z = to_coord.coord_z+5  #5 mm
             self.steps.append(self.move_pos(to_coord, module_dic)) # move over first well
             to_coord.coord_z = self.height
             self.steps.append(self.move_pos(to_coord, module_dic))
             
             self.xM[0]=self.xM[0]+1
-            self.mod_coord.coord_z = self.mod_coord.coord_z + 37 #tip offset
-            self.tip_height = 330 - 37
+            self.mod_coord.coord_z = self.mod_coord.coord_z + 30.87 #tip offset
+            self.tip_height = 330 - 30.87
         
         elif tip_size=="Small":
             tip_mod = module_dic["small_tip_holder"]
@@ -223,7 +223,7 @@ class PipetteModule(DeckModule):
             self.steps.append(self.move_pos(to_coord, module_dic))
 
             to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(self.xS[0],self.yS[0], ))
-            to_coord.coord_z = to_coord.coord_z+6.51 #11.51mm
+            to_coord.coord_z = to_coord.coord_z+6.51 #6.51mm
             self.steps.append(self.move_pos(to_coord, module_dic)) # move over first well
             to_coord.coord_z = self.height
             self.steps.append(self.move_pos(to_coord, module_dic))
@@ -263,9 +263,9 @@ class PipetteModule(DeckModule):
         # added together for simplicity and speed
 
         if tip_size=="Large":
-            to_coord.coord_z = 79 #mm
+            to_coord.coord_z = 80.4 #mm have to consider tip offset TODO
         elif tip_size=="Medium":
-            to_coord.coord_z = 51 #mm
+            to_coord.coord_z = 51.27 #mm
         elif tip_size=="Small":
             to_coord.coord_z = 48.2 #mm
         else:
@@ -274,9 +274,9 @@ class PipetteModule(DeckModule):
         self.steps.append(self.move_pos(to_coord, module_dic))
 
         if tip_size=="Large":
-            to_coord.coord_x = to_coord.coord_x+5.3 #mm
+            to_coord.coord_x = to_coord.coord_x+18.867 #mm
         elif tip_size=="Medium":
-            to_coord.coord_x = to_coord.coord_x+2.8 #mm
+            to_coord.coord_x = to_coord.coord_x+24.17 #mm
         elif tip_size=="Small":
             to_coord.coord_x = to_coord.coord_x+28.17 #mm
         else:
@@ -287,10 +287,11 @@ class PipetteModule(DeckModule):
         to_coord.coord_z = self.height
         self.steps.append(self.move_pos(to_coord, module_dic))
 
+        #Remove tip offset
         if tip_size=="Large":
-            self.mod_coord.coord_z = self.mod_coord.coord_z - 37
+            self.mod_coord.coord_z = self.mod_coord.coord_z - 52
         elif tip_size=="Medium":
-            self.mod_coord.coord_z = self.mod_coord.coord_z - 37
+            self.mod_coord.coord_z = self.mod_coord.coord_z - 30.87
         elif tip_size=="Small":
             self.mod_coord.coord_z = self.mod_coord.coord_z - 37
         else:
@@ -320,7 +321,7 @@ class PipetteModule(DeckModule):
 
     def get_tip_size(self,volume):
         # Volume is in uL
-        volume = int(volume)
+        volume = float(volume)
         if volume  > 100 and volume <= 600:
             self.pipette_size = "Large"
 

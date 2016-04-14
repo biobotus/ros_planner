@@ -35,20 +35,20 @@
           "transfert":
           {
                 "from": "water/A1",
-                "to": "water/E4",
-                "volume": "5",
-                "aspirate_speed": "10",
-                "dispense_speed": "10"
+                "to": "water/A2",
+                "volume": "200",
+                "aspirate_speed": "100",
+                "dispense_speed": "100"
           }
         },
         {
           "transfert":
           {
-                "from": "water/B6",
-                "to": "water/F2",
-                "volume": "500",
-                "aspirate_speed": "10",
-                "dispense_speed": "10"
+                "from": "water/B1",
+                "to": "water/B2",
+                "volume": "50",
+                "aspirate_speed": "100",
+                "dispense_speed": "100"
           }
         }
       ]
