@@ -30,12 +30,12 @@ class PipetteModule(DeckModule):
         self.large_tip_penetration_depth = 0
         self.medium_tip_penetration_depth = 5
         self.small_tip_penetration_depth = 6.51
-        self.large_tip_lenght = 80.4
+        self.large_tip_length = 80.4
         self.medium_tip_length = 51.27
         self.small_tip_length = 48.2
         self.large_tip_trash_x_offset = 18.867  # x distance to enter the teeth's trash properly
         self.medium_tip_trash_x_offset = 24.17  # x distance to enter the teeth's trash properly
-        self.small_tip_trash_x_offset = 28,17  # x distance to enter the teeth's trash properly
+        self.small_tip_trash_x_offset = 28.17  # x distance to enter the teeth's trash properly
         self.max_volume = 800 # maximum quantity in uL of volume that can be pipetted by the large tip
         self.med_volume = 100 # quantity in uL of volume that can be pipetted by the medium tip
         self.min_volume = 10 # minimum quantity in uL of volume that can be pipetted by the small tip
@@ -97,7 +97,6 @@ class PipetteModule(DeckModule):
         dump_coord  = self.actual_mod_pos(module_dic, trash_mod.get_mod_coordinate())
         # go to max height
         self.height = dump_coord.coord_z-self.max_height_100mm
-        self.steps.append(self.move_pos(Coordinate(0, 0, self.height), module_dic))
 
         # Get tip from tip holder module
         self.get_tip_size(trans_json["volume"])
@@ -190,7 +189,7 @@ class PipetteModule(DeckModule):
         if tip_size=="Large":
             tip_mod = module_dic["large_tip_holder"]
             # if the tip in a well has already been taken, go to an other well
-            if self.xL[0]>max_column:
+            if self.xL[0]>self.max_column:
                 self.yL[0]=self.yL[0]+1
                 self.xL[0]=0
             # go over the 1st well
@@ -210,7 +209,7 @@ class PipetteModule(DeckModule):
         elif tip_size=="Medium":
             tip_mod = module_dic["medium_tip_holder"]
             # if the tip in a well has already been taken, go to an other well
-            if self.xM[0]>max_column:
+            if self.xM[0]>self.max_column:
                 self.yM[0]=self.yM[0]+1
                 self.xM[0]=0
             # go over the 1st well
@@ -275,14 +274,14 @@ class PipetteModule(DeckModule):
         # move in the middle of the trash
         to_coord.coord_y = dump_coord.coord_y+self.dump_coord_y_offset
         to_coord.coord_x = dump_coord.coord_x+self.dump_coord_x_offset
-        self.steps.append(self.move_pos(to_coord, module_dic)) # x-y move (over dump hole)
+        # self.steps.append(self.move_pos(to_coord, module_dic)) # x-y move (over dump hole)
         # move down
         if tip_size=="Large":
-            to_coord.coord_z = self.large_tip_lenght #mm
+            to_coord.coord_z = self.large_tip_length #mm
         elif tip_size=="Medium":
-            to_coord.coord_z = self.medium_tip_lenght #mm
+            to_coord.coord_z = self.medium_tip_length #mm
         elif tip_size=="Small":
-            to_coord.coord_z = self.small_tip_lenght #mm
+            to_coord.coord_z = self.small_tip_length #mm
         else:
             print("Error reading tip size")
         to_coord.coord_z = dump_coord.coord_z+to_coord.coord_z

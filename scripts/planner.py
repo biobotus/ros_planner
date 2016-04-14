@@ -18,7 +18,8 @@ from deck.labware_module import Centrifuge_Vial_Holder
 from deck.labware_module import Multiwell_Plate
 import logging
 from protocol.protocol import *
-from ros_planner.msg import CoordinateMsgs
+
+from biobot_ros_msgs.msg import CoordinateMsgs
 from deck.tac_module import TacModule
 from std_msgs.msg import Bool, String
 

@@ -50,6 +50,16 @@
                 "aspirate_speed": "100",
                 "dispense_speed": "100"
           }
+        },
+        {
+          "transfert":
+          {
+                "from": "water/C1",
+                "to": "water/C2",
+                "volume": "5",
+                "aspirate_speed": "100",
+                "dispense_speed": "100"
+          }
         }
       ]
       }
