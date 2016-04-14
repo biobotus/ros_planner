@@ -32,31 +32,42 @@
       "groups":
       [
         {
-          "transfert":
+          "serial_dilution":
           {
+                "iteration": 5,
                 "from": "water/A1",
                 "to": "water/A2",
                 "volume": "200",
                 "aspirate_speed": "100",
-                "dispense_speed": "100"
-          }
-        },
-        {
-          "transfert":
-          {
-                "from": "water/B1",
-                "to": "water/B2",
-                "volume": "50",
+                "dispense_speed": "100",
+
+                "from": "water/A2",
+                "to": "water/A3",
+                "volume": "200",
                 "aspirate_speed": "100",
-                "dispense_speed": "100"
-          }
-        },
-        {
-          "transfert":
-          {
-                "from": "water/C1",
-                "to": "water/C2",
-                "volume": "5",
+                "dispense_speed": "100",
+
+                "from": "water/A3",
+                "to": "water/A4",
+                "volume": "200",
+                "aspirate_speed": "100",
+                "dispense_speed": "100",
+
+                "from": "water/A4",
+                "to": "water/A5",
+                "volume": "200",
+                "aspirate_speed": "100",
+                "dispense_speed": "100",
+
+                "from": "water/A5",
+                "to": "water/A6",
+                "volume": "200",
+                "aspirate_speed": "100",
+                "dispense_speed": "100",
+
+                "from": "water/A6",
+                "to": "water/A7",
+                "volume": "200",
                 "aspirate_speed": "100",
                 "dispense_speed": "100"
           }

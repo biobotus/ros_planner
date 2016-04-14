@@ -55,6 +55,10 @@ class PipetteModule(DeckModule):
             elif "transfert" in instruction:
                 self._parse_transfert(instruction['transfert'], module_dic)
 
+            elif "serial_dilution" in instruction:
+                #TODO impossible with pipette_s
+                self._parse_serial_dilution(instruction['serial_dilution'], module_dic)
+
             elif "mix" in instruction:
                 #TODO est possible avec la mechaPipette?
                 self._parse_mix(instruction['mix'])
@@ -86,8 +90,6 @@ class PipetteModule(DeckModule):
             the task
         """
         self.logger.info("parsing transfert instruction")
-
-
 
         # Coord initialized
         from_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["from"], module_dic))
@@ -141,8 +143,119 @@ class PipetteModule(DeckModule):
         self.eject_tip(self.pipette_size, module_dic)
         return
 
-    def _parse_mix(self, mix_json):
+    def _parse_serial_dilution(self, trans_json, module_dic):
+        """
+        A transfert is an operation which transfert from one well to another a
+        certain amount of liquid
+        There is 8 step to do so :
+            * get the tip
+            * go to the source well position
+            * get down
+            * aspirate
+            * get up
+
+            * go to the destination well  |
+            * get down                     \
+            * dispense (90%)                > loop n times
+            * aspirate (75%)               /
+            * get up                      |
+
+            * go to the destination well
+            * get down
+            * dispense (100%)
+            * get up
+            * go to the dump
+            * eject tip
+        :param trans_json: the json containing the information
+        :param module_dict: the list of module involved in the protocol
+        :return: a list of steps with their different parameters to complete
+            the task
+        """
         self.logger.info("parsing mix instruction")
+
+        # Coord initialized
+        from_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["from"], module_dic))
+        to_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["to"], module_dic))
+
+        trash_mod = module_dic["trash"]
+        dump_coord  = self.actual_mod_pos(module_dic, trash_mod.get_mod_coordinate())
+        # go to max height
+        self.height = dump_coord.coord_z-self.max_height_100mm
+
+        # Get tip from tip holder module
+        self.get_tip_size(trans_json["volume"])
+        self.get_tip(self.pipette_size, module_dic)
+
+        # go to the source well position
+        from_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["from"], module_dic))
+        to_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["to"], module_dic))
+
+        from_mod = trans_json["from"].split("/")
+        from_mod = from_mod[0]
+
+        to_mod = trans_json["to"].split("/")
+        to_mod = to_mod[0]
+
+        # Going to the source position
+        self.steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, self.height), module_dic))
+
+        # Getting down
+        self.steps.append(self.move_pos(from_coord, module_dic))
+
+        # aspirate
+        self.steps.append(self.aspirate(trans_json["volume"],
+                                   trans_json["aspirate_speed"]))
+
+        if from_mod == to_mod:
+            self.height = self.tip_height
+
+        # get Up
+        self.steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, self.height), module_dic))
+
+        # got to the destination well
+        self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.height), module_dic))
+        # getting down
+        self.steps.append(self.move_pos(to_coord, module_dic))
+        # blow
+        qte = float(trans_json["volume"])*0.90
+        self.steps.append(self.dispense(qte,trans_json["dispense_speed"]))
+        # ====================================================================
+        k=0
+        number_of_iteration = trans_json["iteration"]
+        for k in range(number_of_iteration):
+            # aspirate 75%
+            qte = float(trans_json["volume"])*0.75
+            self.steps.append(self.aspirate(qte,
+                                       trans_json["aspirate_speed"]))
+
+            if from_mod == to_mod:
+                self.height = self.tip_height
+
+            # get Up
+            self.steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, self.height), module_dic))
+
+            # got to the destination well
+            self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.height), module_dic))
+            # getting down
+            self.steps.append(self.move_pos(to_coord, module_dic))
+            # blow
+            qte = float(trans_json["volume"])*0.90
+            self.steps.append(self.dispense(qte,trans_json["dispense_speed"]))
+        # ====================================================================
+        # got to the destination well
+        self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.height), module_dic))
+        # getting down
+        self.steps.append(self.move_pos(to_coord, module_dic))
+        # blow
+        self.steps.append(self.dispense(trans_json["volume"],
+                                    trans_json["dispense_speed"]))
+        # get up
+        self.height = dump_coord.coord_z-self.max_height_100mm
+        self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.height), module_dic))
+        self.get_tip_size(trans_json["volume"])
+        self.eject_tip(self.pipette_size, module_dic)
+        return
+
 
     def aspirate(self, volume, speed):
 
