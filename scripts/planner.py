@@ -97,7 +97,12 @@ class Planner():
         self.modules.add_module(tac_module, m_id)
 
     def add_pipette_s(self, m_name, m_id, coord, m_type):
-        self.logger.info("Add pipette module")
+        self.logger.info("Add simple pipette module")
+        pipette_module = PipetteModule(m_name, coord, m_type)
+        self.modules.add_module(pipette_module,m_id)
+
+    def add_pipette_m(self, m_name, m_id, coord, m_type):
+        self.logger.info("Add multiple pipette module")
         pipette_module = PipetteModule(m_name, coord, m_type)
         self.modules.add_module(pipette_module,m_id)
 

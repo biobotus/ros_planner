@@ -8,27 +8,31 @@
     {
       "id": "1"
     },
-   "small_tip_holder":
+    "pipette_m":
     {
       "id": "2"
     },
-    "medium_tip_holder":
+   "small_tip_holder":
     {
       "id": "3"
     },
-    "large_tip_holder":
+    "medium_tip_holder":
     {
       "id": "4"
     },
-    "water":
+    "large_tip_holder":
     {
       "id": "5"
+    },
+    "water":
+    {
+      "id": "6"
     }
   },
 
   "instructions":
     [
-      { "op": "pipette_s",
+      { "op": "pipette_m",
       "groups":
       [
         {

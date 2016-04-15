@@ -17,6 +17,8 @@ class PipetteModule(DeckModule):
         self.yM=[0]
         self.xS=[0]
         self.yS=[0]
+        print "printing type"
+        print m_type
         # Constant used for simple pipette across the code
         self.pipette_size = "something"
         self.max_height_100mm = 100 # z distance used to be more efficient (not returning to z0)
