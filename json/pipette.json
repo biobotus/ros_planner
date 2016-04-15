@@ -32,45 +32,15 @@
 
   "instructions":
     [
-      { "op": "pipette_m",
+      { "op": "pipette_s",
       "groups":
       [
         {
-          "serial_dilution":
+          "multi_dispense":
           {
-                "iteration": 5,
+                "iteration": 3,
                 "from": "water/A1",
                 "to": "water/A2",
-                "volume": "200",
-                "aspirate_speed": "100",
-                "dispense_speed": "100",
-
-                "from": "water/A2",
-                "to": "water/A3",
-                "volume": "200",
-                "aspirate_speed": "100",
-                "dispense_speed": "100",
-
-                "from": "water/A3",
-                "to": "water/A4",
-                "volume": "200",
-                "aspirate_speed": "100",
-                "dispense_speed": "100",
-
-                "from": "water/A4",
-                "to": "water/A5",
-                "volume": "200",
-                "aspirate_speed": "100",
-                "dispense_speed": "100",
-
-                "from": "water/A5",
-                "to": "water/A6",
-                "volume": "200",
-                "aspirate_speed": "100",
-                "dispense_speed": "100",
-
-                "from": "water/A6",
-                "to": "water/A7",
                 "volume": "200",
                 "aspirate_speed": "100",
                 "dispense_speed": "100"
