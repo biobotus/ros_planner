@@ -32,19 +32,19 @@
 
   "instructions":
     [
-      { "op": "pipette_s",
+      { "op": "pipette_m",
       "groups":
       [
         {
-          "multi_dispense":
-          {
-                "iteration": 3,
-                "from": "water/A1",
-                "to": "water/A2",
-                "volume": "200",
-                "aspirate_speed": "100",
-                "dispense_speed": "100"
-          }
+          "serial_dilution":
+           {
+                 "iteration": 5,
+                 "from": "water/A1",
+                 "to": "water/A2",
+                 "volume": "150",
+                 "aspirate_speed": "100",
+                 "dispense_speed": "100"
+           }
         }
       ]
       }

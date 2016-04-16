@@ -57,6 +57,10 @@ class PipetteModule(DeckModule):
             elif "transfert" in instruction:
                 self._parse_transfert(instruction['transfert'], module_dic)
 
+            elif "multi_dispense" in instruction:
+                #TODO est possible avec la mechaPipette?
+                self._parse_multi_dispense(instruction['multi_dispense'], module_dic)
+
             elif "serial_dilution" in instruction:
                 #TODO impossible with pipette_s
                 self._parse_serial_dilution(instruction['serial_dilution'], module_dic)
@@ -64,10 +68,6 @@ class PipetteModule(DeckModule):
             elif "mix" in instruction:
                 #TODO est possible avec la mechaPipette?
                 self._parse_mix(instruction['mix'], module_dic)
-
-            elif "multi_dispense" in instruction:
-                #TODO est possible avec la mechaPipette?
-                self._parse_multi_dispense(instruction['multi_dispense'], module_dic)
 
             else:
                 #TODO raise an exception instruction not known
@@ -354,39 +354,14 @@ class PipetteModule(DeckModule):
 
         # got to the destination well
         self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.height), module_dic))
-        # getting down
-        self.steps.append(self.move_pos(to_coord, module_dic))
-        # blow
-        self.steps.append(self.dispense(float(trans_json["volume"])*0.90,trans_json["dispense_speed"]))
-        # ====================================================================
+
         k=0
         number_of_iteration = trans_json["iteration"]
+        # go to the module specified and blow 75% re-aspirate 90% of volume, go to next well n times
         for k in range(number_of_iteration):
-            # aspirate 75%
-            self.steps.append(self.aspirate(float(trans_json["volume"])*0.75,
-                                       trans_json["aspirate_speed"]))
+            # blow + aspirate with option turn on
+            self.serial_dilution(number_of_iteration, module_dic, float(trans_json["volume"]), trans_json["dispense_speed"], trans_json)
 
-            if from_mod == to_mod:
-                self.height = self.tip_height
-
-            # get Up
-            self.steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, self.height), module_dic))
-
-            # got to the destination well
-            self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.height), module_dic))
-            # getting down
-            self.steps.append(self.move_pos(to_coord, module_dic))
-            # blow
-            self.steps.append(self.dispense(float(trans_json["volume"])*0.90,
-                                        trans_json["dispense_speed"]))
-        # ====================================================================
-        # got to the destination well
-        self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.height), module_dic))
-        # getting down
-        self.steps.append(self.move_pos(to_coord, module_dic))
-        # blow
-        self.steps.append(self.dispense(trans_json["volume"],
-                                    trans_json["dispense_speed"]))
         # get up
         self.height = dump_coord.coord_z-self.max_height_100mm
         self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.height), module_dic))
@@ -610,28 +585,70 @@ class PipetteModule(DeckModule):
         return
 
     def multi_dispense(self, iteration, module_dic, volume, speed, trans_json):
-        to_coord = Coordinate(0,0,0)
-        # Get tip holder from deck
+        # Go to 1st well from deck
         module =  trans_json["from"].split("/")
         tip_mod = module_dic[str(module[0])]
         # if the well has been blown in, go to an other well
         if self.m_type == "pipette_m":
             self.yL[0]=self.yL[0]+1
+            self.xL[0] = 0
         else:
             if self.xL[0]>self.max_column:
                 self.yL[0]=self.yL[0]+1
                 self.xL[0]=0
         # go over the 1st well and get down
         to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(self.xL[0],self.yL[0], ))
-        to_coord.coord_z = self.tip_height #
+        to_coord.coord_z = self.tip_height
         self.steps.append(self.move_pos(to_coord, module_dic))
         # blow
         self.steps.append(self.dispense(volume/iteration, speed))
         # move up
-        self.xL[0]=self.xL[0]+1
-        self.mod_coord.coord_z = self.mod_coord.coord_z + self.large_tip_offset
+        if self.pipette_size == "Large":
+            tip_size = self.large_tip_offset
+        elif self.pipette_size == "Medium":
+            tip_size = self.medium_tip_offset
+        elif self.pipette_size == "Small":
+            tip_size = self.small_tip_offset
+        else:
+            print("unable to read tip size")
+
+        self.mod_coord.coord_z = to_coord.coord_z - tip_size
         self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.mod_coord.coord_z), module_dic))
+        self.xL[0]=self.xL[0]+1
+        return
 
+    def serial_dilution(self, iteration, module_dic, volume, speed, trans_json):
+        to_coord = Coordinate(0,0,0)
+        # Go to 1st well from deck
+        module =  trans_json["from"].split("/")
+        tip_mod = module_dic[str(module[0])]
+        # if the well has been blown in, go to an other well
+        if self.m_type == "pipette_m":
+            self.yL[0]=self.yL[0]+1
+            self.xL[0] = 0
+        else:
+            if self.xL[0]>self.max_column:
+                self.yL[0]=self.yL[0]+1
+                self.xL[0]=0
+        # go over the 1st well and get down
+        to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(self.xL[0],self.yL[0], ))
+        to_coord.coord_z = self.tip_height
+        self.steps.append(self.move_pos(to_coord, module_dic))
+        # blow
+        self.steps.append(self.dispense(volume, speed))
+        # aspirate
+        self.steps.append(self.aspirate(volume, speed))
+        # move up
+        if self.pipette_size == "Large":
+            tip_size = self.large_tip_offset
+        elif self.pipette_size == "Medium":
+            tip_size = self.medium_tip_offset
+        elif self.pipette_size == "Small":
+            tip_size = self.small_tip_offset
+        else:
+            print("unable to read tip size")
 
-
+        self.mod_coord.coord_z = to_coord.coord_z - tip_size
+        self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.mod_coord.coord_z), module_dic))
+        self.xL[0]=self.xL[0]+1
         return

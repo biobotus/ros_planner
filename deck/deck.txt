@@ -15,7 +15,7 @@ pipette_m
 2
 100
 -50
-0
+25
 small_tip_holder
 small_tip_holder
 3
