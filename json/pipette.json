@@ -36,14 +36,15 @@
       "groups":
       [
         {
-          "serial_dilution":
+          "multi_dispense":
            {
                  "iteration": 5,
                  "from": "water/A1",
                  "to": "water/A2",
-                 "volume": "150",
+                 "volume": "200",
                  "aspirate_speed": "100",
-                 "dispense_speed": "100"
+                 "dispense_speed": "100",
+                 "iteration": "5"
            }
         }
       ]
