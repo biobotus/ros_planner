@@ -57,16 +57,15 @@ def load_protocol_from_json(json_data, module_manager):
         if 'op' in instruction and instruction['op'] in labware_description and 'groups' in instruction:
             mod = module_dict[instruction['op']]
             steps = mod.parse_json(instruction['groups'], module_dict)
-            
-            params = ["MotorControlXY", "MotorControlZ"]
-            step_move = Step({"module_type": "init", "params": params})
 
-            steps.append(step_move)
-
+            #params = ["MotorControlXY", "MotorControlZ"]
+            #step_move = Step({"module_type": "init", "params": params})
+            #steps.append(step_move)
             protocol.add_steps(steps)
+
         else:
             logger.error("Instruction error : wrong operator or groups")
-
+    
     return protocol
 
 

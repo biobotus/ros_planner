@@ -7,7 +7,7 @@ import rospy
 from biobot_ros_msgs.msg import CoordinateMsgs
 from deck.labware_module import Trash_bin, Small_Tip_Holder, Medium_Tip_Holder, \
                                 Large_Tip_Holder, Centrifuge_Vial_Holder, \
-                                Multiwell_Plate
+                                Multiwell_Plate, Large_Container
 from deck.deck_module import DeckManager, DeckModule, ModuleParam, Coordinate
 from deck.pipette_module import PipetteModule
 from deck.tac_module import TacModule
@@ -64,6 +64,10 @@ class Planner():
             getattr(self.__class__, 'add_{0}'.format(data.m_type))(*parameters)
         except AttributeError as e:
             print(e)
+
+    def add_large_container(self, m_name, m_id, coord, m_type):
+        large_container = Large_Container(m_name, coord)
+        self.modules.add_module(large_container, m_id)
 
     def add_small_tip_holder(self, m_name, m_id, coord, m_type):
         small_tip_holder = Small_Tip_Holder(m_name, coord)
