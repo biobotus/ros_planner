@@ -11,10 +11,6 @@ class PipetteModule(DeckModule):
         self.logger.info("Pipette initialized")
         self.m_type = m_type
         self.mod_coord = self.get_mod_coordinate()
-        self.xL=[0]
-        self.yL=[0]
-        self.xS=[0]
-        self.yS=[0]
         self.x_buff = 0
         self.y_buff = 0
         # Constant used for simple pipette across the code
@@ -23,7 +19,7 @@ class PipetteModule(DeckModule):
         self.max_column = 7 # pipette box max column (dimension)
         self.large_tip_offset = 52 # large tip offset (zeroing)
         self.medium_tip_offset = 30.37 # medium tip offset (zeroing)
-        self.small_tip_offset = 37 # small tip offset (zeroing)
+        self.small_tip_offset = 36 # small tip offset (zeroing)
 
         if self.m_type == "pipette_m":
             self.max_z_height = 330 # maximum movement in the z-axis
@@ -213,7 +209,7 @@ class PipetteModule(DeckModule):
 
         if from_mod != to_mod:
             self.steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, self.height), module_dic))
-        
+
         iteration = int(trans_json["iteration"])
         k=0
         for k in range(iteration):
@@ -410,7 +406,7 @@ class PipetteModule(DeckModule):
             self.logger.error("Received a negative coordinate x: {} y: {} z: {}"\
                 .format(coord.coord_x, coord.coord_y, coord.coord_z))
             return -1
-        elif int(coord.coord_x)>1050 or int(coord.coord_y)>600:
+        elif int(coord.coord_x)>1050 or int(coord.coord_y)>800:
             print("Over coord x: {} y: {} z: {}"\
                 .format(coord.coord_x, coord.coord_y, coord.coord_z))
             self.logger.error("Received a too far coord x: {} y: {} z: {}"\
@@ -437,7 +433,7 @@ class PipetteModule(DeckModule):
             self.steps.append(self.move_pos(to_coord, module_dic))
             # get in the tip
             to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0], tip_pos[1], ))
-            
+
             if self.m_type == "pipette_m":
                 to_coord.coord_z = to_coord.coord_z+self.large_tip_penetration_depth_m
             else:
@@ -447,18 +443,9 @@ class PipetteModule(DeckModule):
             to_coord.coord_z = self.height
             self.steps.append(self.move_pos(to_coord, module_dic))
             # move up
- #           self.xL[0]=self.xL[0]+1
             self.mod_coord.coord_z = self.mod_coord.coord_z + self.large_tip_offset
             self.tip_height = self.max_z_height - self.large_tip_offset
- 
-            # if the tip in a well has already been taken, go to an other well
-#            if self.m_type == "pipette_m":
-#                self.yL[0]=self.yL[0]+1
-#                self.xL[0]=0
-#            else:
-#                if self.xL[0]>self.max_column:
-#                    self.yL[0]=self.yL[0]+1
-#                    self.xL[0]=0
+
 
         elif tip_size=="Medium":
 
@@ -480,50 +467,30 @@ class PipetteModule(DeckModule):
             to_coord.coord_z = self.height
             self.steps.append(self.move_pos(to_coord, module_dic))
             # move up
-#            self.xM[0]=self.xM[0]+1
             self.mod_coord.coord_z = self.mod_coord.coord_z + self.medium_tip_offset #tip offset
             self.tip_height = self.max_z_height - self.medium_tip_offset
 
-            # if the tip in a well has already been taken, go to an other well
- #           if self.m_type == "pipette_m":
-  #              self.yM[0]=self.yM[0]+1
-   #             self.xM[0]=0
-    #        else:
-     #           if self.xM[0]>self.max_column:
-      #              self.yM[0]=self.yM[0]+1
-       #             self.xM[0]=0
-       
 
         elif tip_size=="Small":
             tip_mod = module_dic["small_tip_holder"]
             # go over the 1st well
-            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(self.xS[0],self.yS[0], ))
+            tip_pos = tip_mod.get_tip_pos(self.m_type)
+            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0],tip_pos[1], ))
             to_coord.coord_z = self.height
             self.steps.append(self.move_pos(to_coord, module_dic))
             # get in the tip
-            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(self.xS[0],self.yS[0], ))
+            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0],tip_pos[1], ))
             if self.m_type == "pipette_m":
                 to_coord.coord_z = to_coord.coord_z+self.small_tip_penetration_depth_m
             else:
-                to_coord.coord_z = to_coord.coord_z+self.small_tip_penetration_depth_s    
+                to_coord.coord_z = to_coord.coord_z+self.small_tip_penetration_depth_s
 
             self.steps.append(self.move_pos(to_coord, module_dic))
-            # move up
             to_coord.coord_z = self.height
-            self.steps.append(self.move_pos(to_coord, module_dic))
             # move up
-            self.xS[0]=self.xS[0]+1
-            self.mod_coord.coord_z = self.mod_coord.coord_z + self.small_tip_offset
+            self.steps.append(self.move_pos(to_coord, module_dic))
+            self.mod_coord.coord_z = self.mod_coord.coord_z + self.small_tip_offset # tip offset
             self.tip_height = self.max_z_height - self.small_tip_offset
-       
-            # if the tip in a well has already been taken, go to an other well
-            if self.m_type == "pipette_m": #SHOULD BE AT THE END TODO
-                self.yS[0]=self.yS[0]+1
-                self.xS[0]=0
-            else:
-                 if self.xS[0]>self.max_column:
-                     self.yS[0]=self.yS[0]+1
-                     self.xS[0]=0
 
         else:
             print("Error reading tip size")
@@ -637,8 +604,8 @@ class PipetteModule(DeckModule):
         number = module[1][1:]
         number = int(number) - 1 + self.x_buff
         letter = ord(letter) - ord('A') + self.y_buff
-        
-       
+
+
         # go over the 1st well
         to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(letter, number))
         self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.tip_height), module_dic))
@@ -651,7 +618,7 @@ class PipetteModule(DeckModule):
         # move up
         self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.tip_height), module_dic))
         self.y_buff=self.y_buff+1
-        
+
         # if the well has been blown in, go to an other well
         if self.m_type == "pipette_m":
             self.x_buff=self.x_buff+1

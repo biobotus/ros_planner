@@ -1,17 +1,16 @@
 <launch>
-
   <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+  <node name="planner" pkg="ros_planner" type="planner.py" required="True" output="screen"/>
+  <node name="behavior" pkg="ros_behavior" type="behavior.py" required="True" output="screen"/>
 
-  <node name="planner" pkg="ros_planner" type="planner.py" required="true" output="screen"/>
-  <node name="behavior" pkg="ros_behavior" type="behavior.py" required="true" output="screen"/>
-
-<!--
   <machine name="pi1" address="10.43.156.11" env-loader="/home/ubuntu/env.sh" user="ubuntu" password="ubuntu"/>
-  <node name="motor_control_xy" pkg="platform_control" type="motor_control_xy.py" machine="pi1"/>
+  <node pkg="platform_control" type="global_motor_control.py" name="global_motor_control11" output="screen" machine="pi1" required="True"/>
+  <node pkg="platform_control" type="motor_control_xy.py" name="motor_control_xy" output="screen" machine="pi1" required="True"/>
+  <node pkg="platform_control" type="motor_control_z.py" name="motor_control_z" output="screen" machine="pi1" required="True"/>
 
-  <include file="$(find platform_control)/launch/axis_control.launch" machine="pi1"/>
-
-  <machine name="pi2" address="10.43.156.12" env-loader="/home/ubuntu/env.sh" user="ubuntu" password="ubuntu"/>
-  <include file="(find platform_control)/launch/pipette_control.launch" machine="pi2"/>
--->
+  <machine name="pi2" address="10.43.156.12" env-loader="/home/ubuntu/env.sh" user="ubuntu" password="ubuntu" />
+  <node pkg="platform_control" type="global_motor_control.py" name="global_motor_control12" output="screen" machine="pi2" required="True"/>
+  <node pkg="platform_control" type="motor_control_sp.py" name="motor_control_sp" output="screen" machine="pi2" required="True"/>
+  <node pkg="platform_control" type="motor_control_mp.py" name="motor_control_mp" output="screen" machine="pi2" required="True"/>
 </launch>
+

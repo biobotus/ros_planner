@@ -47,7 +47,7 @@ class Medium_Tip_Holder(DeckModule):
     def get_tip_pos(self, m_type):
         x = self.xM
         y = self.yM
-        
+
         if m_type == "pipette_m":
             if x > 0:
                 y = y+1
@@ -67,8 +67,8 @@ class Large_Tip_Holder(DeckModule):
     def __init__(self, name, coord):
         super(Large_Tip_Holder, self).__init__(name, coord)
         self.set_well_layout(8, 12, Coordinate(0, 0, 0), Coordinate(9, 9, 0))
-        self.xL = [0]
-        self.yL = [0]
+        self.xL = 0
+        self.yL = 0
         self.max_column = 8
 
     def get_tip_pos(self, m_type):

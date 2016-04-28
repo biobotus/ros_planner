@@ -5,10 +5,10 @@ import logging
 import rospy
 
 from biobot_ros_msgs.msg import CoordinateMsgs
+from deck.deck_module import DeckManager, DeckModule, ModuleParam, Coordinate
 from deck.labware_module import Trash_bin, Small_Tip_Holder, Medium_Tip_Holder, \
                                 Large_Tip_Holder, Centrifuge_Vial_Holder, \
                                 Multiwell_Plate, Large_Container
-from deck.deck_module import DeckManager, DeckModule, ModuleParam, Coordinate
 from deck.pipette_module import PipetteModule
 from deck.tac_module import TacModule
 from protocol.protocol import *
@@ -53,8 +53,12 @@ class Planner():
             print("Step complete!")
 
     def callback_done_step(self, data):
-        if data.data:
+        if data.data == True:
+            print("Done step true")
             self.step_complete = True
+        else:
+            rospy.signal_shutdown("Error: Done Step is false")
+            return -1
 
     def callback_input(self, data):
         try:
