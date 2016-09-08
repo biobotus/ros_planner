@@ -176,12 +176,12 @@ class DeckModule(object):
         (robot top left corner)
         """
         # add more information on the log error + check for < 0
-        if letter > self.nb_line or letter < 0:
+        if letter > self.nb_line-1 or letter < 0:
             self.logger.error("Error on the line")
             print "Error on the line"
             return -1
 
-        if number > self.nb_column or number < 0:
+        if number > self.nb_column-1 or number < 0:
             self.logger.error("Error on the column")
             print "Error on the column"
             return -1

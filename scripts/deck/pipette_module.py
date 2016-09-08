@@ -29,11 +29,11 @@ class PipetteModule(DeckModule):
         self.dump_coord_y_offset = 14.5 # necessary offset to move in the middle of the teeth of the trash (ALL PIPETTE)
         self.dump_coord_x_offset = 79.1 # necessary offset to move in front of the teeth of the trash (ALL PIPETTE)
         self.large_tip_penetration_depth_s = 0
-        self.medium_tip_penetration_depth_s = 5
-        self.small_tip_penetration_depth_s = 6.51
-        self.large_tip_penetration_depth_m = 6
-        self.medium_tip_penetration_depth_m = 10
-        self.small_tip_penetration_depth_m = 15
+        self.medium_tip_penetration_depth_s = 3
+        self.small_tip_penetration_depth_s = 1
+        self.large_tip_penetration_depth_m = 1
+        self.medium_tip_penetration_depth_m = 3
+        self.small_tip_penetration_depth_m = 1
 
         self.large_tip_length = 80.4
         self.medium_tip_length = 51.27
@@ -393,6 +393,8 @@ class PipetteModule(DeckModule):
 
     def actual_mod_pos(self, module_dic, coord):
 
+        print(type(coord))
+        print(dir(coord))
         coord.coord_x = coord.coord_x-self.mod_coord.coord_x
         coord.coord_y = coord.coord_y-self.mod_coord.coord_y
         coord.coord_z = coord.coord_z-self.mod_coord.coord_z

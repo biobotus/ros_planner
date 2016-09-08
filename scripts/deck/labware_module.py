@@ -15,10 +15,13 @@ class Small_Tip_Holder(DeckModule):
         self.xS = 0
         self.yS = 0
         self.max_column = 8
+        self.max_row = 11
 
     def get_tip_pos(self, m_type):
         x = self.xS
         y = self.yS
+
+
 
         if m_type == "pipette_m":
             if x > 0:
@@ -32,10 +35,13 @@ class Small_Tip_Holder(DeckModule):
             self.xS = self.xS + 1
             if self.xS>self.max_column:
                 self.yS=self.yS+1
-                self.xS=0
+                if self.yS>self.max_row:
+                    return None
+                else:
+                    self.xS=0
         return x,y
 
-class Medium_Tip_Holder(DeckModule):
+class Medium_Tip_Holder(DeckModule): # TODO add better get tip pos 8 / 11
     """Medium tip holder """
     def __init__(self, name, coord):
         super(Medium_Tip_Holder, self).__init__(name, coord)
@@ -43,6 +49,8 @@ class Medium_Tip_Holder(DeckModule):
         self.xM = 0
         self.yM = 0
         self.max_column = 8
+        self.max_row = 11
+
 
     def get_tip_pos(self, m_type):
         x = self.xM
@@ -59,7 +67,10 @@ class Medium_Tip_Holder(DeckModule):
             self.xM = self.xM + 1
             if self.xM>self.max_column:
                 self.yM=self.yM+1
-                self.xM=0
+                if self.yM>self.max_row:
+                    return None
+                else:
+                    self.xM=0
         return x,y
 
 class Large_Tip_Holder(DeckModule):
@@ -70,6 +81,7 @@ class Large_Tip_Holder(DeckModule):
         self.xL = 0
         self.yL = 0
         self.max_column = 8
+        self.max_row = 11
 
     def get_tip_pos(self, m_type):
         x = self.xL
@@ -89,7 +101,10 @@ class Large_Tip_Holder(DeckModule):
             self.xL = self.xL + 1
             if self.xL>self.max_column:
                 self.yL=self.yL+1
-                self.xL=0
+                if self.yL>self.max_row:
+                    self.yL=0
+                else:
+                    self.xL=0
         return x,y
 
 
