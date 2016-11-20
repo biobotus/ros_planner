@@ -1,6 +1,5 @@
-#!usr/bin/python
+#!/usr/bin/python
 from deck.deck_module import Coordinate, DeckModule
-
 
 class Trash_bin(DeckModule):
     """Trash bin tip collector"""

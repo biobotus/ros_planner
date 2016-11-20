@@ -3,13 +3,14 @@
   <node name="planner" pkg="ros_planner" type="planner.py" required="True" output="screen"/>
   <node name="behavior" pkg="ros_behavior" type="behavior.py" required="True" output="screen"/>
 
+
   <machine name="pi1" address="10.43.156.11" env-loader="/home/ubuntu/env.sh" user="ubuntu" password="ubuntu"/>
-  <node pkg="platform_control" type="global_motor_control.py" name="global_motor_control11" output="screen" machine="pi1" required="True"/>
+  <node pkg="platform_control" type="global_motor_control.py" name="global_motor_control" output="screen" machine="pi1" />
   <node pkg="platform_control" type="motor_control_xy.py" name="motor_control_xy" output="screen" machine="pi1" required="True"/>
   <node pkg="platform_control" type="motor_control_z.py" name="motor_control_z" output="screen" machine="pi1" required="True"/>
 
   <machine name="pi2" address="10.43.156.12" env-loader="/home/ubuntu/env.sh" user="ubuntu" password="ubuntu" />
-  <node pkg="platform_control" type="global_motor_control.py" name="global_motor_control12" output="screen" machine="pi2" required="True"/>
+  <node pkg="platform_control" type="global_motor_control.py" name="global_motor_control2" output="screen" machine="pi2" required="True"/>
   <node pkg="platform_control" type="motor_control_sp.py" name="motor_control_sp" output="screen" machine="pi2" required="True"/>
   <node pkg="platform_control" type="motor_control_mp.py" name="motor_control_mp" output="screen" machine="pi2" required="True"/>
 </launch>

@@ -1,90 +1,52 @@
-from collections import deque
-import time
+#!/usr/bin/python
+
+import collections
 import json
-from threading import Timer
 import logging
+import pymongo
+import threading
+import time
 
+# Get MongoDB client
+client = pymongo.MongoClient()
 
-def param_to_frame(param):
-    return {
-        "density": "D",
-        "time": "T",
-        "temperature": "K",
-        "spin": "A"
-    }[param]
-
-
-def load_protocol_from_json_file(json_file, module_manager):
-
-    with open(json_file, 'r') as json_data:
-        data = json.load(json_data)
-        return load_protocol_from_json(data, module_manager)
-
-
-def load_protocol_from_json_string(json_string, module_manager):
-
+def load_protocol_from_json(json_string, module_manager):
     data = json.loads(json_string)
+    protocol = Protocol()
 
-    return load_protocol_from_json(data, module_manager)
-
-
-def load_protocol_from_json(json_data, module_manager):
-    #the new protocol
-    protocol = Protocol(name="Jsonprotocol2")
-    # TODO - change the name for the name of the json file
-    #print json.dumps(json_data, sort_keys=True, indent=4)
-
-    #print json.dumps(json_data['instructions'], sort_keys=True, indent=4)
-    instructions = json_data['instructions']
-    labware_description = json_data['refs']
+    instructions = data['instructions']
+    labware_description = data['refs']
     logger = logging.getLogger()
-    module_dict = {}
 
     # We build a dictionary with all the modules/labwares used on the protocol
     # to link the name they are refered by and their id on the deck
     for labware in labware_description:
-        mod = module_manager.get_module(labware_description[labware]["id"])
-        if mod == -1:
-            # raise an error
-            # A module on the json is not on the deck
-            print "A module on the json refs section is not on the deck : "
-            print(labware_description[labware]["id"])
-            logger.error("A module on the json refs section is not on the deck")
-        else:
-            module_dict[labware] = mod
+        if not labware['name'] in module_manager.modules:
+            mod = module_manager.add_module(labware)
 
     for instruction in instructions:
-        if 'op' in instruction and instruction['op'] in labware_description and 'groups' in instruction:
-            mod = module_dict[instruction['op']]
-            steps = mod.parse_json(instruction['groups'], module_dict)
-
-            #params = ["MotorControlXY", "MotorControlZ"]
-            #step_move = Step({"module_type": "init", "params": params})
-            #steps.append(step_move)
+        if 'op' in instruction and instruction['op'] in module_manager.modules:
+            mod = module_manager.modules[instruction['op']]
+            steps = mod.parse_json(instruction, module_manager.modules)
             protocol.add_steps(steps)
 
         else:
             logger.error("Instruction error : wrong operator or groups")
-    
+
     return protocol
 
 
 class Protocol:
     """
     Protocol describe a Protocol of instructions for multiples modules
-    Protocol are a named suit of instructions grouped as steps. (doc a modifier)
+    Protocol are a named suite of instructions grouped as steps.
     """
 
-    def __init__(self, name = "generic_name"):
-        """
-        Constructor of Protocol
-
-        @param self
-        @param name the name of the Protocol, default to "generic_name"
-        """
-        self.name = name
+    def __init__(self):
+        self.name = "protocol_{}".format(int(time.time()))
+        self.db = client[self.name]
         self.current_step = None
-        self.steps = deque()
+        self.steps = collections.deque()
         self.modules = []
         self.logger = logging.getLogger(__name__)
         self.logger.info("Creation of Protocol : %s", self.name)
@@ -132,31 +94,6 @@ class Protocol:
         else:
             self.logger.info("No more steps for : " + self.name)
 
-    def on_param_received(self, module, name, value):
-        """
-        Act on the reception of a message.
-        For now we only check if the message match a stop condition
-        @param module the module sending the message
-        @param name name of the parameter received
-        @param value value received for the named parameter
-        """
-        self.logger.info("Protocol "+ self.name + " received : " + name + " @ " +
-                str(value) + " from module : " + str(module))
-        if self.current_step.condition.is_match(module, name, value):
-            self.start_next_step()
-
-    def on_step_started_received(self, module):
-        """
-        Act on the reception of a module step started.
-        """
-        if self.current_step.condition.module == module:
-            self.current_step.started()
-            if self.current_step.condition.name == "time":
-                self.logger.info(time.time())
-                stop_value = self.current_step.condition.value
-                Timer(stop_value, self.start_next_step, ()).start()
-
-
 class Step:
     """
     A step is the core component of a Protocol.
@@ -180,17 +117,6 @@ class Step:
         #         + str(step_param.value))
         self.params.append(step_param)
 
-    def to_com_string(self):
-        """
-        Transform the step as a communication string for the modules
-        @return the trame to be send for the target module describing each
-                parameters
-        """
-        string = ""
-        for param in self.params:
-            string += "S" + param_to_frame(param.name) + chr(param.value)
-        return string+"\n"
-
     def get_module_list(self):
         """
         Get the list of module use in the step
@@ -198,7 +124,7 @@ class Step:
         """
         module_list = []
         for param in self.params:
-            if not (param.module in module_list):
+            if not param.module in module_list:
                 module_list.append(param.module)
         return module_list
 
@@ -209,7 +135,7 @@ class StepParameter:
     to be enforced on a module.
     """
 
-    def __init__(self, module, name = "", value = 0):
+    def __init__(self, module, name="", value=0):
         """
         Constructor
         @param module the module to force the parameter to.
@@ -228,3 +154,4 @@ class StepParameter:
         Return true if the step parameter match a given for a module
         """
         return self.module == module and self.name == name and self.value == value
+

@@ -1,13 +1,12 @@
-from deck.deck_module import Coordinate, DeckModule, ModuleParam
+#!/usr/bin/python
+
+from deck.deck_module import Coordinate, DeckModule
 from protocol.protocol import Step, StepParameter
 
 class GripperModule(DeckModule):
 
     def __init__(self, name, coord, m_type):
         super(PipetteModule, self).__init__(name, coord)
-        #self.add_parameter(ModuleParam("volume", True, False))
-        #self.add_parameter(ModuleParam("from", True, False))
-        #self.add_parameter(ModuleParam("to", True, False))
         self.logger.info("Gripper initialized")
         self.m_type = m_type
 

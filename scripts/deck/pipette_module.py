@@ -1,13 +1,11 @@
+#!/usr/bin/python
 
-#/usr/bin/
-
-from deck.deck_module import Coordinate, DeckModule, ModuleParam
+from deck.deck_module import Coordinate, DeckModule
 from protocol.protocol import Protocol, Step, StepParameter
 
 class PipetteModule(DeckModule):
-
-    def __init__(self, name, coord, m_type):
-        super(PipetteModule, self).__init__(name, coord)
+    def __init__(self, m_type, coord):
+        super(PipetteModule, self).__init__(m_type, coord)
         self.logger.info("Pipette initialized")
         self.m_type = m_type
         self.mod_coord = self.get_mod_coordinate()
@@ -48,7 +46,7 @@ class PipetteModule(DeckModule):
     def parse_json(self, json_instruction, module_dic):
         self.steps = []
 
-        for instruction in json_instruction:
+        for instruction in json_instruction['groups']:
             if "distribute" in instruction:
                 #TODO raise an exception, this operation won't be possible with the mechaPipette
                 self.logger.error("distribute operation is not possible with the mecha pipette for now")
@@ -57,8 +55,8 @@ class PipetteModule(DeckModule):
                 #TODO raise an exception, this operation won't be possible with the mechaPipette
                 self.logger.error("consolidate operation is not possible with the mecha pipette for now")
 
-            elif "transfert" in instruction:
-                self._parse_transfert(instruction['transfert'], module_dic)
+            elif "transfer" in instruction:
+                self._parse_transfer(instruction['transfer'], module_dic)
 
             elif "multi_dispense" in instruction:
                 #TODO est possible avec la mechaPipette?
@@ -78,9 +76,9 @@ class PipetteModule(DeckModule):
                 pass
         return self.steps
 
-    def _parse_transfert(self, trans_json, module_dic):
+    def _parse_transfer(self, trans_json, module_dic):
         """
-        A transfert is an operation which transfert from one well to another a
+        A transfer is an operation which transfer from one well to another a
         certain amount of liquid
         There is 8 step to do so :
             * get the tip
@@ -99,7 +97,8 @@ class PipetteModule(DeckModule):
         :return: a list of steps with their different parameters to complete
             the task
         """
-        self.logger.info("parsing transfert instruction")
+        self.logger.info("parsing transfer instruction")
+        print("parsing transfer instruction")
 
         # Coord initialized
         from_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["from"], module_dic))
@@ -290,7 +289,7 @@ class PipetteModule(DeckModule):
 
     def _parse_serial_dilution(self, trans_json, module_dic):
         """
-        A transfert is an operation which transfert from one well to another a
+        A transfer is an operation which transfer from one well to another a
         certain amount of liquid
         There is 16 and more steps to do so :
             * get the tip
@@ -392,9 +391,6 @@ class PipetteModule(DeckModule):
         return step_move
 
     def actual_mod_pos(self, module_dic, coord):
-
-        print(type(coord))
-        print(dir(coord))
         coord.coord_x = coord.coord_x-self.mod_coord.coord_x
         coord.coord_y = coord.coord_y-self.mod_coord.coord_y
         coord.coord_z = coord.coord_z-self.mod_coord.coord_z
@@ -430,11 +426,11 @@ class PipetteModule(DeckModule):
             tip_mod = module_dic["large_tip_holder"]
             # go over the 1st well
             tip_pos = tip_mod.get_tip_pos(self.m_type)
-            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0], tip_pos[1],  ))
+            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0], tip_pos[1]))
             to_coord.coord_z = self.height
             self.steps.append(self.move_pos(to_coord, module_dic))
             # get in the tip
-            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0], tip_pos[1], ))
+            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0], tip_pos[1]))
 
             if self.m_type == "pipette_m":
                 to_coord.coord_z = to_coord.coord_z+self.large_tip_penetration_depth_m

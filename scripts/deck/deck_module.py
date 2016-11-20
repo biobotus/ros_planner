@@ -1,16 +1,17 @@
-"""
-Module contain ModuleManager, Module, ModuleParam
-ModuleManager give an interface to store and retrieve modules by their Ids
-Module contain ModuleParam wich describe what can be ask to a module.
-"""
+#!/usr/bin/python
 
-# cos and sin used in rotation fonction
+"""
+Module contain ModuleManager, Module
+ModuleManager give an interface to store and retrieve modules by their Ids
+"""
+import json
+import logging
 import math
 from protocol.protocol import Step, StepParameter
+import pymongo
 
-# using the python ubber logger
-import logging
-
+client = pymongo.MongoClient()
+biobot = client['biobot']
 
 class Coordinate():
     """
@@ -71,7 +72,8 @@ class Coordinate():
         """
         Return a string representing the coordinate
         """
-        return "(x: {0}; y: {1}; z: {2})".format(self.coord_x, self.coord_y, self.coord_z)
+        return "(x: {0}; y: {1}; z: {2})".format(self.coord_x, self.coord_y, \
+                                                               self.coord_z)
 
     def __eq__(self, other):
         """
@@ -93,32 +95,76 @@ class DeckManager():
         self.modules = {}
         self.logger = logging.getLogger(__name__)
 
-    def add_module(self, module, module_id):
-        """
-        Add a module
+    def add_module(self, labware):
+        item = biobot.deck.find_one({'name': labware['name'], \
+                                     'type': labware['type'], \
+                                     'validated': True})
+        if item:
+            parameters = [self, item['name'], \
+                          Coordinate(item['valid_x'], \
+                                     item['valid_y'], \
+                                     item['valid_z'])]
+            try:
+                mod = getattr(self.__class__, 'add_{0}'.format(labware['type']))(*parameters)
+                self.modules[labware['name']] = mod
+                self.logger.info('Module %s : %s added', labware['type'], labware['name'])
+                return True
+            except AttributeError as e:
+                print("Item {} is not yet implemented. Error: {}".format(labware['type'], e))
+                return False
 
-        @param module the module to be add
-        @param module_id the id of the module
-        """
-        self.logger.info('Module %s : %s added', module.name, module_id)
-        print module, module_id
-        self.modules[module_id] = module
-
-    def get_module(self, module_id):
-        """
-        Return the module of a given id
-
-        @param module_id the id of the module to be retrieve
-        """
-        if module_id in self.modules:
-            return self.modules[module_id]
         else:
-            return -1
+            print("An item in the reference section of the protocol is not on the deck: {}".format(labware))
+            return False
 
-    def list_module(self):
-        print "Modules  list :"
-        for module in self.modules:
-            print(self.get_module(module))
+    def add_tools(self):
+        with open('/home/ubuntu/biobot_web/tools_conf.json', 'r') as f:
+            tools = json.load(f)
+
+        for tool in tools:
+            parameters = [self, tool['type'], \
+                          Coordinate(tool['offset_x'], \
+                                     tool['offset_y'], \
+                                     tool['offset_z'])]
+            try:
+                mod = getattr(self.__class__, 'add_{0}'.format(tool['type']))(*parameters)
+                self.modules[tool['type']] = mod
+                self.logger.info("Tool added: {}".format(tool['type']))
+            except AttributeError as e:
+                print("Tool {} is not yet implemented. Error: {}".format(tool['type'], e))
+
+    def add_large_container(self, m_name, coord):
+        return Large_Container(m_name, coord)
+
+    def add_small_tip_holder(self, m_name, coord):
+        return Small_Tip_Holder(m_name, coord)
+
+    def add_medium_tip_holder(self, m_name, coord):
+        return Medium_Tip_Holder(m_name, coord)
+
+    def add_large_tip_holder(self, m_name, coord):
+        return Large_Tip_Holder(m_name, coord)
+
+    def add_centrifuge_vial_holder(self, m_name, coord):
+        return Centrifuge_Vial_Holder(m_name, coord)
+
+    def add_multiwell_plate(self, m_name, coord):
+        return Multiwell_Plate(m_name, coord)
+
+    def add_tac(self, m_name, coord):
+        self.logger.info("Add tac module")
+        return TacModule(m_name, coord)
+
+    def add_trash(self, m_name, coord):
+        self.logger.info("Add trash module")
+        return Trash_bin(m_name, coord)
+
+    def add_pipette_s(self, m_type, coord):
+        return PipetteModule(m_type, coord)
+
+    def add_pipette_m(self, m_type, coord):
+        return PipetteModule(m_type, coord)
+
 
 class DeckModule(object):
     """
@@ -152,7 +198,7 @@ class DeckModule(object):
         Add a parameter to the module.
           Module parameter represent what the module can recieve as instruction
           or transmit as information
-        @param module_param the parameter the module accept @see ModuleParam
+        @param module_param the parameter the module accept
         """
         self.logger.info("Added a parameter to the module : " + self.name)
         self.params.append(module_param)
@@ -185,6 +231,7 @@ class DeckModule(object):
             self.logger.error("Error on the column")
             print "Error on the column"
             return -1
+
         mod_coord = self.get_mod_coordinate()
         coord_x = self.coord.coord_x + self.well1_offset.coord_x + \
                     (number) * self.well_offset.coord_x
@@ -215,29 +262,8 @@ class DeckModule(object):
                                                  value=mod_value))
         return [step,]
 
-
-class ModuleParam():
-    """
-    Represent a param that can be command (in) or ask (out) to a module.
-    """
-
-    def __init__(self, name, p_in, p_out, vmax=0, vmin=0):
-        """
-        Constructor for ModuleParam.
-        @param name the param denomination, temperatur, spin etc..
-        @param p_in true if the param is a command, false either.
-        @param p_out true if the param is a sensor information, false either.
-        @param max the max this param can be command to.
-        @param min the min this param can be command to.
-        """
-        self.name = name
-        self.p_in = p_in
-        self.p_out = p_out
-        self.max = vmax
-        self.min = vmin
-
-    def __str__(self):
-        """
-        Return a string representing the param, its name.
-        """
-        return self.name
+# To prevent cyclic imports
+from deck.pipette_module import PipetteModule
+from deck.labware_module import Trash_bin, Small_Tip_Holder, Medium_Tip_Holder, \
+                                Large_Tip_Holder, Centrifuge_Vial_Holder, \
+                                Multiwell_Plate, Large_Container

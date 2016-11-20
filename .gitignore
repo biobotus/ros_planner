@@ -11,4 +11,11 @@
 
 # OS generated files
 .DS_STORE
+
+# ROS generated files
 .catkin_workspace
+CMakeFiles/*
+*.cmake
+catkin_generated/*
+Makefile
+
