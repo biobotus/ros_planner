@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+from deck.gripper_tool import GripperTool
 from deck.deck_module import Coordinate, DeckModule
 from protocol.protocol import Protocol, Step, StepParameter
 
@@ -67,7 +68,7 @@ class PipetteModule(DeckModule):
                 self._parse_serial_dilution(instruction['serial_dilution'], module_dic)
 
             elif "mix" in instruction:
-                #TODO est possible avec la mechaPipette?
+                #TODO impossible with mechaPipette?
                 self._parse_mix(instruction['mix'], module_dic)
 
             else:
@@ -150,6 +151,12 @@ class PipetteModule(DeckModule):
         self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.height), module_dic))
         self.get_tip_size(trans_json["volume"])
         self.eject_tip(self.pipette_size, module_dic)
+
+
+        gripper_mod = module_dic["gripper"]
+        gripper_mod.gripper_move(trans_json["from"],trans_json["to"],self.height,module_dic,self.steps)
+        gripper_mod.gripper_clap(10,module_dic,self.steps)
+
         return
 
     def _parse_multi_dispense(self, trans_json, module_dic):
@@ -285,6 +292,7 @@ class PipetteModule(DeckModule):
         self.steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, self.height), module_dic))
         self.get_tip_size(trans_json["volume"])
         self.eject_tip(self.pipette_size, module_dic)
+
         return
 
     def _parse_serial_dilution(self, trans_json, module_dic):

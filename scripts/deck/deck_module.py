@@ -165,6 +165,11 @@ class DeckManager():
     def add_pipette_m(self, m_type, coord):
         return PipetteModule(m_type, coord)
 
+    def add_gripper(self, m_type, coord):
+	return GripperTool(m_type, coord)
+
+    def add_3d_camera(self, m_type, coord):
+        return Camera3DTool(m_type, coord)
 
 class DeckModule(object):
     """
@@ -263,6 +268,8 @@ class DeckModule(object):
         return [step,]
 
 # To prevent cyclic imports
+from deck.camera_3d_tool import Camera3DTool
+from deck.gripper_tool import GripperTool
 from deck.pipette_module import PipetteModule
 from deck.labware_module import Trash_bin, Small_Tip_Holder, Medium_Tip_Holder, \
                                 Large_Tip_Holder, Centrifuge_Vial_Holder, \

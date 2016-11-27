@@ -10,6 +10,15 @@ import time
 # Get MongoDB client
 client = pymongo.MongoClient()
 
+def mapping_3d_protocol(module_manager):
+
+    protocol = Protocol()
+    mod = module_manager.modules['3d_camera']
+    steps = mod.mapping_3d(module_manager.modules)
+    protocol.add_steps(steps)
+
+    return protocol
+
 def load_protocol_from_json(json_string, module_manager):
     data = json.loads(json_string)
     protocol = Protocol()

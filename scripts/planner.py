@@ -19,11 +19,14 @@ class Planner():
         self.rate = rospy.Rate(10)  # 10 Hz
 
         # ROS subscriptions
-        self.subscriber = rospy.Subscriber('Start_Protocol', String, \
+        self.subscriber_prot = rospy.Subscriber('Start_Protocol', String, \
                                            self.callback_start_protocol)
         self.subscriber = rospy.Subscriber('Step_Done', Bool, \
                                            self.callback_done_step)
+        self.subscriber_mapping = rospy.Subscriber('Start_Mapping', Bool, \
+                                           self.callback_start_mapping)
 
+        print('sfdg')
         # ROS publishments
         self.send_step = rospy.Publisher('New_Step', String, queue_size=10)
         self.module_manager = DeckManager()
@@ -32,7 +35,24 @@ class Planner():
 
         self.step_complete = False
 
+
+    def callback_start_mapping(self, data):
+        if data:
+            prot = protocol.mapping_3d_protocol(self.module_manager)
+        else: return
+
+        print(data)
+
+        for step in prot.steps:
+            print(step)
+            self.step_complete = False
+            self.send_step.publish(str(step))
+            while not self.step_complete:
+                self.rate.sleep()
+            print("Step complete!")
+
     def callback_start_protocol(self, data):
+        print("Protocol loaded from JSON file:")
         prot = protocol.load_protocol_from_json(data.data, self.module_manager)
         print("Protocol loaded from JSON file:")
         print(data.data)
