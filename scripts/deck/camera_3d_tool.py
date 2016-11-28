@@ -12,21 +12,23 @@ class Camera3DTool(DeckModule):
         self.x_buff = 0
         self.y_buff = 0
         # Constant used for simple pipette across the code
-	self.nb_x = 4
-	self.nb_y = 3
-	self.delta_x = 100
-	self.delta_y = 100
+        self.nb_x = 3
+        self.nb_y = 3
+        self.delta_x = 400
+        self.delta_y = 292
+        self.offset_x = 100
+        self.offset_y = 0
 
     def mapping_3d(self, module_dict):
-	self.steps = []
-	for nx in range(self.nb_x):
-	    for ny in range(self.nb_y):
-		pos_x = (self.nb_x+1)*self.delta_x
-		pos_y = (self.nb_y+1)*self.delta_y
-		coord = [pos_x, pos_y, 0]
-		self.move_pos(coord, module_dict)
-		self.steps.append(self.aquisition_3d(nx,ny))
-	return self.steps
+        self.steps = []
+        for nx in range(self.nb_x):
+            for ny in range(self.nb_y):
+                pos_x = (nx*self.delta_x)+self.offset_x
+                pos_y = (ny*self.delta_y)+self.offset_y
+                coord = [pos_x, pos_y, 0]
+                self.steps.append(self.move_pos(coord, module_dict))
+                self.steps.append(self.aquisition_3d(nx,ny))
+        return self.steps
 
     def aquisition_3d(self, nx, ny):
         args = {"nx": float(nx), "ny": float(ny)}
@@ -42,13 +44,12 @@ class Camera3DTool(DeckModule):
             self.logger.error("Received a negative coordinate x: {} y: {} z: {}"\
                 .format(coord.coord_x, coord.coord_y, coord.coord_z))
             return -1
-        elif int(coord[0])>1050 or int(coord[1])>800:
+        elif int(coord[0])>1000 or int(coord[1])>585:
             print("Over coord x: {} y: {} z: {}"\
                 .format(coord.coord_x, coord.coord_y, coord.coord_z))
             self.logger.error("Received a too far coord x: {} y: {} z: {}"\
                 .format(coord.coord_x, coord.coord_y, coord.coord_z))
             return -1
-
         else:
             args =  {"x": coord[0], "y": coord[1], "z": coord[2]}
             params = {"name": "pos", "args": args}

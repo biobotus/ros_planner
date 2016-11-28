@@ -26,18 +26,33 @@ class Planner():
         self.subscriber_mapping = rospy.Subscriber('Start_Mapping', Bool, \
                                            self.callback_start_mapping)
 
+        self.subscriber_pause = rospy.Subscriber('Pause', Bool, \
+                                           self.callback_pause)
         print('sfdg')
         # ROS publishments
         self.send_step = rospy.Publisher('New_Step', String, queue_size=10)
+        self.send_status = rospy.Publisher('BioBot_Status', String, queue_size=10)
+
         self.module_manager = DeckManager()
         self.module_manager.add_tools()
         self.logger = logging.getLogger(__name__)
 
         self.step_complete = False
+        self.doing_mapping = False
+        self.doing_protocol = False
+        self.paused = False
 
+    def callback_pause(self, data):
+        if data.data == True:
+            print('PAUSED BIOBOT')
+            self.paused = True
+        else:
+            print('UNPAUSED BIOBOT')
+            self.paused = False
 
     def callback_start_mapping(self, data):
-        if data:
+        self.doing_mapping = True
+        if data and not self.doing_protocol:
             prot = protocol.mapping_3d_protocol(self.module_manager)
         else: return
 
@@ -50,10 +65,17 @@ class Planner():
             while not self.step_complete:
                 self.rate.sleep()
             print("Step complete!")
+            while self.paused:
+                self.rate.sleep()
+
+        self.doing_mapping = False
 
     def callback_start_protocol(self, data):
+        self.doing_protocol = True
         print("Protocol loaded from JSON file:")
-        prot = protocol.load_protocol_from_json(data.data, self.module_manager)
+        if not self.doing_mapping:
+            prot = protocol.load_protocol_from_json(data.data, self.module_manager)
+        else: return
         print("Protocol loaded from JSON file:")
         print(data.data)
 
@@ -63,8 +85,10 @@ class Planner():
             self.send_step.publish(str(step))
             while not self.step_complete:
                 self.rate.sleep()
-
             print("Step complete!")
+            while self.paused:
+                self.rate.sleep()
+        self.doing_protocol = False
 
     def callback_done_step(self, data):
         if data.data == True:
@@ -75,7 +99,21 @@ class Planner():
             return -1
 
     def listener(self):
-        rospy.spin()
+        self.status_rate = rospy.Rate(1)
+        while not rospy.is_shutdown():
+            if self.doing_protocol and self.paused:
+                self.send_status.publish('paused (doing a biological protocol)')
+            elif self.doing_mapping and self.paused:
+                self.send_status.publish('paused (mapping the deck)')
+            elif self.doing_protocol:
+                self.send_status.publish('doing a biological protocol')
+            elif self.doing_mapping:
+                self.send_status.publish('mapping the deck')
+            elif self.paused:
+                self.send_status.publish('paused')
+            else:
+                self.send_status.publish('idle')
+            self.status_rate.sleep()
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO)
