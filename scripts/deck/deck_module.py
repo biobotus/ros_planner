@@ -174,6 +174,9 @@ class DeckManager():
     def add_petri_dish(self, m_type, coord):
         return PetriDish(m_type, coord)
 
+    def add_backlight_module(self, m_type, coord):
+        return BackLightModule(m_type, coord)
+
 class DeckModule(object):
     """
     This class represent an entity of a module present on the deck
@@ -190,6 +193,7 @@ class DeckModule(object):
         self.coord = coord
         self.nb_line = 0
         self.nb_column = 0
+        self.diameter = 0
         self.well1_offset = Coordinate(0, 0, 0)
         self.well_offset = Coordinate(0, 0, 0)
         self.logger = logging.getLogger(__name__)
@@ -199,6 +203,9 @@ class DeckModule(object):
         Return a string representing the module (the name)
         """
         return "module : " + self.name
+
+    def set_mod_diameter(self, d):
+        self.diameter = d
 
     def set_well_layout(self, nb_line, nb_column, first_offset, offset):
         """
@@ -239,7 +246,12 @@ class DeckModule(object):
     def get_mod_coordinate(self):
         return Coordinate(self.coord.coord_x, self.coord.coord_y, self.coord.coord_z)
 
-# To prevent cyclic imports
+    def get_mod_diameter(self):
+        return self.diameter
+
+
+# To prevent cyclic import
+from deck.backlight_module import BackLightModule
 from deck.camera_3d_tool import Camera3DTool
 from deck.gripper_tool import GripperTool
 from deck.pipette_module import PipetteModule

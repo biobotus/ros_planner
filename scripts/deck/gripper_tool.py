@@ -53,6 +53,8 @@ class GripperTool(DeckModule):
 
         steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, height), module_dic))
 
+        #TODO Add module diameter for opening
+
         steps.append(self.gripper_pos(-90,0))
         steps.append(self.gripper_pos(-90,100))
         steps.append(self.gripper_pos(-90,0))

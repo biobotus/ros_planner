@@ -32,7 +32,7 @@ class Planner():
 
         self.subscriber_pause = rospy.Subscriber('Pause', Bool, \
                                            self.callback_pause)
-        print('sfdg')
+
         # ROS publishments
         self.send_step = rospy.Publisher('New_Step', String, queue_size=10)
         self.send_status = rospy.Publisher('BioBot_Status', String, queue_size=10)

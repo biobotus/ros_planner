@@ -12,6 +12,14 @@ class PetriDish(DeckModule):
         super(PetriDish, self).__init__(name, coord)
         self.base_diameter = 90 #TODO define diameter
         self.lid_diameter = 90 #TODO
+        self.set_mod_diameter(self.lid_diameter)
+
+    def remove_lid(self):
+        self.set_mod_diameter(self.base_diameter)
+
+    def add_lid(self):
+        self.set_mod_diameter(self.lid_diameter)
+
 
 class Small_Tip_Holder(DeckModule):
     """Small tip holder """
