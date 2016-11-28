@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from deck.deck_module import Coordinate, DeckModule
-from protocol.protocol import Protocol, Step, StepParameter
+from protocol.protocol import Protocol, Step
 
 class Camera3DTool(DeckModule):
     def __init__(self, m_type, coord):

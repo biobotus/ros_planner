@@ -21,10 +21,12 @@ def mapping_3d_protocol(module_manager):
 
 def load_protocol_from_json(json_string, module_manager):
     data = json.loads(json_string)
-    protocol = Protocol()
+    protocol = Protocol(data)
+    db = protocol.db
+    db.protocol.insert_one({'protocol': protocol.data})
 
-    instructions = data['instructions']
-    labware_description = data['refs']
+    instructions = protocol.data['instructions']
+    labware_description = protocol.data['refs']
     logger = logging.getLogger()
 
     # We build a dictionary with all the modules/labwares used on the protocol
@@ -33,11 +35,14 @@ def load_protocol_from_json(json_string, module_manager):
         if not labware['name'] in module_manager.modules:
             mod = module_manager.add_module(labware)
 
+    number = 1
     for instruction in instructions:
         if 'op' in instruction and instruction['op'] in module_manager.modules:
             mod = module_manager.modules[instruction['op']]
-            steps = mod.parse_json(instruction, module_manager.modules)
+            steps, description = mod.parse_json(instruction, module_manager.modules)
             protocol.add_steps(steps)
+            db.steps.insert_one({'number': number, 'description': '\n'.join(description)})
+            number += 1
 
         else:
             logger.error("Instruction error : wrong operator or groups")
@@ -51,8 +56,9 @@ class Protocol:
     Protocol are a named suite of instructions grouped as steps.
     """
 
-    def __init__(self):
+    def __init__(self, data):
         self.name = "protocol_{}".format(int(time.time()))
+        self.data = data
         self.db = client[self.name]
         self.current_step = None
         self.steps = collections.deque()
@@ -71,43 +77,16 @@ class Protocol:
         Add a step to the Protocol
         @param step the step to be add
         """
+        new_step = collections.deque()
         for step in steps:
             self.logger.info("adding step to Protocol : {0}".format(self.name))
-            self.steps.append(step)
+            new_step.append(step)
 
-    def get_module_list(self):
-        """
-        Return the list of modules active in the Protocol
-        """
-        modules = []
-        for step in self.steps:
-            modules += step.get_module_list()
-
-        return list(set(modules))
-
-    def start(self):
-        """
-        Start the first step of the Protocol
-        """
-        self.start_next_step()
-        self.logger.info("Protocol : " + self.name + " is started")
-
-    def start_next_step(self):
-        """
-        Start the Protocol with the first step
-        """
-        if self.steps:
-            self.logger.info("Starting next step of Protocol :" + self.name)
-            self.current_step = self.steps.popleft()
-            #mettre ici le code pour envoyer la commande
-        else:
-            self.logger.info("No more steps for : " + self.name)
+        self.steps.append(new_step)
 
 class Step:
     """
     A step is the core component of a Protocol.
-    A step is the combinaison of a stop condition and a set of parameters to be
-    send to modules
     """
 
     def __init__(self, step_dict):
@@ -115,52 +94,4 @@ class Step:
 
     def __str__(self):
         return str(self.step_dict)
-
-    def add_parameter(self, step_param):
-        """
-        Add a parameter to the step
-        @param self
-        @para step_param the param to be add
-        """
-        #self.logger.info("Added a parameter to the step : " + step_param.name + " @ "
-        #         + str(step_param.value))
-        self.params.append(step_param)
-
-    def get_module_list(self):
-        """
-        Get the list of module use in the step
-        @return a list of unique module
-        """
-        module_list = []
-        for param in self.params:
-            if not param.module in module_list:
-                module_list.append(param.module)
-        return module_list
-
-
-class StepParameter:
-    """
-    StepParameter, merain component of a step, a step parameter is a parameter
-    to be enforced on a module.
-    """
-
-    def __init__(self, module, name="", value=0):
-        """
-        Constructor
-        @param module the module to force the parameter to.
-        @param name the parameter name, temperature for exemaple
-        @param value the value to be set for a given parameter name
-        """
-        self.module = module
-        self.name = name
-        self.value = value
-
-    def __str__(self):
-        return "{0}: {1} @ {2}".format(self.module, self.name, self.value)
-
-    def is_match(self, module, name, value):
-        """
-        Return true if the step parameter match a given for a module
-        """
-        return self.module == module and self.name == name and self.value == value
 

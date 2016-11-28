@@ -6,6 +6,13 @@ class Trash_bin(DeckModule):
     def __init__(self, name, coord):
         super(Trash_bin, self).__init__(name, coord)
 
+class PetriDish(DeckModule):
+    """Petri dish"""
+    def __init__(self, name, coord):
+        super(PetriDish, self).__init__(name, coord)
+        self.base_diameter = 90 #TODO define diameter
+        self.lid_diameter = 90 #TODO
+
 class Small_Tip_Holder(DeckModule):
     """Small tip holder """
     def __init__(self, name, coord):

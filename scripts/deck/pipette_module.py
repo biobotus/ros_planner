@@ -2,7 +2,7 @@
 
 from deck.gripper_tool import GripperTool
 from deck.deck_module import Coordinate, DeckModule
-from protocol.protocol import Protocol, Step, StepParameter
+from protocol.protocol import Protocol, Step
 
 class PipetteModule(DeckModule):
     def __init__(self, m_type, coord):
@@ -46,6 +46,7 @@ class PipetteModule(DeckModule):
 
     def parse_json(self, json_instruction, module_dic):
         self.steps = []
+        description = ["Use {0} to execute the following actions:".format(self.m_type)]
 
         for instruction in json_instruction['groups']:
             if "distribute" in instruction:
@@ -57,25 +58,38 @@ class PipetteModule(DeckModule):
                 self.logger.error("consolidate operation is not possible with the mecha pipette for now")
 
             elif "transfer" in instruction:
-                self._parse_transfer(instruction['transfer'], module_dic)
+                val = instruction['transfer']
+                self._parse_transfer(val, module_dic)
+                description.append("Transfer {0} &micro;L from {1} to {2}.".format(val['volume'], \
+                                                                          val['from'], val['to']))
 
             elif "multi_dispense" in instruction:
                 #TODO est possible avec la mechaPipette?
-                self._parse_multi_dispense(instruction['multi_dispense'], module_dic)
+                val = instruction['multi_dispense']
+                self._parse_multi_dispense(val, module_dic)
+                description.append("Multi dispense {0} &micro;L {1} times from {2} to {3}.".format(val['volume'], \
+                                                                       val['iteration'], val['from'], val['to']))
 
             elif "serial_dilution" in instruction:
                 #TODO impossible with pipette_s
-                self._parse_serial_dilution(instruction['serial_dilution'], module_dic)
+                val = instruction['serial_dilution']
+                self._parse_serial_dilution(val, module_dic)
+                description.append("Serial dilution of {0} &micro;L {1} times with {2} iterations from {3} to {4}.".format(val['volume'], \
+                                                                         val['iteration'], val['mix_iteration'], val['from'], val['to']))
 
             elif "mix" in instruction:
                 #TODO impossible with mechaPipette?
-                self._parse_mix(instruction['mix'], module_dic)
+                val = instruction['mix']
+                self._parse_mix(val, module_dic)
+                description.append("Mix {0} with {1} aspiration/dispense cycles of {2} &micro;L.".format(val['from'], \
+                                                                                    val['iteration'], val['volume']))
 
             else:
                 #TODO raise an exception instruction not known
                 self.logger.error("unknown operation: {0}".format(instruction))
                 pass
-        return self.steps
+
+        return self.steps, description
 
     def _parse_transfer(self, trans_json, module_dic):
         """
@@ -152,7 +166,7 @@ class PipetteModule(DeckModule):
         self.get_tip_size(trans_json["volume"])
         self.eject_tip(self.pipette_size, module_dic)
 
-
+        # TODO: REMOVE
         gripper_mod = module_dic["gripper"]
         gripper_mod.gripper_move(trans_json["from"],trans_json["to"],self.height,module_dic,self.steps)
         gripper_mod.gripper_clap(10,module_dic,self.steps)

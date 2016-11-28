@@ -1,12 +1,11 @@
 #!/usr/bin/python
 
 from deck.deck_module import Coordinate, DeckModule
-from protocol.protocol import Protocol, Step, StepParameter
+from protocol.protocol import Protocol, Step
 
 class GripperTool(DeckModule):
     def __init__(self, m_type, coord):
         super(GripperTool, self).__init__(m_type, coord)
-	from protocol.protocol import Protocol, Step, StepParameter
         self.logger.info("Gripper initialized")
         self.m_type = m_type
         self.mod_coord = self.get_mod_coordinate()
@@ -14,27 +13,28 @@ class GripperTool(DeckModule):
         self.y_buff = 0
         # Constant used for simple pipette across the code
         self.wrist_pos_max = 90
-	self.wrist_pos_min = -90
-	self.opening_pos_max = 100
-	self.opening_pos_min = 0
+        self.wrist_pos_min = -90
+        self.opening_pos_max = 100
+        self.opening_pos_min = 0
 
     def parse_json(self, json_instruction, module_dic):
         self.steps = []
 
         for instruction in json_instruction['groups']:
             if "clap" in instruction:
-		self._parse_clap(instruction['clap'], module_dic)
-	    else:
-		self.logger.error("unknown operation: {0}".format(instruction))
-		pass
+                self._parse_clap(instruction['clap'], module_dic)
+                description.append("Clapping {0} times.".format(val['clap']))
+            else:
+                self.logger.error("unknown operation: {0}".format(instruction))
+                pass
         return self.steps
 
     def _parse_clap(self,clap, module_dic):
         self.steps.append(self.gripper_pos(-90,0))
         self.steps.append(self.gripper_pos(45,0))
-	for i in range(clap):
-        	self.steps.append(self.gripper_pos(45,100))
-        	self.steps.append(self.gripper_pos(45,0))
+        for i in range(clap):
+                self.steps.append(self.gripper_pos(45,100))
+                self.steps.append(self.gripper_pos(45,0))
         self.steps.append(self.gripper_pos(90,0))
         return
 
@@ -50,28 +50,28 @@ class GripperTool(DeckModule):
     def gripper_move(self, from_mod, to_mod,height, module_dic, steps):
         from_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(from_mod, module_dic))
         to_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(to_mod, module_dic))
-        
-	steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, height), module_dic))
 
-	steps.append(self.gripper_pos(-90,0))
-	steps.append(self.gripper_pos(-90,100))
-	steps.append(self.gripper_pos(-90,0))
+        steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, height), module_dic))
 
-	steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, height), module_dic))
+        steps.append(self.gripper_pos(-90,0))
+        steps.append(self.gripper_pos(-90,100))
+        steps.append(self.gripper_pos(-90,0))
 
-	steps.append(self.gripper_pos(-90,100))
+        steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, height), module_dic))
 
-	return
+        steps.append(self.gripper_pos(-90,100))
+
+        return
 
     def gripper_pos(self, wrist, opening):
 
-	if self.wrist_pos_max>=int(wrist)>=self.wrist_pos_min and self.opening_pos_max>=int(opening)>=self.opening_pos_min :
-	    args = {"wrist": float(wrist), "opening": float(opening)} #, "speed": float(speed)}
-       	    params = {"name": "manip", "args": args}
+        if self.wrist_pos_max>=int(wrist)>=self.wrist_pos_min and self.opening_pos_max>=int(opening)>=self.opening_pos_min :
+            args = {"wrist": float(wrist), "opening": float(opening)} #, "speed": float(speed)}
+            params = {"name": "manip", "args": args}
             step_move = Step({"module_type": self.m_type, "params": params})
             return step_move
-	else:
-	    return -1
+        else:
+            return -1
 
     def move_pos(self, coord, module_dic):
 

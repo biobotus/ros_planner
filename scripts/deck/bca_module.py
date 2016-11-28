@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 from deck.deck_module import Coordinate, DeckModule
-from protocol.protocol import Protocol, Step, StepParameter
+from protocol.protocol import Protocol, Step
 
 class BCAModule(DeckModule):
     def __init__(self, m_type, coord):
@@ -17,6 +17,7 @@ class BCAModule(DeckModule):
         self.steps = []
 
         for instruction in json_instruction['groups']:
+
             if "repiquage" in instruction:
                 self._parse_clap(instruction['repiquage'], module_dic)
             else:

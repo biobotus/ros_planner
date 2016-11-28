@@ -7,7 +7,7 @@ ModuleManager give an interface to store and retrieve modules by their Ids
 import json
 import logging
 import math
-from protocol.protocol import Step, StepParameter
+from protocol.protocol import Step
 import pymongo
 
 client = pymongo.MongoClient()
@@ -166,10 +166,13 @@ class DeckManager():
         return PipetteModule(m_type, coord)
 
     def add_gripper(self, m_type, coord):
-	return GripperTool(m_type, coord)
+        return GripperTool(m_type, coord)
 
     def add_3d_camera(self, m_type, coord):
         return Camera3DTool(m_type, coord)
+
+    def add_petri_dish(self, m_type, coord):
+        return PetriDish(m_type, coord)
 
 class DeckModule(object):
     """
@@ -196,17 +199,6 @@ class DeckModule(object):
         Return a string representing the module (the name)
         """
         return "module : " + self.name
-
-
-    def add_parameter(self, module_param):
-        """
-        Add a parameter to the module.
-          Module parameter represent what the module can recieve as instruction
-          or transmit as information
-        @param module_param the parameter the module accept
-        """
-        self.logger.info("Added a parameter to the module : " + self.name)
-        self.params.append(module_param)
 
     def set_well_layout(self, nb_line, nb_column, first_offset, offset):
         """
@@ -246,26 +238,6 @@ class DeckModule(object):
 
     def get_mod_coordinate(self):
         return Coordinate(self.coord.coord_x, self.coord.coord_y, self.coord.coord_z)
-
-    def parse_json(self, json_instruction, module_dic):
-        """
-        Parse a json structure concerning this module.
-        """
-        stop_condition = StepParameter(module = self,
-                             name = json_instruction['stop']['condition'],
-                             value = json_instruction['stop']['value'])
-
-        step = Step(stop_condition)
-        for param in self.params :
-            mod_value = 2  # valeur par default, a definir?
-            if param.p_in and param.name in json_instruction:
-                mod_value = json_instruction[param.name]
-
-            if param.p_in:
-                step.add_parameter(StepParameter(module=self,
-                                                 name=param.name,
-                                                 value=mod_value))
-        return [step,]
 
 # To prevent cyclic imports
 from deck.camera_3d_tool import Camera3DTool

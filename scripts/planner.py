@@ -3,6 +3,7 @@
 import logging
 import pymongo
 import rospy
+import time
 from std_msgs.msg import Bool, String
 
 from deck.deck_module import DeckManager
@@ -17,6 +18,9 @@ class Planner():
         self.node_name = self.__class__.__name__
         rospy.init_node(self.node_name, anonymous=True)
         self.rate = rospy.Rate(10)  # 10 Hz
+
+        # Protocol Stats Collection of BioBot Database
+        self.stats = pymongo.MongoClient()['biobot']['stats']
 
         # ROS subscriptions
         self.subscriber_prot = rospy.Subscriber('Start_Protocol', String, \
@@ -51,43 +55,59 @@ class Planner():
             self.paused = False
 
     def callback_start_mapping(self, data):
+        while self.doing_protocol:
+            self.rate.sleep()
+
         self.doing_mapping = True
-        if data and not self.doing_protocol:
+
+        if data.data:
+            print('Starting Mapping')
             prot = protocol.mapping_3d_protocol(self.module_manager)
-        else: return
 
-        print(data)
-
-        for step in prot.steps:
-            print(step)
-            self.step_complete = False
-            self.send_step.publish(str(step))
-            while not self.step_complete:
-                self.rate.sleep()
-            print("Step complete!")
-            while self.paused:
-                self.rate.sleep()
+            for high_level_step in prot.steps:
+                for step in high_level_step:
+                    while self.paused:
+                        self.rate.sleep()
+                    print(step)
+                    self.step_complete = False
+                    self.send_step.publish(str(step))
+                    while not self.step_complete:
+                        self.rate.sleep()
+                    print("Step complete!")
 
         self.doing_mapping = False
 
     def callback_start_protocol(self, data):
+        while self.doing_mapping:
+            self.rate.sleep()
+
         self.doing_protocol = True
-        print("Protocol loaded from JSON file:")
-        if not self.doing_mapping:
-            prot = protocol.load_protocol_from_json(data.data, self.module_manager)
-        else: return
         print("Protocol loaded from JSON file:")
         print(data.data)
 
-        for step in prot.steps:
-            print(step)
-            self.step_complete = False
-            self.send_step.publish(str(step))
-            while not self.step_complete:
-                self.rate.sleep()
-            print("Step complete!")
-            while self.paused:
-                self.rate.sleep()
+        prot = protocol.load_protocol_from_json(data.data, self.module_manager)
+        self.stats.insert_one({'id': prot.name, 'name': prot.data['name'], \
+                               'description': prot.data['description'], \
+                               'nb_steps': len(prot.steps), 'start': time.time(), \
+                               'operator': prot.data['operator']})
+
+        number = 1
+        for high_level_step in prot.steps:
+            prot.db.steps.update_one({'number': number}, {'$set': {'start': time.time()}})
+            for step in high_level_step:
+                while self.paused:
+                    self.rate.sleep()
+                print(step)
+                self.step_complete = False
+                self.send_step.publish(str(step))
+                while not self.step_complete:
+                    self.rate.sleep()
+                print("Step complete!")
+
+            prot.db.steps.update_one({'number': number}, {'$set': {'end': time.time()}})
+            number += 1
+
+        self.stats.update_one({'id': prot.name}, {'$set': {'end': time.time()}})
         self.doing_protocol = False
 
     def callback_done_step(self, data):
