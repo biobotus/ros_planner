@@ -19,15 +19,17 @@ class GripperTool(DeckModule):
 
     def parse_json(self, json_instruction, module_dic):
         self.steps = []
+        description = []
 
         for instruction in json_instruction['groups']:
             if "clap" in instruction:
-                self._parse_clap(instruction['clap'], module_dic)
-                description.append("Clapping {0} times.".format(val['clap']))
+                val=instruction['clap']
+                self._parse_clap(val, module_dic)
+                description.append("Clapping {0} times.".format(val))
             else:
                 self.logger.error("unknown operation: {0}".format(instruction))
                 pass
-        return self.steps
+        return self.steps, description
 
     def _parse_clap(self,clap, module_dic):
         self.steps.append(self.gripper_pos(-90,0))

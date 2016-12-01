@@ -62,7 +62,7 @@ class Planner():
 
         if data.data:
             print('Starting Mapping')
-            prot = protocol.mapping_3d_protocol(self.module_manager)
+            prot = protocol.mapping_3d_protocol(self.module_manager, data)
 
             for high_level_step in prot.steps:
                 for step in high_level_step:

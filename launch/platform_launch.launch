@@ -1,11 +1,14 @@
 <launch>
   <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+
   <include file="$(find gripper)/launch/controller_manager.launch"/>
   <include file="$(find gripper)/launch/start_joint_controllers.launch"/>
 
   <node name="planner" pkg="ros_planner" type="planner.py" required="True" output="screen"/>
-  <node name="behavior" pkg="ros_behavior" type="behavior.py" required="True" output="screen"/>
+  <node name="coordinator" pkg="ros_coordinator" type="coordinator.py" required="True" output="screen"/>
+
   <node name="depthsense_camera_node" pkg="ros_depthsense_camera" type="depthsense_camera_node" required="True" output="screen"/>
+
   <node name="pcl_xyzrgb" pkg="pcl_to_windows" type="pcl_xyzrgb" required="True" output="screen" />
   <node name="camera_3d" pkg="ros_3d_cartography" type="camera_3d.py" required="True" output="screen" />
 
@@ -18,5 +21,6 @@
   <node pkg="platform_control" type="global_motor_control.py" name="global_motor_control2" output="screen" machine="pi2" required="True"/>
   <node pkg="platform_control" type="motor_control_sp.py" name="motor_control_sp" output="screen" machine="pi2" required="True"/>
   <node pkg="platform_control" type="motor_control_mp.py" name="motor_control_mp" output="screen" machine="pi2" required="True"/>
+
 </launch>
 

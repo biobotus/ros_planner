@@ -11,7 +11,17 @@ class BackLightModule(DeckModule):
         self.mod_coord = self.get_mod_coordinate()
         self.x_buff = 0
         self.y_buff = 0
-        # Constant used for simple pipette across the code
+        # Colony selection parameters
+        self.perimeter_min = 0
+        self.perimeter_max = 0
+        self.excentricity_min = 0
+        self.excentricity_max = 0
+        self.area_min = 0
+        self.area_max = 0
+        self.number_of_colony_d = 0
+        self.picking = 0
+        self.protocol =  0
+        self.step = 0
 
     def parse_json(self, json_instruction, module_dic):
         self.steps = []
@@ -32,7 +42,12 @@ class BackLightModule(DeckModule):
 
     def _parse_analyze(self,var, module_dic):
 
+        msg.picking = 0
+        msg.protocol = x
+        msg.protocol = y
         gripper_mod.gripper_move(backlight_mod,petri_mod,self.height,module_dic,self.steps)
+
+        self.steps.append(bca_analysis(data, module_dic))
 
         return
 
@@ -40,7 +55,22 @@ class BackLightModule(DeckModule):
     def _parse_autopick(self, var, module_dic):
 
 
+
+
         return
 
+    def bca_analysis(self, data, module_dic):
 
+        #args =  {"": data[1], "", data[2]}
+        params = {"name": "analysis", "args": args}
+        step_move = Step({"module_type": self.m_type, "params": params})
 
+        return
+
+    def bca_autopick(self, var, module_dic):
+
+        #args =  {""}
+        params = {"name": "analysis", "args": args}
+        step_move = Step({"module_type": self.m_type, "params": params})
+
+        return step_move
