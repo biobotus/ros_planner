@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import collections
+import fallocate
 import json
 import logging
 import pymongo
@@ -9,6 +10,16 @@ import time
 
 # Get MongoDB client
 client = pymongo.MongoClient()
+
+def alloc_db(name):
+    """
+    Allocate disk space for MongoDB manually to prevent using
+    default sizes of 32 MB or more.
+    """
+
+    for i in ['ns', '0', '1']:
+        with open("/data/db/{0}.{1}".format(name, i), 'w+b') as f:
+            fallocate.posix_fallocate(f, 0, 1048576)
 
 def mapping_3d_protocol(module_manager, data):
 
@@ -58,6 +69,7 @@ class Protocol:
 
     def __init__(self, data):
         self.name = "protocol_{}".format(int(time.time()))
+        alloc_db(self.name)
         self.data = data
         self.db = client[self.name]
         self.current_step = None
