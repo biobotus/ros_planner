@@ -90,10 +90,11 @@ class Planner():
                                'description': prot.data['description'], \
                                'nb_steps': len(prot.steps), 'start': time.time(), \
                                'operator': prot.data['operator']})
-
+        print(prot.steps)
         number = 1
         for high_level_step in prot.steps:
             prot.db.steps.update_one({'number': number}, {'$set': {'start': time.time()}})
+
             for step in high_level_step:
                 while self.paused:
                     self.rate.sleep()

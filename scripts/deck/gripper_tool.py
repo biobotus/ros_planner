@@ -49,21 +49,36 @@ class GripperTool(DeckModule):
         steps.append(self.gripper_pos(90,0))
         return
 
-    def gripper_move(self, from_mod, to_mod,height, module_dic, steps):
-        from_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(from_mod, module_dic))
-        to_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(to_mod, module_dic))
+    def gripper_move(self, from_mod, to_mod, height, module_dic, steps):
+        from_coord = self.actual_mod_pos(module_dic, from_mod.get_mod_coordinate())
+        to_coord = self.actual_mod_pos(module_dic, to_mod.get_mod_coordinate())
 
-        steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, height), module_dic))
+        opening = 40
 
-        #TODO Add module diameter for opening
+        grab_opening = opening - 5
 
-        steps.append(self.gripper_pos(-90,0))
-        steps.append(self.gripper_pos(-90,100))
-        steps.append(self.gripper_pos(-90,0))
+        cruise_height = height
 
-        steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, height), module_dic))
+        steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, cruise_height), module_dic))
 
-        steps.append(self.gripper_pos(-90,100))
+
+        steps.append(self.gripper_pos(-90,opening))
+
+        steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, from_coord.coord_z), module_dic))
+
+
+        steps.append(self.gripper_pos(-90,grab_opening))
+
+
+        steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, cruise_height), module_dic))
+
+        steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, cruise_height), module_dic))
+
+        steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, to_coord.coord_z), module_dic))
+
+        steps.append(self.gripper_pos(-90,opening))
+        steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, cruise_height), module_dic))
+        steps.append(self.gripper_pos(90,0))
 
         return
 
@@ -78,6 +93,8 @@ class GripperTool(DeckModule):
             return -1
 
     def move_pos(self, coord, module_dic):
+        print('CODOD')
+        print(coord)
 
         if int(coord.coord_x)<0 or int(coord.coord_y)<0 or int(coord.coord_z) < 0:
             print("Negative coord x: {} y: {} z: {}"\
@@ -106,12 +123,6 @@ class GripperTool(DeckModule):
         return coord
 
     def parse_mod_coord(self, dest_string, mod_dict):
-        dest = dest_string.split("/")
-        mod_name = dest[0]
-        letter = dest[1][0]
-        number = dest[1][1:]
-        number = int(number) - 1
-        letter = ord(letter) - ord('A')
 
         if mod_name in mod_dict:
             mod = mod_dict[mod_name]
@@ -122,5 +133,5 @@ class GripperTool(DeckModule):
             print "ERROR no module to set coord"
             self.logger.error("attempt to access the coordinate of a module which is not reference on the refs section of the json")
             #TODO raise an error
-            return None
 
+            return None

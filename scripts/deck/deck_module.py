@@ -15,7 +15,7 @@ biobot = client['biobot']
 
 class Coordinate():
     """
-    coordinate represente a position (x,y,z) inside the deck. This class offer
+    coordinate represents a position (x,y,z) inside the deck. This class offer
     tools to translate and rotate those position.
     """
 
@@ -171,6 +171,9 @@ class DeckManager():
     def add_3d_camera(self, m_type, coord):
         return Camera3DTool(m_type, coord)
 
+    def add_2d_camera(self, m_type, coord):
+        return Camera2DTool(m_type, coord)
+
     def add_petri_dish(self, m_type, coord):
         return PetriDish(m_type, coord)
 
@@ -251,10 +254,10 @@ class DeckModule(object):
 
 
 # To prevent cyclic import
-from deck.backlight_module import BackLightModule
+from deck.camera_2d_tool import Camera2DTool, BackLightModule
 from deck.camera_3d_tool import Camera3DTool
 from deck.gripper_tool import GripperTool
 from deck.pipette_module import PipetteModule
 from deck.labware_module import Trash_bin, Small_Tip_Holder, Medium_Tip_Holder, \
                                 Large_Tip_Holder, Centrifuge_Vial_Holder, \
-                                Multiwell_Plate, Large_Container
+                                Multiwell_Plate, Large_Container, PetriDish

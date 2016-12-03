@@ -1,11 +1,11 @@
-#!/usr/bin/python
+!/usr/bin/python
 
 from deck.deck_module import Coordinate, DeckModule
 from protocol.protocol import Protocol, Step
 
-class BackLightModule(DeckModule):
+class Camera2DTool(DeckModule):
     def __init__(self, m_type, coord):
-        super(BackLightModule, self).__init__(m_type, coord)
+        super(Camera2DTool, self).__init__(m_type, coord)
         self.logger.info("BCA initialized")
         self.m_type = m_type
         self.mod_coord = self.get_mod_coordinate()

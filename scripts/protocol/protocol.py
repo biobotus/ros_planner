@@ -19,7 +19,7 @@ def alloc_db(name):
 
     for i in ['ns', '0', '1']:
         with open("/data/db/{0}.{1}".format(name, i), 'w+b') as f:
-            fallocate.posix_fallocate(f, 0, 1048576)
+            fallocate.posix_fallocate(f, 0, 1048576*3)
 
 def mapping_3d_protocol(module_manager, data):
 
@@ -50,7 +50,11 @@ def load_protocol_from_json(json_string, module_manager):
     for instruction in instructions:
         if 'op' in instruction and instruction['op'] in module_manager.modules:
             mod = module_manager.modules[instruction['op']]
-            steps, description = mod.parse_json(instruction, module_manager.modules)
+            if instruction['op'] == '2d_camera':
+                steps, description = mod.parse_json(instruction, module_manager.modules, protocol.name)
+            else:
+                steps, description = mod.parse_json(instruction, module_manager.modules)
+
             protocol.add_steps(steps)
             db.steps.insert_one({'number': number, 'description': '\n'.join(description)})
             number += 1

@@ -4,7 +4,17 @@ from deck.deck_module import Coordinate, DeckModule
 from protocol.protocol import Protocol, Step
 
 class Camera3DTool(DeckModule):
+    """
+    Initialise the Camera3DTool class.
+    Input:  DeckModule
+    Output: returns nothing
+    """
     def __init__(self, m_type, coord):
+        """
+        Initialise the class.
+        Input:
+        Output:
+        """
         super(Camera3DTool, self).__init__(m_type, coord)
         self.logger.info("Gripper initialized")
         self.m_type = m_type
@@ -20,6 +30,11 @@ class Camera3DTool(DeckModule):
         self.offset_y = 0
 
     def mapping_3d(self, module_dict):
+        """
+        mapping_3d function move from square on deck to another.
+        Input: Module_dict
+        Output: steps [platform movements]
+        """
         self.steps = []
         for nx in range(self.nb_x):
             for ny in range(self.nb_y):
@@ -31,12 +46,22 @@ class Camera3DTool(DeckModule):
         return self.steps
 
     def aquisition_3d(self, nx, ny):
+        """
+        TO DO
+        Input: nx and ny (matrix adress of the square being analyzed)
+        Output: step_move
+        """
         args = {"nx": float(nx), "ny": float(ny)}
         params = {"name": "manip", "args": args}
         step_move = Step({"module_type": self.m_type, "params": params})
         return step_move
 
     def move_pos(self, coord, module_dict):
+        """
+        TO DO
+        Input: coord, module_dict
+        Output: step_move
+        """
 
         if int(coord[1])<0 or int(coord[1])<0 or int(coord[2]) < 0:
             print("Negative coord x: {} y: {} z: {}"\
@@ -58,6 +83,11 @@ class Camera3DTool(DeckModule):
         return step_move
 
     def actual_pos(self, module_dict, coord):
+        """
+        Modify coord. TO DO
+        Input: module_dict, coord
+        Output: coord
+        """
         coord.coord_x = coord.coord_x-self.mod_coord.coord_x
         coord.coord_y = coord.coord_y-self.mod_coord.coord_y
         coord.coord_z = coord.coord_z-self.mod_coord.coord_z

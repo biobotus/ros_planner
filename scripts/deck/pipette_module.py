@@ -5,7 +5,17 @@ from deck.deck_module import Coordinate, DeckModule
 from protocol.protocol import Protocol, Step
 
 class PipetteModule(DeckModule):
+    """
+    PipetteModule class describes all function relevant to pipette's protocol, without
+    consideration for the single or the multi-pipette.
+    """
     def __init__(self, m_type, coord):
+        """
+        Initialise the PipetteModule class. It contains there current size [small, medium, large]
+        and their type (single or multiple (pipette_m))
+        It also contains most of the hardcoded value regarding the height of the tip and some
+        specific offset necessary for a smooth movement into the trash and other specific labware.
+        """
         super(PipetteModule, self).__init__(m_type, coord)
         self.logger.info("Pipette initialized")
         self.m_type = m_type
@@ -45,6 +55,12 @@ class PipetteModule(DeckModule):
         self.min_volume = 10 # minimum quantity in uL of volume that can be pipetted by the small tip
 
     def parse_json(self, json_instruction, module_dic):
+        """
+        This function go through the json files and make the call on the relevant function needed
+        to process protocols required by the user.
+        Input: json_instruction, module_dic
+        Output: None
+        """
         self.steps = []
         description = ["Use {0} to execute the following actions:".format(self.m_type)]
 
@@ -455,7 +471,11 @@ class PipetteModule(DeckModule):
         return
 
     def aspirate(self, volume, speed):
-
+        """
+        Aspirate required volume from the current pipette
+        Input: volume (ul) to aspirate, speed
+        Output: step_move : list of steps to perform the task.
+        """
         args = {"vol": float(volume), "speed": float(speed)}
         params = {"name": "manip", "args": args}
         step_move = Step({"module_type": self.m_type, "params": params})
@@ -463,7 +483,11 @@ class PipetteModule(DeckModule):
         return step_move
 
     def dispense(self, volume, speed):
-
+        """
+        dispence required volume from the current pipette
+        Input: volume (ul) to aspirate, speed
+        Output: step_move : list of steps to perform the task.
+        """
         args = {"vol": -float(volume), "speed": float(speed)}
         params = {"name": "manip", "args": args}
         step_move = Step({"module_type": self.m_type, "params": params})
@@ -477,7 +501,11 @@ class PipetteModule(DeckModule):
         return coord
 
     def move_pos(self, coord, module_dic):
-
+        """
+        Verify that the requested movement are within limits of the platform.
+        Input: coord, module_dic
+        Output: list of steps required to perform the task
+        """
         if int(coord.coord_x)<0 or int(coord.coord_y)<0 or int(coord.coord_z) < 0:
             print("Negative coord x: {} y: {} z: {}"\
                 .format(coord.coord_x, coord.coord_y, coord.coord_z))
@@ -499,7 +527,13 @@ class PipetteModule(DeckModule):
         return step_move
 
     def get_tip(self, tip_size, module_dic):
-
+        """
+        Verify the size of the tip to get and send a list of step to get them.
+        For each pipette type, it goes over the well, get inside and secure the tip
+        move up again.
+        Input: tip_size, module_dic
+        Output: list of step to get tip.
+        """
         to_coord = Coordinate(0,0,0)
             # Get tip holder from deck
         if tip_size=="Large":
@@ -576,20 +610,27 @@ class PipetteModule(DeckModule):
         return
 
     def eject_tip(self,tip_size, module_dic):
+        """
+        This function send a list of step in order to ject the tip. It goes over the trash
+        get inside and go through the trash teeth before moving up thus ejecting the tip.
 
-        # TRASH TOP VIEW
-        #        __________ (0,0,0) ==> dump_coord (top left corner)
-        #      /|_________|       y <-----|
-        #     / |         |             / |
-        #    /  |         |           v   |
-        #    |  |         |         z     V
-        #    |  |/\/\/\/\/|               x
-        #    |  |---------|
-        #    | /         /
-        #    |----------|
-        #   The dump will always be positioned in this manner
-        #       because of the 8-tips pipette.
+        Input: tip_size, module_dic
+        Output: list of steps for the required action
 
+
+         TRASH TOP VIEW
+                __________ (0,0,0) ==> dump_coord (top left corner)
+              /|_________|       y <-----|
+             / |         |             / |
+            /  |         |           v   |
+            |  |         |         z     V
+            |  |/\/\/\/\/|               x
+            |  |---------|
+            | /         /
+            |----------|
+           The dump will always be positioned in this manner
+               because of the 8-tips pipette.
+        """
         to_coord = Coordinate(0,0,0)
         # Get trash_bin from deck
         trash_mod = module_dic["trash"]
@@ -638,6 +679,8 @@ class PipetteModule(DeckModule):
         return
 
     def parse_mod_coord(self, dest_string, mod_dict):
+        """
+        """
         dest = dest_string.split("/")
         mod_name = dest[0]
         letter = dest[1][0]
@@ -657,6 +700,11 @@ class PipetteModule(DeckModule):
             return None
 
     def get_tip_size(self,volume):
+        """
+        Function determining which pipette is needed for the protocol by comparing volumes needed.
+        Input: volume
+        Output: None
+        """
         # Volume is in uL
         volume = float(volume)
         if volume  > self.med_volume and volume <= self.max_volume:
@@ -675,6 +723,8 @@ class PipetteModule(DeckModule):
         return
 
     def multi_dispense(self, last, iteration, module_dic, volume, speed, trans_json):
+        """
+        """
         # Go to 1st well from deck
         module =  trans_json["to"].split("/")
         tip_mod = module_dic[str(module[0])]
@@ -719,6 +769,8 @@ class PipetteModule(DeckModule):
         return
 
     def serial_dilution(self, iteration, module_dic, volume, speed, trans_json, last_mix):
+        """
+        """
         to_coord = Coordinate(0,0,0)
 
         # Go to 1st well from deck
