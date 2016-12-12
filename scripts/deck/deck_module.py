@@ -326,11 +326,11 @@ class DeckModule(object):
         return self.diameter
 
 # To prevent cyclic import
-#from deck.camera_2d_tool import Camera2DTool, BackLightModule
-#from deck.camera_3d_tool import Camera3DTool
-#from deck.gripper_tool import GripperTool
-#from deck.pipette_module import PipetteModule
-#from deck.labware_module import Trash_bin, Small_Tip_Holder, Medium_Tip_Holder, \
-#                                Large_Tip_Holder, Centrifuge_Vial_Holder, \
-#                                Multiwell_Plate, Large_Container, PetriDish, \
-#                                TAC, Vial_Holder, Safety_Tip
+from deck.camera_2d_tool import Camera2DTool, BackLightModule
+from deck.camera_3d_tool import Camera3DTool
+from deck.gripper_tool import GripperTool
+from deck.pipette_module import PipetteModule
+from deck.labware_module import Trash_bin, Small_Tip_Holder, Medium_Tip_Holder, \
+                                Large_Tip_Holder, Centrifuge_Vial_Holder, \
+                                Multiwell_Plate, Large_Container, PetriDish, \
+                                TAC, Vial_Holder, Safety_Tip
