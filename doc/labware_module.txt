@@ -1,0 +1,558 @@
+Help on module labware_module:
+
+NAME
+    labware_module
+
+FILE
+    /home/ubuntu/biobot_ros_jtk/src/ros_planner/scripts/deck/labware_module.py
+
+CLASSES
+    deck.deck_module.DeckModule(__builtin__.object)
+        Centrifuge_Vial_Holder
+        Large_Container
+        Large_Tip_Holder
+        Medium_Tip_Holder
+        Multiwell_Plate
+        PetriDish
+        Safety_Tip
+        Small_Tip_Holder
+        TAC
+        Trash_bin
+        Vial_Holder
+    
+    class Centrifuge_Vial_Holder(deck.deck_module.DeckModule)
+     |  Holder for centrifugial vials
+     |  
+     |  Method resolution order:
+     |      Centrifuge_Vial_Holder
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class Large_Container(deck.deck_module.DeckModule)
+     |  Large_Container
+     |  
+     |  Method resolution order:
+     |      Large_Container
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class Large_Tip_Holder(deck.deck_module.DeckModule)
+     |  Large tip holder
+     |  
+     |  Method resolution order:
+     |      Large_Tip_Holder
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  get_tip_pos(self, m_type)
+     |      Return the next available tip from this module
+     |  
+     |  reset_tips(self)
+     |      Reset the tip indices
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class Medium_Tip_Holder(deck.deck_module.DeckModule)
+     |  Medium tip holder
+     |  
+     |  Method resolution order:
+     |      Medium_Tip_Holder
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  get_tip_pos(self, m_type)
+     |      Return the next available tip from this module
+     |  
+     |  reset_tips(self)
+     |      Reset the tip indices
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class Multiwell_Plate(deck.deck_module.DeckModule)
+     |  Multiwell plate
+     |  
+     |  Method resolution order:
+     |      Multiwell_Plate
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class PetriDish(deck.deck_module.DeckModule)
+     |  Petri dish
+     |  
+     |  Method resolution order:
+     |      PetriDish
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class Safety_Tip(deck.deck_module.DeckModule)
+     |  TAC
+     |  
+     |  Method resolution order:
+     |      Safety_Tip
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class Small_Tip_Holder(deck.deck_module.DeckModule)
+     |  Small tip holder
+     |  
+     |  Method resolution order:
+     |      Small_Tip_Holder
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  get_tip_pos(self, m_type)
+     |      Return the next available tip from this module
+     |  
+     |  reset_tips(self)
+     |      Reset the tip indices
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class TAC(deck.deck_module.DeckModule)
+     |  TAC
+     |  
+     |  Method resolution order:
+     |      TAC
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class Trash_bin(deck.deck_module.DeckModule)
+     |  Trash bin tip collector
+     |  
+     |  Method resolution order:
+     |      Trash_bin
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class Vial_Holder(deck.deck_module.DeckModule)
+     |  Vial_Holder
+     |  
+     |  Method resolution order:
+     |      Vial_Holder
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+

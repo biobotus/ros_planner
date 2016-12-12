@@ -1,0 +1,139 @@
+Help on module pipette_module:
+
+NAME
+    pipette_module
+
+FILE
+    /home/ubuntu/biobot_ros_jtk/src/ros_planner/scripts/deck/pipette_module.py
+
+CLASSES
+    deck.deck_module.DeckModule(__builtin__.object)
+        PipetteModule
+    
+    class PipetteModule(deck.deck_module.DeckModule)
+     |  PipetteModule class describes all function relevant to pipette's protocol, without
+     |  consideration for the single or the multi-pipette.
+     |  
+     |  Method resolution order:
+     |      PipetteModule
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, m_type, coord)
+     |      Initialise the PipetteModule class. It contains there current size [small, medium, large]
+     |      and their type (single or multiple (pipette_m))
+     |      It also contains most of the hardcoded value regarding the height of the tip and some
+     |      specific offset necessary for a smooth movement into the trash and other specific labware.
+     |  
+     |  actual_mod_pos(self, module_dic, coord)
+     |      Return the relative position of a module from this module
+     |  
+     |  aspirate(self, volume, speed)
+     |      Aspirate required volume from the current pipette
+     |      Input: volume (ul) to aspirate, speed
+     |      Output: step_move : list of steps to perform the task.
+     |  
+     |  autopick(self, from_mod, to_mod, number, letter, module_dic, steps)
+     |      Autopick function for colonie picking
+     |  
+     |  dispense(self, volume, speed)
+     |      dispence required volume from the current pipette
+     |      Input: volume (ul) to aspirate, speed
+     |      Output: step_move : list of steps to perform the task.
+     |  
+     |  eject_tip(self, tip_size, module_dic, steps)
+     |      This function send a list of step in order to ject the tip. It goes over the trash
+     |      get inside and go through the trash teeth before moving up thus ejecting the tip.
+     |      
+     |      Input: tip_size, module_dic
+     |      Output: list of steps for the required action
+     |      
+     |      
+     |       TRASH TOP VIEW
+     |              __________ (0,0,0) ==> dump_coord (top left corner)
+     |            /|_________|       y <-----|
+     |           / |         |             / |
+     |          /  |         |           v   |
+     |          |  |         |         z     V
+     |          |  |/\/\/\/\/|               x
+     |          |  |---------|
+     |          | /         /
+     |          |----------|
+     |         The dump will always be positioned in this manner
+     |             because of the 8-tips pipette.
+     |  
+     |  get_tip(self, tip_size, module_dic, steps)
+     |      Verify the size of the tip to get and send a list of step to get them.
+     |      For each pipette type, it goes over the well, get inside and secure the tip
+     |      move up again.
+     |      Input: tip_size, module_dic
+     |      Output: list of step to get tip.
+     |  
+     |  get_tip_size(self, volume)
+     |      Function determining which pipette is needed for the protocol by comparing volumes needed.
+     |      Input: volume
+     |      Output: None
+     |  
+     |  move_pos(self, coord, module_dic)
+     |      Verify that the requested movement are within limits of the platform.
+     |      Input: coord, module_dic
+     |      Output: list of steps required to perform the task
+     |  
+     |  move_pos_var(self, coord, module_dic)
+     |      Verify that the requested movement are within limits of the platform.
+     |      Input: coord, module_dic
+     |      Output: list of steps required to perform the task
+     |  
+     |  multi_dispense(self, last, iteration, module_dic, volume, speed, trans_json)
+     |      Multidispense function
+     |  
+     |  parse_json(self, json_instruction, module_dic)
+     |      This function go through the json files and make the call on the relevant function needed
+     |      to process protocols required by the user.
+     |      Input: json_instruction, module_dic
+     |      Output: None
+     |  
+     |  parse_mod_coord(self, dest_string, mod_dict)
+     |      Return the coordinate from a protocol string
+     |  
+     |  serial_dilution(self, iteration, module_dic, volume, speed, trans_json, last_mix)
+     |      Serial dilution function
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+

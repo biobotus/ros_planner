@@ -1,0 +1,52 @@
+Help on module planner:
+
+NAME
+    planner
+
+FILE
+    /home/ubuntu/biobot_ros_jtk/src/ros_planner/scripts/planner.py
+
+CLASSES
+    Planner
+    
+    class Planner
+     |  Methods defined here:
+     |  
+     |  __init__(self)
+     |      Planner initialisation
+     |      ROS topics init
+     |      Flags init
+     |  
+     |  callback_calibration_2d(self, data)
+     |      This function is not yet implemented
+     |  
+     |  callback_done_step(self, data)
+     |      Done step
+     |      When a step is done, this function change a flag to send a new step
+     |  
+     |  callback_pause(self, data)
+     |      Pause
+     |      Sent by the web, this function hold planner from sending another step to coordinator.
+     |      When a pause is sent, coordinator finish the last step before pausing the platform.
+     |      The platform can be unpaused by the web.
+     |  
+     |  callback_reset_tips(self, data)
+     |      Reset tips
+     |      Sent by the web, this function reset the tip holders to the original state
+     |  
+     |  callback_start_mapping(self, data)
+     |      Start mapping
+     |      Sent by the web, this function start a mapping protocol.
+     |      The platform will move the head to scan the platform deck.
+     |      9 positions are used to map the whole deck in a 3 by 3 layout
+     |  
+     |  callback_start_protocol(self, data)
+     |      Protocol
+     |      Sent by the web, this function start a biological protocol formated by the web.
+     |      Planner create all the steps the acheive a protocol before sending a first step to coordinator.
+     |      After each step planner wait for a Done_Step from coordinator before sending another step.
+     |  
+     |  listener(self)
+     |      ROS callback listener
+
+

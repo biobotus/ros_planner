@@ -1,0 +1,166 @@
+Help on module deck_module:
+
+NAME
+    deck_module
+
+FILE
+    /home/ubuntu/biobot_ros_jtk/src/ros_planner/scripts/deck/deck_module.py
+
+DESCRIPTION
+    Module contain ModuleManager, Module
+    ModuleManager give an interface to store and retrieve modules by their Ids
+
+CLASSES
+    __builtin__.object
+        DeckModule
+    Coordinate
+    DeckManager
+    
+    class Coordinate
+     |  coordinate represents a position (x,y,z) inside the deck. This class offer
+     |  tools to translate and rotate those position.
+     |  
+     |  Methods defined here:
+     |  
+     |  __eq__(self, other)
+     |      Overloading of the equal function to compare equity of coordone
+     |  
+     |  __init__(self, coord_x, coord_y, coord_z)
+     |      Constructor for coordinate
+     |      @param coord_x the x coordinate
+     |      @param coord_y the y coordinate
+     |      @param coord_z the z coordinate
+     |  
+     |  __str__(self)
+     |      Return a string representing the coordinate
+     |  
+     |  rotate_z(self, angle, axe)
+     |      Rotate the position around an axe
+     |      @param axe the coordinate of the axe for the rotation
+     |      @param angle the angle for the rotation
+     |  
+     |  translate_x(self, distance)
+     |      Translate the coordinate along the axe X
+     |      @param distance the distance to be translate
+     |  
+     |  translate_y(self, distance)
+     |      Translate the coordinate along the axe Y
+     |      @param distance the distance to be translate
+     |  
+     |  translate_z(self, distance)
+     |      Translate the coordinate along the axe z
+     |      @param distance the distance to be translate
+    
+    class DeckManager
+     |  The module manager handles modules,labware and their Ids.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self)
+     |      Constructor
+     |  
+     |  add_2d_camera(self, m_type, coord)
+     |      Create a 2D camera tool
+     |  
+     |  add_3d_camera(self, m_type, coord)
+     |      Create a 3D camera tool
+     |  
+     |  add_backlight_module(self, m_type, coord)
+     |      Create a backlight module
+     |  
+     |  add_centrifuge_vial_holder(self, m_name, coord)
+     |      Create a centrifuge vial holder labware
+     |  
+     |  add_gripper(self, m_type, coord)
+     |      Create a gripper tool
+     |  
+     |  add_large_container(self, m_name, coord)
+     |      Create a large container labware
+     |  
+     |  add_large_tip_holder(self, m_name, coord)
+     |      Create a large tip holder labware
+     |  
+     |  add_medium_tip_holder(self, m_name, coord)
+     |      Create a medium tip holder labware
+     |  
+     |  add_module(self, labware)
+     |      Add a module in the planner dict by fetching the information in the database
+     |  
+     |  add_multiwell_plate(self, m_name, coord)
+     |      Create a multiwell plate labware
+     |  
+     |  add_petri_dish(self, m_type, coord)
+     |      Create a petri dish labware
+     |  
+     |  add_pipette_m(self, m_type, coord)
+     |      Create a multi pipette tool
+     |  
+     |  add_pipette_s(self, m_type, coord)
+     |      Create a single pipette tool
+     |  
+     |  add_safety_tip(self, m_type, coord)
+     |      Create a safety tip module
+     |  
+     |  add_small_tip_holder(self, m_name, coord)
+     |      Create a small tip holder labware
+     |  
+     |  add_tac(self, m_type, coord)
+     |      Create a TAC module
+     |  
+     |  add_tools(self)
+     |      Add a tool in the planner dict by fetching the information in the database
+     |  
+     |  add_trash(self, m_name, coord)
+     |      Create a thrash
+     |  
+     |  add_vial_holder(self, m_type, coord)
+     |      Create a vial holder labware
+    
+    class DeckModule(__builtin__.object)
+     |  This class represent an entity of a module present on the deck
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |      Constructor for module
+     |      @param name The name of the module
+     |      @param coord the coordinate of the module on the deck, top left
+     |         relative to the robot top left corner.
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+DATA
+    biobot = Database(MongoClient(host=['localhost:27017'], d...s=dict, tz...
+    client = MongoClient(host=['localhost:27017'], document_class=dict, tz...
+
+

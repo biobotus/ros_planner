@@ -1,0 +1,54 @@
+Help on module protocol:
+
+NAME
+    protocol
+
+FILE
+    /home/ubuntu/biobot_ros_jtk/src/ros_planner/scripts/protocol/protocol.py
+
+CLASSES
+    Protocol
+    Step
+    
+    class Protocol
+     |  Protocol describe a Protocol of instructions for multiples modules
+     |  Protocol are a named suite of instructions grouped as steps.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, data)
+     |  
+     |  __str__(self)
+     |      Return a string representing the protocol
+     |  
+     |  add_steps(self, steps)
+     |      Add a step to the Protocol
+     |      @param step the step to be add
+    
+    class Step
+     |  A step is the core component of a Protocol.
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, step_dict)
+     |  
+     |  __str__(self)
+
+FUNCTIONS
+    alloc_db(name)
+        Allocate disk space for MongoDB manually to prevent using
+        default sizes of 32 MB or more.
+    
+    calibrate_2d_cam_protocol(module_manager)
+        Generate a 2d calibration protocol
+    
+    load_protocol_from_json(json_string, module_manager)
+        Generate a biological protocol
+    
+    mapping_3d_protocol(module_manager, data)
+        Generate a mapping protocol
+
+DATA
+    client = MongoClient(host=['localhost:27017'], document_class=dict, tz...
+
+

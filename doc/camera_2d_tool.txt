@@ -1,0 +1,119 @@
+Help on module camera_2d_tool:
+
+NAME
+    camera_2d_tool
+
+FILE
+    /home/ubuntu/biobot_ros_jtk/src/ros_planner/scripts/deck/camera_2d_tool.py
+
+CLASSES
+    deck.deck_module.DeckModule(__builtin__.object)
+        BackLightModule
+        Camera2DTool
+    
+    class BackLightModule(deck.deck_module.DeckModule)
+     |  Method resolution order:
+     |      BackLightModule
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, name, coord)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+    
+    class Camera2DTool(deck.deck_module.DeckModule)
+     |  Method resolution order:
+     |      Camera2DTool
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, m_type, coord)
+     |  
+     |  actual_mod_pos(self, module_dic, coord)
+     |      This function defines the relative position of a module from the 2D camera
+     |  
+     |  bca_analysis(self, data, module_dic)
+     |      This function create a BCA analysis message for coordinator
+     |  
+     |  calibrate_2d(self, module_dic)
+     |      To be implemented
+     |  
+     |  parse_json(self, json_instruction, module_dic, protocol_name)
+     |      Main function called when a operation is defined in the protocol
+     |      An operation is defined for a specific petri dish so this function
+     |      take care of moving the said petri dish into position and remove the
+     |      lid before engaging in the action demanded by the protocol
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+

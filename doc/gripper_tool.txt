@@ -1,0 +1,78 @@
+Help on module gripper_tool:
+
+NAME
+    gripper_tool
+
+FILE
+    /home/ubuntu/biobot_ros_jtk/src/ros_planner/scripts/deck/gripper_tool.py
+
+CLASSES
+    deck.deck_module.DeckModule(__builtin__.object)
+        GripperTool
+    
+    class GripperTool(deck.deck_module.DeckModule)
+     |  Method resolution order:
+     |      GripperTool
+     |      deck.deck_module.DeckModule
+     |      __builtin__.object
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, m_type, coord)
+     |      Constructor
+     |  
+     |  actual_mod_pos(self, module_dic, coord)
+     |      Relative position of a module from the gripper
+     |  
+     |  gripper_move(self, from_mod, to_mod, from_offset, to_offset, height, opening, module_dic, steps)
+     |      Function to take something with the gripper and move it
+     |  
+     |  gripper_pos(self, wrist, opening)
+     |      Create a message for coordinator
+     |  
+     |  holder_to_tac(self, module_dic, steps)
+     |  
+     |  move_pos(self, coord, module_dic)
+     |      Move the gripper axis to a desired position
+     |  
+     |  parse_json(self, json_instruction, module_dic)
+     |      Main function when operator gripper is called from directly from a protocol
+     |  
+     |  tac_to_holder(self, module_dic, steps)
+     |  
+     |  ----------------------------------------------------------------------
+     |  Methods inherited from deck.deck_module.DeckModule:
+     |  
+     |  __str__(self)
+     |      Return a string representing the module (the name)
+     |  
+     |  get_mod_coordinate(self)
+     |      Return a labware, module or tool absolute coordinate
+     |  
+     |  get_mod_diameter(self)
+     |      Return a labware, module or tool diameter
+     |  
+     |  get_well_coordinate(self, letter, number)
+     |      Return a well coordinate, according to the global referential
+     |      (robot top left corner)
+     |  
+     |  set_mod_diameter(self, d)
+     |      Set a labware diameter
+     |  
+     |  set_well_layout(self, nb_line, nb_column, first_offset, offset)
+     |      Set how the wells are repartited on the plate/module.
+     |      @param nb_line the number of well lines
+     |      @param nb_column the number of well column
+     |      @param x_offset the distance between two columns in mm
+     |      @param y_offset the distance between two lines in mm
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors inherited from deck.deck_module.DeckModule:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+
