@@ -24,9 +24,10 @@ class PipetteModule(DeckModule):
         self.y_buff = 0
         # Constant used for simple pipette across the code
         self.pipette_size = "something"
-        self.max_cruise_height_100mm = 100 # z distance used to be more efficient (not returning to z0)
+        self.max_cruise_height_100mm = 50 # z distance used to be more efficient (not returning to z0)
+        self.cruise_height = 50
         self.max_column = 7 # pipette box max column (dimension)
-        self.large_tip_offset = 52 # large tip offset (zeroing)
+        self.large_tip_offset = 54.5 # large tip offset (zeroing)
         self.medium_tip_offset = 30.37 # medium tip offset (zeroing)
         self.small_tip_offset = 36 # small tip offset (zeroing)
         self.delta_mod_cruise = 20
@@ -38,18 +39,18 @@ class PipetteModule(DeckModule):
         self.dump_coord_y_offset = 10.5 # necessary offset to move in the middle of the teeth of the trash (ALL PIPETTE)
         self.dump_coord_x_offset = 79.1 # necessary offset to move in front of the teeth of the trash (ALL PIPETTE)
         self.large_tip_penetration_depth_s = 0
-        self.medium_tip_penetration_depth_s = 6
-        self.small_tip_penetration_depth_s = 4
-        self.large_tip_penetration_depth_m = 1
-        self.medium_tip_penetration_depth_m = 6
-        self.small_tip_penetration_depth_m = 4
+        self.medium_tip_penetration_depth_s = 3
+        self.small_tip_penetration_depth_s = 6
+        self.large_tip_penetration_depth_m = 0
+        self.medium_tip_penetration_depth_m = 3
+        self.small_tip_penetration_depth_m = 7
 
-        self.large_tip_length = 81
-        self.medium_tip_length = 53
+        self.large_tip_length = 81 #Poub
+        self.medium_tip_length = 51
         self.small_tip_length = 49
-        self.large_tip_trash_x_offset = 20  # x distance to enter the teeth's trash properly
-        self.medium_tip_trash_x_offset = 29  # x distance to enter the teeth's trash properly
-        self.small_tip_trash_x_offset = 29  # x distance to enter the teeth's trash properly
+        self.large_tip_trash_x_offset = 20.5  # x distance to enter the teeth's trash properly
+        self.medium_tip_trash_x_offset = 22  # x distance to enter the teeth's trash properly
+        self.small_tip_trash_x_offset = 26  # x distance to enter the teeth's trash properly
         self.max_volume = 800 # maximum quantity in uL of volume that can be pipetted by the large tip
         self.med_volume = 100 # quantity in uL of volume that can be pipetted by the medium tip
         self.min_volume = 10 # minimum quantity in uL of volume that can be pipetted by the small tip
@@ -66,7 +67,6 @@ class PipetteModule(DeckModule):
 
         trash_mod = module_dic["trash"]
         dump_coord  = self.actual_mod_pos(module_dic, trash_mod.get_mod_coordinate())
-        self.cruise_height = dump_coord.coord_z-self.max_cruise_height_100mm
         self.mod_cruise_height = self.cruise_height
 
         for instruction in json_instruction['groups']:
@@ -145,13 +145,10 @@ class PipetteModule(DeckModule):
 
         # Get tip from tip holder module
         self.get_tip_size(trans_json["volume"])
-        self.get_tip(self.pipette_size, module_dic)
+        self.get_tip(self.pipette_size, module_dic, self.steps)
 
         from_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["from"], module_dic))
         to_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["to"], module_dic))
-
-        print('from coord')
-        print(from_coord)
 
         from_mod = trans_json["from"].split("/")
         from_mod = from_mod[0]
@@ -189,15 +186,9 @@ class PipetteModule(DeckModule):
         # blow
         self.steps.append(self.dispense(trans_json["volume"], trans_json["dispense_speed"]))
         # get up
-        self.cruise_height = dump_coord.coord_z-self.max_cruise_height_100mm
         self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.cruise_height), module_dic))
         self.get_tip_size(trans_json["volume"])
-        self.eject_tip(self.pipette_size, module_dic)
-
-        # TODO: REMOVE
-        #gripper_mod = module_dic["gripper"]
-        #gripper_mod.gripper_move(trans_json["from"],trans_json["to"],self.cruise_height,module_dic,self.steps)
-        #gripper_mod.gripper_clap(10,module_dic,self.steps)
+        self.eject_tip(self.pipette_size, module_dic, self.steps)
 
         return
 
@@ -231,11 +222,10 @@ class PipetteModule(DeckModule):
         trash_mod = module_dic["trash"]
         dump_coord  = self.actual_mod_pos(module_dic, trash_mod.get_mod_coordinate())
         # go to max cruise_height
-        self.cruise_height = dump_coord.coord_z - self.max_cruise_height_100mm
 
         # Get tip from tip holder module
         self.get_tip_size(trans_json["volume"])
-        self.get_tip(self.pipette_size, module_dic)
+        self.get_tip(self.pipette_size, module_dic, self.steps)
 
         from_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["from"], module_dic))
         to_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["to"], module_dic))
@@ -286,10 +276,9 @@ class PipetteModule(DeckModule):
 
         to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(letter, number))
 
-        self.cruise_height = dump_coord.coord_z-self.max_cruise_height_100mm
         self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.cruise_height), module_dic))
         self.get_tip_size(trans_json["volume"])
-        self.eject_tip(self.pipette_size, module_dic)
+        self.eject_tip(self.pipette_size, module_dic, self.steps)
         self.x_buff = 0
         self.y_buff = 0
 
@@ -322,11 +311,10 @@ class PipetteModule(DeckModule):
         trash_mod = module_dic["trash"]
         dump_coord  = self.actual_mod_pos(module_dic, trash_mod.get_mod_coordinate())
         # go to max cruise_height
-        self.cruise_height = dump_coord.coord_z-self.max_cruise_height_100mm
 
         # Get tip from tip holder module
         self.get_tip_size(trans_json["volume"])
-        self.get_tip(self.pipette_size, module_dic)
+        self.get_tip(self.pipette_size, module_dic, self.steps)
 
         from_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["from"], module_dic))
 
@@ -363,7 +351,7 @@ class PipetteModule(DeckModule):
             self.steps.append(self.move_pos(Coordinate(from_coord.coord_x, from_coord.coord_y, self.cruise_height), module_dic))
 
         self.get_tip_size(trans_json["volume"])
-        self.eject_tip(self.pipette_size, module_dic)
+        self.eject_tip(self.pipette_size, module_dic, self.steps)
 
         return
 
@@ -404,11 +392,10 @@ class PipetteModule(DeckModule):
         trash_mod = module_dic["trash"]
         dump_coord  = self.actual_mod_pos(module_dic, trash_mod.get_mod_coordinate())
         # go to max cruise_height
-        self.cruise_height = dump_coord.coord_z-self.max_cruise_height_100mm
 
         # Get tip from tip holder module
         self.get_tip_size(trans_json["volume"])
-        self.get_tip(self.pipette_size, module_dic)
+        self.get_tip(self.pipette_size, module_dic, self.steps)
 
         # go to the source well position
         from_coord = self.actual_mod_pos(module_dic, self.parse_mod_coord(trans_json["from"], module_dic))
@@ -464,7 +451,7 @@ class PipetteModule(DeckModule):
 
         self.steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.cruise_height), module_dic))
         self.get_tip_size(trans_json["volume"])
-        self.eject_tip(self.pipette_size, module_dic)
+        self.eject_tip(self.pipette_size, module_dic, self.steps)
         self.x_buff = 0
         self.y_buff = 0
 
@@ -495,10 +482,40 @@ class PipetteModule(DeckModule):
         return step_move
 
     def actual_mod_pos(self, module_dic, coord):
+        """
+        Return the relative position of a module from this module
+        """
+
         coord.coord_x = coord.coord_x-self.mod_coord.coord_x
         coord.coord_y = coord.coord_y-self.mod_coord.coord_y
         coord.coord_z = coord.coord_z-self.mod_coord.coord_z
         return coord
+
+    def move_pos_var(self, coord, module_dic):
+        """
+        Verify that the requested movement are within limits of the platform.
+        Input: coord, module_dic
+        Output: list of steps required to perform the task
+        """
+        if int(coord.coord_x) < 0 or int(coord.coord_y) < 0 or int(coord.coord_z) < 0:
+            print("Negative coord x: {} y: {} z: {}"\
+                .format(coord.coord_x, coord.coord_y, coord.coord_z))
+            self.logger.error("Received a negative coordinate x: {} y: {} z: {}"\
+                .format(coord.coord_x, coord.coord_y, coord.coord_z))
+            return -1
+        elif int(coord.coord_x) > 1000 or int(coord.coord_y) > 585:
+            print("Over coord x: {} y: {} z: {}"\
+                .format(coord.coord_x, coord.coord_y, coord.coord_z))
+            self.logger.error("Received a too far coord x: {} y: {} z: {}"\
+                .format(coord.coord_x, coord.coord_y, coord.coord_z))
+            return -1
+
+        else:
+            args =  {"x": coord.coord_x, "y": coord.coord_y, "z": coord.coord_z}
+            params = {"name": "pos_var", "args": args}
+            step_move = Step({"module_type": self.m_type, "params": params})
+
+        return step_move
 
     def move_pos(self, coord, module_dic):
         """
@@ -506,13 +523,13 @@ class PipetteModule(DeckModule):
         Input: coord, module_dic
         Output: list of steps required to perform the task
         """
-        if int(coord.coord_x)<0 or int(coord.coord_y)<0 or int(coord.coord_z) < 0:
+        if int(coord.coord_x) < 0 or int(coord.coord_y) < 0 or int(coord.coord_z) < 0:
             print("Negative coord x: {} y: {} z: {}"\
                 .format(coord.coord_x, coord.coord_y, coord.coord_z))
             self.logger.error("Received a negative coordinate x: {} y: {} z: {}"\
                 .format(coord.coord_x, coord.coord_y, coord.coord_z))
             return -1
-        elif int(coord.coord_x)>1050 or int(coord.coord_y)>800:
+        elif int(coord.coord_x) > 1000 or int(coord.coord_y) > 585:
             print("Over coord x: {} y: {} z: {}"\
                 .format(coord.coord_x, coord.coord_y, coord.coord_z))
             self.logger.error("Received a too far coord x: {} y: {} z: {}"\
@@ -526,7 +543,29 @@ class PipetteModule(DeckModule):
 
         return step_move
 
-    def get_tip(self, tip_size, module_dic):
+    def autopick(self, from_mod, to_mod, number, letter, module_dic, steps):
+        """
+        Autopick function for colonie picking
+        """
+        self.pipette_size = "Medium"
+        self.get_tip(self.pipette_size, module_dic, steps)
+
+        from_coord = self.actual_mod_pos(module_dic, Coordinate(from_mod.coord_x, from_mod.coord_y, from_mod.coord_z))
+        to_coord = self.actual_mod_pos(module_dic, to_mod.get_well_coordinate(letter, number))
+
+        steps.append(self.move_pos_var(Coordinate(from_coord.coord_x, from_coord.coord_y, self.cruise_height), module_dic))
+        steps.append(self.move_pos_var(from_coord, module_dic))
+        steps.append(self.move_pos_var(Coordinate(from_coord.coord_x, from_coord.coord_y, self.cruise_height), module_dic))
+
+        steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.cruise_height), module_dic))
+        steps.append(self.move_pos(to_coord, module_dic))
+        steps.append(self.move_pos(Coordinate(to_coord.coord_x, to_coord.coord_y, self.cruise_height), module_dic))
+
+        self.eject_tip(self.pipette_size, module_dic, steps)
+
+        return
+
+    def get_tip(self, tip_size, module_dic, steps):
         """
         Verify the size of the tip to get and send a list of step to get them.
         For each pipette type, it goes over the well, get inside and secure the tip
@@ -534,26 +573,25 @@ class PipetteModule(DeckModule):
         Input: tip_size, module_dic
         Output: list of step to get tip.
         """
-        to_coord = Coordinate(0,0,0)
-            # Get tip holder from deck
+        # Get tip holder from deck
         if tip_size=="Large":
             tip_mod = module_dic["large_tip_holder"]
             # go over the 1st well
             tip_pos = tip_mod.get_tip_pos(self.m_type)
             to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0], tip_pos[1]))
             to_coord.coord_z = self.cruise_height
-            self.steps.append(self.move_pos(to_coord, module_dic))
+            steps.append(self.move_pos(to_coord, module_dic))
             # get in the tip
             to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0], tip_pos[1]))
 
             if self.m_type == "pipette_m":
-                to_coord.coord_z = to_coord.coord_z+self.large_tip_penetration_depth_m
+                to_coord.coord_z = to_coord.coord_z + self.large_tip_penetration_depth_m
             else:
-                to_coord.coord_z = to_coord.coord_z+self.large_tip_penetration_depth_s
+                to_coord.coord_z = to_coord.coord_z + self.large_tip_penetration_depth_s
 
-            self.steps.append(self.move_pos(to_coord, module_dic))
+            steps.append(self.move_pos(to_coord, module_dic))
             to_coord.coord_z = self.cruise_height
-            self.steps.append(self.move_pos(to_coord, module_dic))
+            steps.append(self.move_pos(to_coord, module_dic))
             # move up
             self.mod_coord.coord_z = self.mod_coord.coord_z + self.large_tip_offset
             self.tip_height = self.max_z_height - self.large_tip_offset
@@ -564,22 +602,23 @@ class PipetteModule(DeckModule):
             tip_mod = module_dic["medium_tip_holder"]
             # go over the 1st well
             tip_pos = tip_mod.get_tip_pos(self.m_type)
-            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0], tip_pos[1], ))
+
+            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0], tip_pos[1]))
             to_coord.coord_z = self.cruise_height
-            self.steps.append(self.move_pos(to_coord, module_dic))
+            steps.append(self.move_pos(to_coord, module_dic))
             # get in the tip
-            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0], tip_pos[1], ))
+            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0], tip_pos[1]))
 
             if self.m_type == "pipette_m":
-                to_coord.coord_z = to_coord.coord_z+self.medium_tip_penetration_depth_m
+                to_coord.coord_z = to_coord.coord_z + self.medium_tip_penetration_depth_m
             else:
-                to_coord.coord_z = to_coord.coord_z+self.medium_tip_penetration_depth_s
+                to_coord.coord_z = to_coord.coord_z + self.medium_tip_penetration_depth_s
 
-            self.steps.append(self.move_pos(to_coord, module_dic))
+            steps.append(self.move_pos(to_coord, module_dic))
             to_coord.coord_z = self.cruise_height
-            self.steps.append(self.move_pos(to_coord, module_dic))
+            steps.append(self.move_pos(to_coord, module_dic))
             # move up
-            self.mod_coord.coord_z = self.mod_coord.coord_z + self.medium_tip_offset #tip offset
+            self.mod_coord.coord_z = self.mod_coord.coord_z + self.medium_tip_offset  # tip offset
             self.tip_height = self.max_z_height - self.medium_tip_offset
 
 
@@ -587,20 +626,20 @@ class PipetteModule(DeckModule):
             tip_mod = module_dic["small_tip_holder"]
             # go over the 1st well
             tip_pos = tip_mod.get_tip_pos(self.m_type)
-            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0],tip_pos[1], ))
+            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0],tip_pos[1]))
             to_coord.coord_z = self.cruise_height
-            self.steps.append(self.move_pos(to_coord, module_dic))
+            steps.append(self.move_pos(to_coord, module_dic))
             # get in the tip
-            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0],tip_pos[1], ))
+            to_coord = self.actual_mod_pos(module_dic, tip_mod.get_well_coordinate(tip_pos[0],tip_pos[1]))
             if self.m_type == "pipette_m":
-                to_coord.coord_z = to_coord.coord_z+self.small_tip_penetration_depth_m
+                to_coord.coord_z = to_coord.coord_z + self.small_tip_penetration_depth_m
             else:
-                to_coord.coord_z = to_coord.coord_z+self.small_tip_penetration_depth_s
+                to_coord.coord_z = to_coord.coord_z + self.small_tip_penetration_depth_s
 
-            self.steps.append(self.move_pos(to_coord, module_dic))
+            steps.append(self.move_pos(to_coord, module_dic))
             to_coord.coord_z = self.cruise_height
             # move up
-            self.steps.append(self.move_pos(to_coord, module_dic))
+            steps.append(self.move_pos(to_coord, module_dic))
             self.mod_coord.coord_z = self.mod_coord.coord_z + self.small_tip_offset # tip offset
             self.tip_height = self.max_z_height - self.small_tip_offset
 
@@ -609,7 +648,7 @@ class PipetteModule(DeckModule):
 
         return
 
-    def eject_tip(self,tip_size, module_dic):
+    def eject_tip(self,tip_size, module_dic, steps):
         """
         This function send a list of step in order to ject the tip. It goes over the trash
         get inside and go through the trash teeth before moving up thus ejecting the tip.
@@ -639,7 +678,7 @@ class PipetteModule(DeckModule):
         # move in the middle of the trash
         to_coord.coord_y = dump_coord.coord_y+self.dump_coord_y_offset
         to_coord.coord_x = dump_coord.coord_x+self.dump_coord_x_offset
-        # self.steps.append(self.move_pos(to_coord, module_dic)) # x-y move (over dump hole)
+        # steps.append(self.move_pos(to_coord, module_dic)) # x-y move (over dump hole)
         # move down
         if tip_size=="Large":
             to_coord.coord_z = self.large_tip_length #mm
@@ -650,8 +689,8 @@ class PipetteModule(DeckModule):
         else:
             print("Error reading tip size")
         to_coord.coord_z = dump_coord.coord_z+to_coord.coord_z
-        self.steps.append(self.move_pos(to_coord, module_dic))
-        # move into the teeth to take out the tip
+        steps.append(self.move_pos(to_coord, module_dic))
+        # move into the teeth to take out the tip`
         if tip_size=="Large":
             to_coord.coord_x = to_coord.coord_x + self.large_tip_trash_x_offset
         elif tip_size=="Medium":
@@ -660,11 +699,21 @@ class PipetteModule(DeckModule):
             to_coord.coord_x = to_coord.coord_x + self.small_tip_trash_x_offset
         else:
             print("Error reading tip size")
-        self.steps.append(self.move_pos(to_coord, module_dic))
+        steps.append(self.move_pos(to_coord, module_dic))
 
         # ready to move away
         to_coord.coord_z = self.cruise_height
-        self.steps.append(self.move_pos(to_coord, module_dic))
+        steps.append(self.move_pos(to_coord, module_dic))
+
+        safety_mod = module_dic['safety_tip']
+
+        safety_coord = self.actual_mod_pos(module_dic, safety_mod.get_mod_coordinate())
+
+
+        steps.append(self.move_pos(Coordinate(safety_coord.coord_x, safety_coord.coord_y, self.cruise_height), module_dic))
+        steps.append(self.move_pos(safety_coord, module_dic))
+        steps.append(self.move_pos(Coordinate(safety_coord.coord_x, safety_coord.coord_y, self.cruise_height), module_dic))
+
 
         #Remove tip offset
         if tip_size=="Large":
@@ -676,10 +725,11 @@ class PipetteModule(DeckModule):
         else:
             print("Error reading tip size")
 
-        return
+        return steps
 
     def parse_mod_coord(self, dest_string, mod_dict):
         """
+        Return the coordinate from a protocol string
         """
         dest = dest_string.split("/")
         mod_name = dest[0]
@@ -724,6 +774,7 @@ class PipetteModule(DeckModule):
 
     def multi_dispense(self, last, iteration, module_dic, volume, speed, trans_json):
         """
+        Multidispense function
         """
         # Go to 1st well from deck
         module =  trans_json["to"].split("/")
@@ -770,6 +821,7 @@ class PipetteModule(DeckModule):
 
     def serial_dilution(self, iteration, module_dic, volume, speed, trans_json, last_mix):
         """
+        Serial dilution function
         """
         to_coord = Coordinate(0,0,0)
 

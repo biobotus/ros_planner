@@ -1,0 +1,92 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module camera_3d_tool</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>camera_3d_tool</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/ubuntu/biobot_ros_jtk/src/ros_planner/scripts/deck/camera_3d_tool.py">/home/ubuntu/biobot_ros_jtk/src/ros_planner/scripts/deck/camera_3d_tool.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>(<a href="__builtin__.html#object">__builtin__.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="camera_3d_tool.html#Camera3DTool">Camera3DTool</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Camera3DTool">class <strong>Camera3DTool</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Initialise&nbsp;the&nbsp;<a href="#Camera3DTool">Camera3DTool</a>&nbsp;class.<br>
+Input:&nbsp;&nbsp;<a href="deck.deck_module.html#DeckModule">DeckModule</a><br>
+Output:&nbsp;returns&nbsp;nothing<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="camera_3d_tool.html#Camera3DTool">Camera3DTool</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Camera3DTool-__init__"><strong>__init__</strong></a>(self, m_type, coord)</dt><dd><tt>Initialise&nbsp;the&nbsp;class.<br>
+Input:<br>
+Output:</tt></dd></dl>
+
+<dl><dt><a name="Camera3DTool-actual_pos"><strong>actual_pos</strong></a>(self, module_dict, coord)</dt><dd><tt>Input:&nbsp;module_dict,&nbsp;coord<br>
+Output:&nbsp;coord</tt></dd></dl>
+
+<dl><dt><a name="Camera3DTool-aquisition_3d"><strong>aquisition_3d</strong></a>(self, nx, ny)</dt><dd><tt>Input:&nbsp;nx&nbsp;and&nbsp;ny&nbsp;(matrix&nbsp;adress&nbsp;of&nbsp;the&nbsp;square&nbsp;being&nbsp;analyzed)<br>
+Output:&nbsp;step_move</tt></dd></dl>
+
+<dl><dt><a name="Camera3DTool-mapping_3d"><strong>mapping_3d</strong></a>(self, module_dict)</dt><dd><tt>mapping_3d&nbsp;function&nbsp;move&nbsp;from&nbsp;square&nbsp;on&nbsp;deck&nbsp;to&nbsp;another.<br>
+Input:&nbsp;Module_dict<br>
+Output:&nbsp;steps&nbsp;[platform&nbsp;movements]</tt></dd></dl>
+
+<dl><dt><a name="Camera3DTool-move_pos"><strong>move_pos</strong></a>(self, coord, module_dict)</dt><dd><tt>Input:&nbsp;coord,&nbsp;module_dict<br>
+Output:&nbsp;step_move</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="Camera3DTool-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="Camera3DTool-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="Camera3DTool-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Camera3DTool-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="Camera3DTool-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Camera3DTool-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

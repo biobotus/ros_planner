@@ -96,6 +96,10 @@ class DeckManager():
         self.logger = logging.getLogger(__name__)
 
     def add_module(self, labware):
+        """
+        Add a module in the planner dict by fetching the information in the database
+        """
+
         item = biobot.deck.find_one({'name': labware['name'], \
                                      'type': labware['type'], \
                                      'validated': True})
@@ -118,6 +122,10 @@ class DeckManager():
             return False
 
     def add_tools(self):
+        """
+        Add a tool in the planner dict by fetching the information in the database
+        """
+
         with open('/home/ubuntu/biobot_web/tools_conf.json', 'r') as f:
             tools = json.load(f)
 
@@ -134,51 +142,107 @@ class DeckManager():
                 print("Tool {} is not yet implemented. Error: {}".format(tool['type'], e))
 
     def add_large_container(self, m_name, coord):
+        """
+        Create a large container labware
+        """
         return Large_Container(m_name, coord)
 
     def add_small_tip_holder(self, m_name, coord):
+        """
+        Create a small tip holder labware
+        """
         return Small_Tip_Holder(m_name, coord)
 
     def add_medium_tip_holder(self, m_name, coord):
+        """
+        Create a medium tip holder labware
+        """
         return Medium_Tip_Holder(m_name, coord)
 
     def add_large_tip_holder(self, m_name, coord):
+        """
+        Create a large tip holder labware
+        """
         return Large_Tip_Holder(m_name, coord)
 
     def add_centrifuge_vial_holder(self, m_name, coord):
+        """
+        Create a centrifuge vial holder labware
+        """
         return Centrifuge_Vial_Holder(m_name, coord)
 
     def add_multiwell_plate(self, m_name, coord):
+        """
+        Create a multiwell plate labware
+        """
         return Multiwell_Plate(m_name, coord)
 
-    def add_tac(self, m_name, coord):
-        self.logger.info("Add tac module")
-        return TacModule(m_name, coord)
-
     def add_trash(self, m_name, coord):
+        """
+        Create a thrash
+        """
         self.logger.info("Add trash module")
         return Trash_bin(m_name, coord)
 
     def add_pipette_s(self, m_type, coord):
+        """
+        Create a single pipette tool
+        """
         return PipetteModule(m_type, coord)
 
     def add_pipette_m(self, m_type, coord):
+        """
+        Create a multi pipette tool
+        """
         return PipetteModule(m_type, coord)
 
     def add_gripper(self, m_type, coord):
+        """
+        Create a gripper tool
+        """
         return GripperTool(m_type, coord)
 
     def add_3d_camera(self, m_type, coord):
+        """
+        Create a 3D camera tool
+        """
         return Camera3DTool(m_type, coord)
 
     def add_2d_camera(self, m_type, coord):
+        """
+        Create a 2D camera tool
+        """
         return Camera2DTool(m_type, coord)
 
     def add_petri_dish(self, m_type, coord):
+        """
+        Create a petri dish labware
+        """
         return PetriDish(m_type, coord)
 
     def add_backlight_module(self, m_type, coord):
+        """
+        Create a backlight module
+        """
         return BackLightModule(m_type, coord)
+
+    def add_tac(self, m_type, coord):
+        """
+        Create a TAC module
+        """
+        return TAC(m_type, coord)
+
+    def add_vial_holder(self, m_type, coord):
+        """
+        Create a vial holder labware
+        """
+        return Vial_Holder(m_type, coord)
+
+    def add_safety_tip(self, m_type, coord):
+        """
+        Create a safety tip module
+        """
+        return Safety_Tip(m_type, coord)
 
 class DeckModule(object):
     """
@@ -208,6 +272,9 @@ class DeckModule(object):
         return "module : " + self.name
 
     def set_mod_diameter(self, d):
+        """
+        Set a labware diameter
+        """
         self.diameter = d
 
     def set_well_layout(self, nb_line, nb_column, first_offset, offset):
@@ -225,39 +292,45 @@ class DeckModule(object):
 
     def get_well_coordinate(self, letter, number):
         """
-        Return a well coordinate, acording to the global referential
+        Return a well coordinate, according to the global referential
         (robot top left corner)
         """
-        # add more information on the log error + check for < 0
-        if letter > self.nb_line-1 or letter < 0:
-            self.logger.error("Error on the line")
-            print "Error on the line"
-            return -1
+        if number > self.nb_column - 1 or number < 0:
+            err = "Error on the line of module {0}: Got letter {1}, which is not in [0, {2}[ interval.".format(self.name, number, self.nb_line)
+            print(err)
+            raise Exception(err)
 
-        if number > self.nb_column-1 or number < 0:
-            self.logger.error("Error on the column")
-            print "Error on the column"
-            return -1
+        if letter > self.nb_line-1 or letter < 0:
+            err = "Error on the column of module {0}: Got letter {1}, which is not in [0, {2}[ interval.".format(self.name, letter, self.nb_column)
+            print(err)
+            raise Exception(err)
 
         mod_coord = self.get_mod_coordinate()
         coord_x = self.coord.coord_x + self.well1_offset.coord_x + \
-                    (number) * self.well_offset.coord_x
+                                   number * self.well_offset.coord_x
         coord_y = self.coord.coord_y +self.well1_offset.coord_y + \
-                    (letter)*self.well_offset.coord_y
+                                   letter *self.well_offset.coord_y
+
         return Coordinate(coord_x, coord_y, mod_coord.coord_z)
 
     def get_mod_coordinate(self):
+        """
+        Return a labware, module or tool absolute coordinate
+        """
         return Coordinate(self.coord.coord_x, self.coord.coord_y, self.coord.coord_z)
 
     def get_mod_diameter(self):
+        """
+        Return a labware, module or tool diameter
+        """
         return self.diameter
 
-
 # To prevent cyclic import
-from deck.camera_2d_tool import Camera2DTool, BackLightModule
-from deck.camera_3d_tool import Camera3DTool
-from deck.gripper_tool import GripperTool
-from deck.pipette_module import PipetteModule
-from deck.labware_module import Trash_bin, Small_Tip_Holder, Medium_Tip_Holder, \
-                                Large_Tip_Holder, Centrifuge_Vial_Holder, \
-                                Multiwell_Plate, Large_Container, PetriDish
+#from deck.camera_2d_tool import Camera2DTool, BackLightModule
+#from deck.camera_3d_tool import Camera3DTool
+#from deck.gripper_tool import GripperTool
+#from deck.pipette_module import PipetteModule
+#from deck.labware_module import Trash_bin, Small_Tip_Holder, Medium_Tip_Holder, \
+#                                Large_Tip_Holder, Centrifuge_Vial_Holder, \
+#                                Multiwell_Plate, Large_Container, PetriDish, \
+#                                TAC, Vial_Holder, Safety_Tip

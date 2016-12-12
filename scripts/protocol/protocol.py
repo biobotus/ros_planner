@@ -19,18 +19,32 @@ def alloc_db(name):
 
     for i in ['ns', '0', '1']:
         with open("/data/db/{0}.{1}".format(name, i), 'w+b') as f:
-            fallocate.posix_fallocate(f, 0, 1048576*3)
+            fallocate.posix_fallocate(f, 0, 1048576)
 
 def mapping_3d_protocol(module_manager, data):
-
-    protocol = Protocol(data)
+    """
+    Generate a mapping protocol
+    """
+    protocol = Protocol(None)
     mod = module_manager.modules['3d_camera']
     steps = mod.mapping_3d(module_manager.modules)
     protocol.add_steps(steps)
+    return protocol
 
+def calibrate_2d_cam_protocol(module_manager):
+    """
+    Generate a 2d calibration protocol
+    """
+    protocol = Protocol(None)
+    mod = module_manager.modules['2d_camera']
+    steps = mod.calibrate_2d(module_manager.modules)
+    protocol.add_steps(steps)
     return protocol
 
 def load_protocol_from_json(json_string, module_manager):
+    """
+    Generate a biological protocol
+    """
     data = json.loads(json_string)
     protocol = Protocol(data)
     db = protocol.db
@@ -62,8 +76,7 @@ def load_protocol_from_json(json_string, module_manager):
         else:
             logger.error("Instruction error : wrong operator or groups")
 
-    return protocol
-
+    return protocol, labware_description
 
 class Protocol:
     """

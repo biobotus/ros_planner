@@ -1,0 +1,547 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module labware_module</title>
+<meta charset="utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>labware_module</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/ubuntu/biobot_ros_jtk/src/ros_planner/scripts/deck/labware_module.py">/home/ubuntu/biobot_ros_jtk/src/ros_planner/scripts/deck/labware_module.py</a></font></td></tr></table>
+    <p></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>(<a href="__builtin__.html#object">__builtin__.object</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="labware_module.html#Centrifuge_Vial_Holder">Centrifuge_Vial_Holder</a>
+</font></dt><dt><font face="helvetica, arial"><a href="labware_module.html#Large_Container">Large_Container</a>
+</font></dt><dt><font face="helvetica, arial"><a href="labware_module.html#Large_Tip_Holder">Large_Tip_Holder</a>
+</font></dt><dt><font face="helvetica, arial"><a href="labware_module.html#Medium_Tip_Holder">Medium_Tip_Holder</a>
+</font></dt><dt><font face="helvetica, arial"><a href="labware_module.html#Multiwell_Plate">Multiwell_Plate</a>
+</font></dt><dt><font face="helvetica, arial"><a href="labware_module.html#PetriDish">PetriDish</a>
+</font></dt><dt><font face="helvetica, arial"><a href="labware_module.html#Safety_Tip">Safety_Tip</a>
+</font></dt><dt><font face="helvetica, arial"><a href="labware_module.html#Small_Tip_Holder">Small_Tip_Holder</a>
+</font></dt><dt><font face="helvetica, arial"><a href="labware_module.html#TAC">TAC</a>
+</font></dt><dt><font face="helvetica, arial"><a href="labware_module.html#Trash_bin">Trash_bin</a>
+</font></dt><dt><font face="helvetica, arial"><a href="labware_module.html#Vial_Holder">Vial_Holder</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Centrifuge_Vial_Holder">class <strong>Centrifuge_Vial_Holder</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Holder&nbsp;for&nbsp;centrifugial&nbsp;vials<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="labware_module.html#Centrifuge_Vial_Holder">Centrifuge_Vial_Holder</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Centrifuge_Vial_Holder-__init__"><strong>__init__</strong></a>(self, name, coord)</dt></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="Centrifuge_Vial_Holder-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="Centrifuge_Vial_Holder-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="Centrifuge_Vial_Holder-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Centrifuge_Vial_Holder-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="Centrifuge_Vial_Holder-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Centrifuge_Vial_Holder-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Large_Container">class <strong>Large_Container</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Large_Container">Large_Container</a><br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="labware_module.html#Large_Container">Large_Container</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Large_Container-__init__"><strong>__init__</strong></a>(self, name, coord)</dt></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="Large_Container-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="Large_Container-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="Large_Container-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Large_Container-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="Large_Container-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Large_Container-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Large_Tip_Holder">class <strong>Large_Tip_Holder</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Large&nbsp;tip&nbsp;holder<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="labware_module.html#Large_Tip_Holder">Large_Tip_Holder</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Large_Tip_Holder-__init__"><strong>__init__</strong></a>(self, name, coord)</dt></dl>
+
+<dl><dt><a name="Large_Tip_Holder-get_tip_pos"><strong>get_tip_pos</strong></a>(self, m_type)</dt><dd><tt>Return&nbsp;the&nbsp;next&nbsp;available&nbsp;tip&nbsp;from&nbsp;this&nbsp;module</tt></dd></dl>
+
+<dl><dt><a name="Large_Tip_Holder-reset_tips"><strong>reset_tips</strong></a>(self)</dt><dd><tt>Reset&nbsp;the&nbsp;tip&nbsp;indices</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="Large_Tip_Holder-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="Large_Tip_Holder-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="Large_Tip_Holder-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Large_Tip_Holder-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="Large_Tip_Holder-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Large_Tip_Holder-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Medium_Tip_Holder">class <strong>Medium_Tip_Holder</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Medium&nbsp;tip&nbsp;holder<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="labware_module.html#Medium_Tip_Holder">Medium_Tip_Holder</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Medium_Tip_Holder-__init__"><strong>__init__</strong></a>(self, name, coord)</dt></dl>
+
+<dl><dt><a name="Medium_Tip_Holder-get_tip_pos"><strong>get_tip_pos</strong></a>(self, m_type)</dt><dd><tt>Return&nbsp;the&nbsp;next&nbsp;available&nbsp;tip&nbsp;from&nbsp;this&nbsp;module</tt></dd></dl>
+
+<dl><dt><a name="Medium_Tip_Holder-reset_tips"><strong>reset_tips</strong></a>(self)</dt><dd><tt>Reset&nbsp;the&nbsp;tip&nbsp;indices</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="Medium_Tip_Holder-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="Medium_Tip_Holder-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="Medium_Tip_Holder-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Medium_Tip_Holder-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="Medium_Tip_Holder-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Medium_Tip_Holder-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Multiwell_Plate">class <strong>Multiwell_Plate</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Multiwell&nbsp;plate<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="labware_module.html#Multiwell_Plate">Multiwell_Plate</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Multiwell_Plate-__init__"><strong>__init__</strong></a>(self, name, coord)</dt></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="Multiwell_Plate-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="Multiwell_Plate-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="Multiwell_Plate-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Multiwell_Plate-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="Multiwell_Plate-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Multiwell_Plate-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PetriDish">class <strong>PetriDish</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Petri&nbsp;dish<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="labware_module.html#PetriDish">PetriDish</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="PetriDish-__init__"><strong>__init__</strong></a>(self, name, coord)</dt></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="PetriDish-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="PetriDish-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="PetriDish-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="PetriDish-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="PetriDish-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="PetriDish-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Safety_Tip">class <strong>Safety_Tip</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#TAC">TAC</a><br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="labware_module.html#Safety_Tip">Safety_Tip</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Safety_Tip-__init__"><strong>__init__</strong></a>(self, name, coord)</dt></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="Safety_Tip-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="Safety_Tip-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="Safety_Tip-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Safety_Tip-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="Safety_Tip-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Safety_Tip-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Small_Tip_Holder">class <strong>Small_Tip_Holder</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Small&nbsp;tip&nbsp;holder<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="labware_module.html#Small_Tip_Holder">Small_Tip_Holder</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Small_Tip_Holder-__init__"><strong>__init__</strong></a>(self, name, coord)</dt></dl>
+
+<dl><dt><a name="Small_Tip_Holder-get_tip_pos"><strong>get_tip_pos</strong></a>(self, m_type)</dt><dd><tt>Return&nbsp;the&nbsp;next&nbsp;available&nbsp;tip&nbsp;from&nbsp;this&nbsp;module</tt></dd></dl>
+
+<dl><dt><a name="Small_Tip_Holder-reset_tips"><strong>reset_tips</strong></a>(self)</dt><dd><tt>Reset&nbsp;the&nbsp;tip&nbsp;indices</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="Small_Tip_Holder-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="Small_Tip_Holder-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="Small_Tip_Holder-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Small_Tip_Holder-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="Small_Tip_Holder-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Small_Tip_Holder-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="TAC">class <strong>TAC</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#TAC">TAC</a><br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="labware_module.html#TAC">TAC</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="TAC-__init__"><strong>__init__</strong></a>(self, name, coord)</dt></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="TAC-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="TAC-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="TAC-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="TAC-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="TAC-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="TAC-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Trash_bin">class <strong>Trash_bin</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt>Trash&nbsp;bin&nbsp;tip&nbsp;collector<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="labware_module.html#Trash_bin">Trash_bin</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Trash_bin-__init__"><strong>__init__</strong></a>(self, name, coord)</dt></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="Trash_bin-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="Trash_bin-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="Trash_bin-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Trash_bin-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="Trash_bin-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Trash_bin-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table> <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="Vial_Holder">class <strong>Vial_Holder</strong></a>(<a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#Vial_Holder">Vial_Holder</a><br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="labware_module.html#Vial_Holder">Vial_Holder</a></dd>
+<dd><a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a></dd>
+<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="Vial_Holder-__init__"><strong>__init__</strong></a>(self, name, coord)</dt></dl>
+
+<hr>
+Methods inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><a name="Vial_Holder-__str__"><strong>__str__</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;string&nbsp;representing&nbsp;the&nbsp;module&nbsp;(the&nbsp;name)</tt></dd></dl>
+
+<dl><dt><a name="Vial_Holder-get_mod_coordinate"><strong>get_mod_coordinate</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;absolute&nbsp;coordinate</tt></dd></dl>
+
+<dl><dt><a name="Vial_Holder-get_mod_diameter"><strong>get_mod_diameter</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;labware,&nbsp;module&nbsp;or&nbsp;tool&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Vial_Holder-get_well_coordinate"><strong>get_well_coordinate</strong></a>(self, letter, number)</dt><dd><tt>Return&nbsp;a&nbsp;well&nbsp;coordinate,&nbsp;according&nbsp;to&nbsp;the&nbsp;global&nbsp;referential<br>
+(robot&nbsp;top&nbsp;left&nbsp;corner)</tt></dd></dl>
+
+<dl><dt><a name="Vial_Holder-set_mod_diameter"><strong>set_mod_diameter</strong></a>(self, d)</dt><dd><tt>Set&nbsp;a&nbsp;labware&nbsp;diameter</tt></dd></dl>
+
+<dl><dt><a name="Vial_Holder-set_well_layout"><strong>set_well_layout</strong></a>(self, nb_line, nb_column, first_offset, offset)</dt><dd><tt>Set&nbsp;how&nbsp;the&nbsp;wells&nbsp;are&nbsp;repartited&nbsp;on&nbsp;the&nbsp;plate/module.<br>
+@param&nbsp;nb_line&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;lines<br>
+@param&nbsp;nb_column&nbsp;the&nbsp;number&nbsp;of&nbsp;well&nbsp;column<br>
+@param&nbsp;x_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;columns&nbsp;in&nbsp;mm<br>
+@param&nbsp;y_offset&nbsp;the&nbsp;distance&nbsp;between&nbsp;two&nbsp;lines&nbsp;in&nbsp;mm</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="deck.deck_module.html#DeckModule">deck.deck_module.DeckModule</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table>
+</body></html>

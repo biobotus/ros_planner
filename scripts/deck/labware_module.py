@@ -14,14 +14,8 @@ class PetriDish(DeckModule):
         self.lid_diameter = 90 #TODO
         self.set_mod_diameter(self.lid_diameter)
 
-    def remove_lid(self):
-        self.set_mod_diameter(self.base_diameter)
-
-    def add_lid(self):
-        self.set_mod_diameter(self.lid_diameter)
-
-
 class Small_Tip_Holder(DeckModule):
+
     """Small tip holder """
     def __init__(self, name, coord):
         super(Small_Tip_Holder, self).__init__(name, coord)
@@ -32,60 +26,84 @@ class Small_Tip_Holder(DeckModule):
         self.max_row = 11
 
     def get_tip_pos(self, m_type):
+        """
+        Return the next available tip from this module
+        """
+        #TO DO add 3d matrix to better use the tips
         x = self.xS
         y = self.yS
 
-
-
         if m_type == "pipette_m":
             if x > 0:
-                y = y+1
-                self.yS=self.yS+1
-            self.yS=self.yS+1
-            self.xS=0
+                y += 1
+                self.yS += 1
+            self.yS += 1
+            self.xS = 0
             x = 0
-
         else:
-            self.xS = self.xS + 1
-            if self.xS>self.max_column:
-                self.yS=self.yS+1
-                if self.yS>self.max_row:
-                    return None
+            self.xS += 1
+            if self.xS >= self.max_column:
+                self.yS += 1
+                if self.yS > self.max_row:
+                    self.yS = 0
                 else:
-                    self.xS=0
-        return x,y
+                    self.xS = 0
+        return x, y
+
+    def reset_tips(self):
+        """
+        Reset the tip indices
+        """
+        print('Small tip module reset')
+        self.xS = 0
+        self.yS = 0
+        return
+
 
 class Medium_Tip_Holder(DeckModule): # TODO add better get tip pos 8 / 11
     """Medium tip holder """
     def __init__(self, name, coord):
         super(Medium_Tip_Holder, self).__init__(name, coord)
-        self.set_well_layout(8, 12, Coordinate(0, 0, 0), Coordinate(9.2, 9.2, 0))
+        self.set_well_layout(8, 12, Coordinate(0, 0, 0), Coordinate(9, 9, 0))
         self.xM = 0
         self.yM = 0
         self.max_column = 8
         self.max_row = 11
 
-
     def get_tip_pos(self, m_type):
+        """
+        Return the next available tip from this module
+        """
+        #TO DO add 3d matrix to better use the tips
+
         x = self.xM
         y = self.yM
 
         if m_type == "pipette_m":
             if x > 0:
-                y = y+1
-                self.yM=self.yM+1
-            self.yM=self.yM+1
-            self.xM=0
+                y += 1
+                self.yM += 1
+            self.yM += 1
+            self.xM = 0
             x = 0
         else:
-            self.xM = self.xM + 1
-            if self.xM>self.max_column:
-                self.yM=self.yM+1
-                if self.yM>self.max_row:
-                    return None
+            self.xM += 1
+            if self.xM >= self.max_column:
+                self.yM += 1
+                if self.yM > self.max_row:
+                    self.yM = 0
                 else:
-                    self.xM=0
-        return x,y
+                    self.xM = 0
+        return x, y
+
+    def reset_tips(self):
+        """
+        Reset the tip indices
+        """
+        print('Medium tip module reset')
+        self.xM = 0
+        self.yM = 0
+        return
 
 class Large_Tip_Holder(DeckModule):
     """Large tip holder """
@@ -98,29 +116,38 @@ class Large_Tip_Holder(DeckModule):
         self.max_row = 11
 
     def get_tip_pos(self, m_type):
+        """
+        Return the next available tip from this module
+        """
+        #TO DO add 3d matrix to better use the tips
         x = self.xL
         y = self.yL
 
         if m_type == "pipette_m":
-
             if x > 0:
-                y = y+1
-                self.yL=self.yL+1
-
-            self.yL=self.yL+1
-            self.xL=0
+                y += 1
+                self.yL += 1
+            self.yL += 1
+            self.xL = 0
             x = 0
-
         else:
-            self.xL = self.xL + 1
-            if self.xL>self.max_column:
-                self.yL=self.yL+1
-                if self.yL>self.max_row:
-                    self.yL=0
+            self.xL += 1
+            if self.xL >= self.max_column:
+                self.yL += 1
+                if self.yL > self.max_row:
+                    self.yL = 0
                 else:
-                    self.xL=0
-        return x,y
+                    self.xL = 0
+        return x, y
 
+    def reset_tips(self):
+        """
+        Reset the tip indices
+        """
+        print('Large tip module reset')
+        self.xL = 0
+        self.yL = 0
+        return
 
 class Centrifuge_Vial_Holder(DeckModule):
     """Holder for centrifugial vials """
@@ -140,4 +167,20 @@ class Large_Container(DeckModule):
         super(Large_Container, self).__init__(name, coord)
         self.set_well_layout(8, 1, Coordinate(0, 0, 0), Coordinate(0, 0, 0))
 
+class TAC(DeckModule):
+    """TAC"""
+    def __init__(self, name, coord):
+        super(TAC, self).__init__(name, coord)
+        self.set_well_layout(1, 1, Coordinate(0, 0, 0), Coordinate(0, 0, 0))
 
+class Vial_Holder(DeckModule):
+    """Vial_Holder"""
+    def __init__(self, name, coord):
+        super(Vial_Holder, self).__init__(name, coord)
+        self.set_well_layout(1, 2, Coordinate(0, 0, 0), Coordinate(80, 0, 0))
+
+class Safety_Tip(DeckModule):
+    """TAC"""
+    def __init__(self, name, coord):
+        super(Safety_Tip, self).__init__(name, coord)
+        self.set_well_layout(1, 1, Coordinate(0, 0, 0), Coordinate(0, 0, 0))

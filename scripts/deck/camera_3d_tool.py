@@ -47,7 +47,6 @@ class Camera3DTool(DeckModule):
 
     def aquisition_3d(self, nx, ny):
         """
-        TO DO
         Input: nx and ny (matrix adress of the square being analyzed)
         Output: step_move
         """
@@ -58,7 +57,6 @@ class Camera3DTool(DeckModule):
 
     def move_pos(self, coord, module_dict):
         """
-        TO DO
         Input: coord, module_dict
         Output: step_move
         """
@@ -84,7 +82,6 @@ class Camera3DTool(DeckModule):
 
     def actual_pos(self, module_dict, coord):
         """
-        Modify coord. TO DO
         Input: module_dict, coord
         Output: coord
         """
